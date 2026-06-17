@@ -19,14 +19,14 @@ export default function Hero() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
             <h1 className="text-[2.75rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.1] tracking-tight text-gray-900">
-              Träffa läkare idag,<br />
+              Privat vård –<br />
               <span
                 className="bg-clip-text text-transparent"
                 style={{
                   backgroundImage: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
                 }}
               >
-                skippa vårdcentralen
+                utan kö
               </span>
             </h1>
 
@@ -65,22 +65,22 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Region links */}
+          {/* Region link */}
           <p className="text-[0.9rem] text-gray-600">
-            Vi har också fysiska mottagningar i{" "}
+            Vi har också en{" "}
             <Link
               href="/mottagningar"
               className="font-semibold underline decoration-[#E72E8A]/40 underline-offset-2 hover:decoration-[#E72E8A] transition-colors"
               style={{ color: "#E72E8A" }}
             >
-              Stockholm, Göteborg och Solna
+              fysisk mottagning i Stockholm
             </Link>{" "}
             om du hellre vill träffa oss på plats.
           </p>
         </div>
 
         {/* Right — placeholder for image/video */}
-        <div className="relative hidden lg:flex items-end justify-center">
+        <div className="relative flex items-end justify-center">
           <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
             {/* Replace with <Image> once assets are added */}
             <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
@@ -92,7 +92,7 @@ export default function Hero() {
             className="absolute -bottom-6 -right-4 w-32 h-56 rounded-3xl shadow-2xl border-4 border-white bg-gradient-to-b from-gray-800 to-gray-900 flex items-center justify-center"
             style={{ rotate: "6deg" }}
           >
-            <span className="text-white/30 text-xs text-center px-2">App preview</span>
+            <span className="text-white/30 text-xs text-center px-2">Boka online</span>
           </div>
         </div>
       </div>

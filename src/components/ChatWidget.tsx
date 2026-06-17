@@ -106,8 +106,8 @@ export default function ChatWidget() {
             <div>
               <h2 className="text-[1.1rem] font-bold text-gray-900">Varmt välkommen! 👋</h2>
               <p className="text-[0.82rem] text-gray-500 leading-relaxed mt-1">
-                Nedan hittar du svar på vanliga frågor. Skriv i Hemläkare.se-appen för att få snabb
-                kontakt med vårdpersonalen. 📱 Länk i artiklarna 👇
+                Nedan hittar du svar på vanliga frågor. Boka en tid hos oss för snabb kontakt
+                med vårdpersonalen. Länk i artiklarna 👇
               </p>
             </div>
           </div>

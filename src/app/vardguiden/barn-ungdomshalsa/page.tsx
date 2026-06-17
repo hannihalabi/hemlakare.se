@@ -984,7 +984,7 @@ export default function BarnUngdomsHalsaPage() {
                 >
                   kunskapsstodforvardgivare.se
                 </a>
-                , Region Stockholms och Gotlands regionala kunskapsstöd för vårdgivare, godkänt av RPO Barn och ungdomars hälsa. Informationen utgör offentliga riktlinjer och rekommendationer framtagna av medicinska experter. Vid akut sjukdom hos barn – ring 112 eller 1177. För icke-akuta frågor, kontakta din läkare via appen.
+                , Region Stockholms och Gotlands regionala kunskapsstöd för vårdgivare, godkänt av RPO Barn och ungdomars hälsa. Informationen utgör offentliga riktlinjer och rekommendationer framtagna av medicinska experter. Vid akut sjukdom hos barn – ring 112 eller 1177. För icke-akuta frågor, boka en tid hos din läkare online.
               </p>
             </div>
           </div>
@@ -995,13 +995,13 @@ export default function BarnUngdomsHalsaPage() {
           <div className="max-w-xl mx-auto flex flex-col items-center gap-5">
             <h2 className="text-[1.5rem] font-bold text-gray-900">Frågor om ditt barns hälsa?</h2>
             <p className="text-[0.95rem] text-gray-600">
-              Starta ett ärende i appen och prata med din läkare – svar ofta samma dag.
+              Boka en tid online och prata med din läkare – svar ofta samma dag.
             </p>
             <Link
-              href="/appen"
+              href="/mottagningar"
               className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
             >
-              Öppna appen
+              Boka tid
             </Link>
           </div>
         </section>

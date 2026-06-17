@@ -241,7 +241,7 @@ const categories = [
       "Remisser till specialistvård",
       "Förebyggande vård och vaccinationer",
       "Sjukskrivning och intyg",
-      "Digital primärvård via app",
+      "Digital primärvård online",
     ],
   },
   {
@@ -486,13 +486,13 @@ export default async function VardguidenSlugPage({ params }: Props) {
             </div>
             <div className="flex flex-col gap-2 text-center sm:text-left flex-1">
               <h3 className="text-[1.1rem] font-bold text-gray-900">Har du frågor om {cat.label.toLowerCase()}?</h3>
-              <p className="text-[0.9rem] text-gray-500">Starta ett ärende i appen och prata direkt med din läkare – oftast svar samma dag.</p>
+              <p className="text-[0.9rem] text-gray-500">Boka en tid online och prata direkt med din läkare – oftast svar samma dag.</p>
             </div>
             <Link
-              href="/appen"
+              href="/mottagningar"
               className="btn-cta shrink-0 px-7 py-3.5 rounded-full text-[0.9rem] font-bold text-white transition-all"
             >
-              Öppna appen
+              Boka tid
             </Link>
           </div>
         </section>

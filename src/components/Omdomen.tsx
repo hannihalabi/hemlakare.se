@@ -4,7 +4,7 @@ const reviews = [
   {
     initials: "M",
     quote:
-      "Lätt att nå via appen, personlig och engagerad personal och tryggt att ha kontakt med samma läkare. Och sen att få hembesök, det är verkligen suveränt! Så skönt att slippa sitta i väntrum med en massa andra sjuka människor när man själv inte är kry.",
+      "Lätt att nå online, personlig och engagerad personal och tryggt att ha kontakt med samma läkare. Och sen att få hembesök, det är verkligen suveränt! Så skönt att slippa sitta i väntrum med en massa andra sjuka människor när man själv inte är kry.",
     source: "Recension på Trustpilot",
     bg: "#e8d5c4",
     color: "#7a4f2e",

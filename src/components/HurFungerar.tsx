@@ -5,24 +5,14 @@ const steps = [
   {
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="8 17 12 21 16 17" />
-        <line x1="12" y1="12" x2="12" y2="21" />
-        <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29" />
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
       </svg>
     ),
-    title: "Ladda ner appen",
-    desc: (
-      <>
-        Med några enkla klick laddar du ner appen på{" "}
-        <a href="#" style={{ color: "#E72E8A" }} className="font-semibold">
-          Apple App Store
-        </a>{" "}
-        eller{" "}
-        <a href="#" style={{ color: "#E72E8A" }} className="font-semibold">
-          Google Play.
-        </a>
-      </>
-    ),
+    title: "Välj en tid",
+    desc: "Boka en tid som passar dig direkt i vår onlinekalender – när som helst på dygnet.",
   },
   {
     icon: (
@@ -30,8 +20,8 @@ const steps = [
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     ),
-    title: "Starta nytt ärende",
-    desc: 'Väl inne i appen klickar du på den stora rosa knappen "Starta nytt ärende".',
+    title: "Beskriv ditt ärende",
+    desc: "Berätta kort vad du behöver hjälp med så förbereder vi ditt besök.",
   },
   {
     icon: (
@@ -40,7 +30,7 @@ const steps = [
       </svg>
     ),
     title: "Få kontakt",
-    desc: "Med ett klick startar du en konversation i appen. Våra läkare eller sköterskor svarar snabbt.",
+    desc: "Du träffar läkaren digitalt eller på plats – oftast samma dag. Vi svarar snabbt.",
   },
 ];
 
@@ -101,7 +91,7 @@ export default function HurFungerar() {
 
         {/* CTA */}
         <Link
-          href="/appen"
+          href="/mottagningar"
           className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
         >
           Boka direkt

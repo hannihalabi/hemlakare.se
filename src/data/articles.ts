@@ -34,7 +34,7 @@ export const articles: Article[] = [
     date: "juli 9, 2025",
     image: "/bilder/aktuellt-3.jpg",
     excerpt: "Ska du resa i sommar? Här är vad du behöver tänka på kring dina läkemedel.",
-    body: "Ska du resa i sommar – inom Sverige eller utomlands? Här är några saker att tänka på när det gäller dina läkemedel. Se till att ha tillräckligt med medicin för hela resan, ta reda på reglerna för ditt resmål och kontakta oss i appen om du behöver förnya ett recept innan avresa.",
+    body: "Ska du resa i sommar – inom Sverige eller utomlands? Här är några saker att tänka på när det gäller dina läkemedel. Se till att ha tillräckligt med medicin för hela resan, ta reda på reglerna för ditt resmål och kontakta oss online om du behöver förnya ett recept innan avresa.",
   },
   {
     slug: "hosta-som-inte-gar-over",
@@ -43,7 +43,7 @@ export const articles: Article[] = [
     date: "mars 12, 2026",
     image: "/bilder/aktuellt-1.jpg",
     excerpt: "En hosta som varar mer än tre veckor kan vara ett tecken på något som behöver utredas.",
-    body: "De flesta hostattacker är ofarliga och går över av sig själva inom 1–2 veckor. Men en hosta som varar mer än tre veckor kallas kronisk och bör alltid utredas av en läkare. Vanliga orsaker är astma, allergi, återflöde av magsyra eller en kvarliggande infektion efter förkylning. I sällsynta fall kan det handla om något allvarligare. Kontakta oss i appen om du oroar dig – vi kan bedöma dina symtom snabbt.",
+    body: "De flesta hostattacker är ofarliga och går över av sig själva inom 1–2 veckor. Men en hosta som varar mer än tre veckor kallas kronisk och bör alltid utredas av en läkare. Vanliga orsaker är astma, allergi, återflöde av magsyra eller en kvarliggande infektion efter förkylning. I sällsynta fall kan det handla om något allvarligare. Kontakta oss online om du oroar dig – vi kan bedöma dina symtom snabbt.",
   },
   {
     slug: "hoga-blodtrycket",
@@ -52,7 +52,7 @@ export const articles: Article[] = [
     date: "februari 18, 2026",
     image: "/bilder/aktuellt-2.jpg",
     excerpt: "Högt blodtryck kallas 'den tysta sjukdomen' – de flesta märker ingenting förrän det är för sent.",
-    body: "Högt blodtryck (hypertoni) är en av de vanligaste folksjukdomarna i Sverige och drabbar var tredje vuxen. Problemet är att det sällan ger symtom. Obehandlat ökar risken kraftigt för hjärtinfarkt, stroke och njurskada. Behandling består av livsstilsförändringar som mer rörelse, saltreducering och vid behov läkemedel. Med vår blodtrycksmätare kopplad till appen kan du mäta hemma och dela resultaten direkt med din läkare.",
+    body: "Högt blodtryck (hypertoni) är en av de vanligaste folksjukdomarna i Sverige och drabbar var tredje vuxen. Problemet är att det sällan ger symtom. Obehandlat ökar risken kraftigt för hjärtinfarkt, stroke och njurskada. Behandling består av livsstilsförändringar som mer rörelse, saltreducering och vid behov läkemedel. Med vår blodtrycksmätare kopplad till din läkare kan du mäta hemma och dela resultaten direkt.",
   },
   {
     slug: "diabetes-typ-2-tidiga-tecken",
@@ -241,7 +241,7 @@ export const articles: Article[] = [
     date: "oktober 14, 2025",
     image: "/bilder/aktuellt-2.jpg",
     excerpt: "Fel val kostar dig tid och belastar vården i onödan. Lär dig skillnaden.",
-    body: "Akutmottagningen är till för livshotande tillstånd: bröstsmärta, stroke, allvarliga skador, svår andnöd och medvetslöshet. Allt annat hanteras bättre av en vårdcentral – och numera digitalt via appen. Du slipper väntetider och smittorisk i väntrum. Ring 112 vid livsfara, 1177 för rådgivning, eller kontakta oss direkt i appen för allt annat. Vi svarar snabbt.",
+    body: "Akutmottagningen är till för livshotande tillstånd: bröstsmärta, stroke, allvarliga skador, svår andnöd och medvetslöshet. Allt annat hanteras bättre av en vårdcentral – och numera digitalt online.Du slipper väntetider och smittorisk i väntrum. Ring 112 vid livsfara, 1177 för rådgivning, eller kontakta oss direkt online för allt annat. Vi svarar snabbt.",
   },
   {
     slug: "graviditet-tidiga-tecken",
@@ -421,7 +421,7 @@ export const articles: Article[] = [
     date: "oktober 25, 2025",
     image: "/bilder/aktuellt-1.jpg",
     excerpt: "Inte all halsont kräver antibiotika – men streptokockinfektion gör det. Lär dig skillnaden.",
-    body: "Halsont vid förkylning åtföljs av snuva och hosta – virus orsakar och antibiotika hjälper inte. Streptokockhalsinfektion (strep throat) ger plötsligt halsont utan hosta, feber, svullna lymfkörtlar och vita prickar på halsmandlarna – kräver antibiotika. Mononukleos (körtelfeber) ger extrem trötthet, svullna lymfkörtlar och feber. Snabbtest för streptokocker kan tas hos oss. Skicka ett foto av halsen via appen för en första bedömning.",
+    body: "Halsont vid förkylning åtföljs av snuva och hosta – virus orsakar och antibiotika hjälper inte. Streptokockhalsinfektion (strep throat) ger plötsligt halsont utan hosta, feber, svullna lymfkörtlar och vita prickar på halsmandlarna – kräver antibiotika. Mononukleos (körtelfeber) ger extrem trötthet, svullna lymfkörtlar och feber. Snabbtest för streptokocker kan tas hos oss. Skicka ett foto av halsen online för en första bedömning.",
   },
   {
     slug: "motion-vid-depression",
@@ -493,7 +493,7 @@ export const articles: Article[] = [
     date: "juni 3, 2024",
     image: "/bilder/aktuellt-1.jpg",
     excerpt: "Hemblodtrycksmätning ger mer tillförlitliga värden än på vårdcentralen. Här är tekniken.",
-    body: "Blodtryck uppmätt hemma speglar verkligheten bättre än mätningar på mottagningen, där många får falskt höga värden av 'vitrockseffekten'. Mät alltid på samma tid (morgon före frukost och medicin), sittandes med stöd för ryggen, armen i hjärtnivå, efter 5 minuters vila. Ta två mätningar med 1 minuts mellanrum och notera genomsnittet. Normalt värde: under 135/85 mmHg hemma. Dela dina mätvärden med oss via appen.",
+    body: "Blodtryck uppmätt hemma speglar verkligheten bättre än mätningar på mottagningen, där många får falskt höga värden av 'vitrockseffekten'. Mät alltid på samma tid (morgon före frukost och medicin), sittandes med stöd för ryggen, armen i hjärtnivå, efter 5 minuters vila. Ta två mätningar med 1 minuts mellanrum och notera genomsnittet. Normalt värde: under 135/85 mmHg hemma. Dela dina mätvärden med oss online.",
   },
   {
     slug: "graviditetstecken-vecka-for-vecka",
@@ -610,7 +610,7 @@ export const articles: Article[] = [
     date: "maj 22, 2023",
     image: "/bilder/aktuellt-2.jpg",
     excerpt: "Utslag kan se liknande ut men ha helt olika orsaker. Här är en guide.",
-    body: "Vanliga hudutslag: nässelfeber (upphöjda röda fläckar, kliar intensivt, ofta allergisk reaktion), rosfeber (streptokockinfefktion med tydlig gräns), ringorm (ringformad svampinfektion), rosacea (rödhet i ansiktet, kronisk), kontakteksem (lokalt utslag vid allergen), och vattkoppor (vätskefyllda blåsor med feber). Skicka bild till oss via appen för snabb bedömning utan att behöva besöka mottagning.",
+    body: "Vanliga hudutslag: nässelfeber (upphöjda röda fläckar, kliar intensivt, ofta allergisk reaktion), rosfeber (streptokockinfefktion med tydlig gräns), ringorm (ringformad svampinfektion), rosacea (rödhet i ansiktet, kronisk), kontakteksem (lokalt utslag vid allergen), och vattkoppor (vätskefyllda blåsor med feber). Skicka bild till oss online för snabb bedömning utan att behöva besöka mottagning.",
   },
   {
     slug: "hjartklappning-orsaker",

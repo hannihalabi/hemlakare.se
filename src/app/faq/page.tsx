@@ -17,11 +17,11 @@ const categories = [
     faqs: [
       {
         q: "Behöver jag lista mig?",
-        a: "Ja, för att få tillgång till din egen läkare och sköterska behöver du lista dig hos oss. Det gör du enkelt via appen på bara några minuter med hjälp av BankID.",
+        a: "Ja, för att få tillgång till din egen läkare och sköterska behöver du lista dig hos oss. Det gör du enkelt online på bara några minuter med hjälp av BankID.",
       },
       {
-        q: "Hur laddar jag ner appen?",
-        a: "Appen finns på App Store (iOS) och Google Play (Android). Sök på 'Hemläkare' så hittar du oss. Registrering sker med BankID.",
+        q: "Hur bokar jag en tid?",
+        a: "Du bokar enkelt online i vår kalender – välj en tid som passar, beskriv ditt ärende och bekräfta med BankID.",
       },
       {
         q: "Hur snabbt kan jag komma igång?",
@@ -69,15 +69,15 @@ const categories = [
     faqs: [
       {
         q: "Hur fungerar ett hembesök?",
-        a: "Du bokar hembesök via appen och väljer en tid som passar. Läkaren eller sköterskan kommer till dig – hemma, på jobbet eller annan önskad plats – med utrustning för de vanligaste undersökningarna.",
+        a: "Du bokar hembesök online och väljer en tid som passar. Läkaren eller sköterskan kommer till dig – hemma, på jobbet eller annan önskad plats – med utrustning för de vanligaste undersökningarna.",
       },
       {
         q: "Kan jag få recept digitalt?",
-        a: "Ja, läkaren kan förnya eller utfärda recept direkt i appen. Receptet skickas digitalt till valfritt apotek.",
+        a: "Ja, läkaren kan förnya eller utfärda recept direkt online. Receptet skickas digitalt till valfritt apotek.",
       },
       {
         q: "Hur begär jag en remiss?",
-        a: "Skicka ett meddelande i appen om varför du behöver remiss. Läkaren bedömer och utfärdar remissen digitalt om det är medicinskt motiverat.",
+        a: "Kontakta oss online om varför du behöver remiss. Läkaren bedömer och utfärdar remissen digitalt om det är medicinskt motiverat.",
       },
       {
         q: "Kan jag få sjukintyg?",
@@ -99,7 +99,7 @@ const categories = [
       },
       {
         q: "Kan jag använda er om jag bor utanför era städer?",
-        a: "Absolut. Vår digitala mottagning är tillgänglig i hela Sverige. Via appen når du din läkare oavsett var du befinner dig.",
+        a: "Absolut. Vår digitala mottagning är tillgänglig i hela Sverige. Du når din läkare digitalt oavsett var du befinner dig.",
       },
       {
         q: "Erbjuder ni hembesök utanför städerna?",
@@ -108,7 +108,7 @@ const categories = [
     ],
   },
   {
-    label: "Teknik & app",
+    label: "Teknik & digitalt",
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="2" width="14" height="20" rx="2" /><line x1="12" y1="18" x2="12.01" y2="18" />
@@ -116,16 +116,16 @@ const categories = [
     ),
     faqs: [
       {
-        q: "Prata med vårdpersonalen i appen – hur fungerar det?",
-        a: "I appen startar du ett ärende och beskriver dina besvär. Du kan skicka text, bilder och ha videosamtal. Läkare eller sköterska svarar och ni kommunicerar direkt i chatten.",
+        q: "Hur kommunicerar jag med vårdpersonalen?",
+        a: "När du bokat tid träffar du läkaren via video eller telefon. Du kan också skicka meddelanden och bilder i ditt ärende online, och vårdpersonalen svarar direkt.",
       },
       {
         q: "Är mina uppgifter säkra?",
         a: "Ja. Vi följer GDPR och hälsodatalagstiftning. All kommunikation är krypterad och dina journaluppgifter hanteras enligt Patientdatalagen.",
       },
       {
-        q: "Fungerar appen på alla enheter?",
-        a: "Appen finns för iPhone (iOS 14+) och Android (8.0+). Du kan också använda webversionen via din dator på vår webbplats.",
+        q: "Vilka enheter fungerar det på?",
+        a: "Allt sker via vår webbplats i webbläsaren – dator, mobil eller surfplatta. Du behöver inte ladda ner något.",
       },
     ],
   },
@@ -191,7 +191,7 @@ export default function FaqPage() {
             </h1>
             <p className="text-[1rem] text-gray-500 max-w-xl">
               Här hittar du svar på de vanligaste frågorna om Hemläkare.se. Hittar du inte svaret
-              du söker — skriv till oss direkt i appen.
+              du söker — kontakta oss online.
             </p>
           </div>
         </section>
@@ -253,13 +253,13 @@ export default function FaqPage() {
             </div>
             <div className="flex flex-col gap-2 text-center sm:text-left flex-1">
               <h3 className="text-[1.1rem] font-bold text-gray-900">Hittade du inte svaret du sökte?</h3>
-              <p className="text-[0.9rem] text-gray-500">Skriv till oss direkt i appen så svarar vi så snart vi kan – oftast samma dag.</p>
+              <p className="text-[0.9rem] text-gray-500">Kontakta oss online så svarar vi så snart vi kan – oftast samma dag.</p>
             </div>
             <Link
-              href="/appen"
+              href="/mottagningar"
               className="btn-cta shrink-0 px-7 py-3.5 rounded-full text-[0.9rem] font-bold text-white transition-all"
             >
-              Öppna appen
+              Boka tid
             </Link>
           </div>
         </section>

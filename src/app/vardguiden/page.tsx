@@ -212,7 +212,7 @@ export default function VardguidenPage() {
                   Utforska områden
                 </a>
                 <Link
-                  href="/appen"
+                  href="/mottagningar"
                   className="px-6 py-3 rounded-full text-[0.9rem] font-bold text-white border-2 border-white/50 transition-all hover:border-white hover:bg-white/10"
                 >
                   Prata med läkare
@@ -306,7 +306,7 @@ export default function VardguidenPage() {
                   </svg>
                 ),
                 title: "Snabb vård",
-                body: "Hittar du symtom du är orolig för? Starta ett ärende i appen och få svar samma dag.",
+                body: "Hittar du symtom du är orolig för? Boka en tid online och få hjälp samma dag.",
               },
               {
                 icon: (
@@ -335,10 +335,10 @@ export default function VardguidenPage() {
               Starta ett digitalt ärende eller boka ett besök – vi finns tillgängliga för dig.
             </p>
             <Link
-              href="/appen"
+              href="/mottagningar"
               className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
             >
-              Öppna appen
+              Boka tid
             </Link>
           </div>
         </section>

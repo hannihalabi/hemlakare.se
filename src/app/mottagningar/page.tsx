@@ -72,7 +72,7 @@ const specialties = [
   {
     slug: "prickmottagning",
     title: "Prickmottagning",
-    desc: "Orolig för en hudförändring? Skicka bild via appen och få bedömning av läkare med hudkompetens – snabbt och smidigt.",
+    desc: "Orolig för en hudförändring? Skicka bild online och få bedömning av läkare med hudkompetens – snabbt och smidigt.",
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="11" r="8" />
@@ -151,7 +151,7 @@ export default function MottagningarPage() {
             </h1>
             <p className="text-[1.05rem] text-gray-600 leading-relaxed max-w-2xl">
               Hemläkare.se har fysiska mottagningar i Stockholm, Göteborg och Solna –
-              samt en digital mottagning som nås från hela Sverige, dygnet runt via appen.
+              samt en digital mottagning som nås från hela Sverige, dygnet runt online.
             </p>
           </div>
         </section>
@@ -167,14 +167,14 @@ export default function MottagningarPage() {
                 diagnostik och bemannade av erfarna läkare och sköterskor.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
-                Boka tid via appen och välj om du vill komma in på mottagningen, ha ett
+                Boka tid online och välj om du vill komma in på mottagningen, ha ett
                 hembesök eller konsultera digitalt. Du bestämmer.
               </p>
               <Link
-                href="/appen"
+                href="/mottagningar"
                 className="btn-cta inline-flex items-center gap-2 w-fit px-7 py-3.5 rounded-full text-[0.95rem] font-bold text-white transition-all"
               >
-                Boka tid i appen
+                Boka tid
               </Link>
             </div>
             <ImagePlaceholder label="Kartvy / bild på mottagning" />
@@ -276,14 +276,14 @@ export default function MottagningarPage() {
               <h2 className="text-[2rem] font-bold text-gray-900">Digital mottagning – tillgänglig var du än är</h2>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
                 Bor du utanför Stockholm eller Göteborg? Vår digitala mottagning är öppen
-                för alla i Sverige. Via appen når du din läkare med text, bild eller videosamtal.
+                för alla i Sverige. Du når din läkare digitalt via video eller telefon.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
                 Ingen lång väntelista. Ingen telefonkö. Svaret kommer ofta inom några timmar –
                 ibland minuter. Du kan även boka digitala möten kvällstid och helger.
               </p>
               <ul className="flex flex-col gap-2">
-                {["Textchatt med läkare", "Videokonsultation", "Bildanalys (t.ex. hud)", "Receptförnyelse", "Remiss och sjukintyg"].map((item) => (
+                {["Digital läkarkontakt", "Videokonsultation", "Bildanalys (t.ex. hud)", "Receptförnyelse", "Remiss och sjukintyg"].map((item) => (
                   <li key={item} className="flex items-center gap-2 text-[0.92rem] text-gray-700">
                     <span
                       className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
@@ -298,7 +298,7 @@ export default function MottagningarPage() {
                 ))}
               </ul>
             </div>
-            <ImagePlaceholder label="Bild på digital konsultation / app" aspect="aspect-[4/3]" />
+            <ImagePlaceholder label="Bild på digital konsultation" aspect="aspect-[4/3]" />
           </div>
         </section>
 

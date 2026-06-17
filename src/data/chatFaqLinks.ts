@@ -4,5 +4,5 @@ export const chatFaqLinks = [
   { label: "Var finns ni?", href: "/faq/var-finns-ni" },
   { label: "Hur fungerar det?", href: "/faq/hur-fungerar-det" },
   { label: "Fråga om bokning", href: "/faq/bokning" },
-  { label: "Prata med vårdpersonalen i appen", href: "/faq/prata-i-appen" },
+  { label: "Prata med vårdpersonalen", href: "/faq/prata-med-oss" },
 ];

@@ -6,7 +6,7 @@ const steps = [
     num: 1,
     emoji: "📱",
     title: "Skicka bilder digitalt",
-    desc: "Skriv textmeddelanden, skicka bilder eller ha videosamtal om dina prickar via vår app.",
+    desc: "Skicka bilder eller ha videosamtal om dina prickar i en digital konsultation.",
   },
   {
     num: 2,
@@ -95,7 +95,7 @@ export default function Prickmottagning() {
               </Link>
 
               <Link
-                href="/appen"
+                href="/mottagningar"
                 className="btn-cta inline-flex items-center justify-center w-fit px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
               >
                 Boka direkt

@@ -11,7 +11,7 @@ const articles: Record<string, { title: string; body: string }> = {
   },
   "lista-mig": {
     title: "Behöver jag lista mig?",
-    body: "Ja, för att få tillgång till din egen läkare och sköterska behöver du lista dig hos oss. Det gör du enkelt via appen på bara några minuter.",
+    body: "Ja, för att få tillgång till din egen läkare och sköterska behöver du lista dig hos oss. Det gör du enkelt online på bara några minuter.",
   },
   "var-finns-ni": {
     title: "Var finns ni?",
@@ -19,15 +19,15 @@ const articles: Record<string, { title: string; body: string }> = {
   },
   "hur-fungerar-det": {
     title: "Hur fungerar det?",
-    body: "Ladda ner appen, lista dig och starta ett ärende. Din läkare eller sköterska svarar snabbt digitalt. Behöver du ett fysiskt möte kommer vi till dig — hemma, på jobbet eller på mottagningen.",
+    body: "Boka en tid i vår onlinekalender och beskriv ditt ärende. Din läkare eller sköterska svarar snabbt digitalt. Behöver du ett fysiskt möte kommer vi till dig — hemma, på jobbet eller på mottagningen.",
   },
   "bokning": {
     title: "Fråga om bokning",
-    body: "Du bokar tid direkt i appen. Välj om du vill ha ett digitalt möte, hembesök eller besök på mottagningen. Vi erbjuder tider som passar din vardag.",
+    body: "Du bokar tid direkt i vår onlinekalender. Välj om du vill ha ett digitalt möte, hembesök eller besök på mottagningen. Vi erbjuder tider som passar din vardag.",
   },
-  "prata-i-appen": {
-    title: "Prata med vårdpersonalen i appen",
-    body: "I appen kan du skriva meddelanden, skicka bilder och ha videosamtal med din läkare eller sköterska. Du når oss snabbt utan att behöva sitta i telefonkö.",
+  "prata-med-oss": {
+    title: "Prata med vårdpersonalen",
+    body: "När du har bokat tid kan du skriva meddelanden, skicka bilder och ha videosamtal med din läkare eller sköterska – allt online. Du når oss snabbt utan att behöva sitta i telefonkö.",
   },
 };
 

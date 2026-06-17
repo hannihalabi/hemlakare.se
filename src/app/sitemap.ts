@@ -9,7 +9,7 @@ const faqSlugs = [
   "var-finns-ni",
   "hur-fungerar-det",
   "bokning",
-  "prata-i-appen",
+  "prata-med-oss",
 ];
 
 const vardguidenSlugs = [

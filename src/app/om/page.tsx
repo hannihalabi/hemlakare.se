@@ -97,11 +97,11 @@ const team = [
 
 const milestones = [
   { year: "2019", text: "Hemläkare.se grundas i Stockholm med idén om vård utan väntrum." },
-  { year: "2020", text: "Första digitala konsultationen genomförd. Appen lanseras för iOS och Android." },
+  { year: "2020", text: "Första digitala konsultationen genomförd. Onlinebokning lanseras." },
   { year: "2021", text: "Utökar till Göteborg. 5 000 listade patienter." },
   { year: "2022", text: "Prickmottagningen lanseras – digital hudvård med läkarbedömning samma dag." },
   { year: "2023", text: "Mottagningen för Ungas Psykiska Hälsa öppnar. 20 000 patienter." },
-  { year: "2024", text: "Blodtrycksmätare kopplad till appen – proaktiv hälsoövervakning i hemmet." },
+  { year: "2024", text: "Blodtrycksmätare kopplad till din läkare – proaktiv hälsoövervakning i hemmet." },
   { year: "2025", text: "Expansion till fler städer. Nominerade till Årets Healthtech-bolag." },
   { year: "2026", text: "Idag. Vi fortsätter att växa – med patienten i centrum, alltid." },
 ];
@@ -198,7 +198,7 @@ export default function OmOssPage() {
                 och sköterska – som lär känna dig och din hälsohistoria.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
-                Behöver du snabb hjälp skriver du i appen. Behöver du ett fysiskt möte
+                Behöver du snabb hjälp bokar du en tid online. Behöver du ett fysiskt möte
                 kommer vi till dig – hemma, på jobbet eller på mottagningen. Ingen ska
                 behöva ta ledigt mitt på dagen för att sitta i ett väntrum.
               </p>

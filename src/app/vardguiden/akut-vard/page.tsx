@@ -968,7 +968,7 @@ export default function AkutVardPage() {
             <div className="flex flex-col gap-1">
               <p className="text-[0.88rem] font-bold text-gray-900">Om informationen på denna sida</p>
               <p className="text-[0.83rem] text-gray-600 leading-relaxed">
-                Innehållet är inhämtat från <a href="https://kunskapsstodforvardgivare.se/omraden/akut-vard" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-[#D81B7D] transition-colors">kunskapsstodforvardgivare.se</a>, Region Stockholms och Gotlands regionala kunskapsstöd för vårdgivare. Informationen utgör offentliga riktlinjer och rekommendationer framtagna av medicinska experter. Vid akut sjukdom – ring 112. För icke-akuta frågor, kontakta din läkare via appen.
+                Innehållet är inhämtat från <a href="https://kunskapsstodforvardgivare.se/omraden/akut-vard" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-[#D81B7D] transition-colors">kunskapsstodforvardgivare.se</a>, Region Stockholms och Gotlands regionala kunskapsstöd för vårdgivare. Informationen utgör offentliga riktlinjer och rekommendationer framtagna av medicinska experter. Vid akut sjukdom – ring 112. För icke-akuta frågor, boka en tid hos din läkare online.
               </p>
             </div>
           </div>
@@ -979,13 +979,13 @@ export default function AkutVardPage() {
           <div className="max-w-xl mx-auto flex flex-col items-center gap-5">
             <h2 className="text-[1.5rem] font-bold text-gray-900">Har du frågor om akut vård?</h2>
             <p className="text-[0.95rem] text-gray-600">
-              Starta ett ärende i appen och prata med din läkare – svar ofta samma dag.
+              Boka en tid online och prata med din läkare – svar ofta samma dag.
             </p>
             <Link
-              href="/appen"
+              href="/mottagningar"
               className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
             >
-              Öppna appen
+              Boka tid
             </Link>
           </div>
         </section>

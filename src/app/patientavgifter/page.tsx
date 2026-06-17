@@ -34,7 +34,7 @@ const faqs = [
 
 const included = [
   "Din egen personliga läkare och sköterska",
-  "Snabb respons i appen – ofta samma dag",
+  "Snabb respons online – ofta samma dag",
   "Fysiska möten i hemmet, på arbetet eller på mottagningen",
   "Digitala konsultationer via text, bild och video",
   "Proaktiv uppföljning av din hälsa",
@@ -146,7 +146,7 @@ export default function PatientavgifterPage() {
             <div className="text-center flex flex-col gap-2">
               <h2 className="text-[1.8rem] font-bold text-gray-900">Avgifter</h2>
               <p className="text-[0.95rem] text-gray-500">
-                Alla priser är inklusive moms. Betalning sker via appen eller faktura.
+                Alla priser är inklusive moms. Betalning sker online eller via faktura.
               </p>
             </div>
 

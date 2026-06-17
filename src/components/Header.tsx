@@ -41,7 +41,7 @@ export default function Header() {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           <Link
-            href="/appen"
+            href="/mottagningar"
             className="btn-cta px-5 py-2.5 rounded-full text-[0.875rem] font-semibold text-white transition-all"
           >
             Boka direkt
@@ -74,7 +74,7 @@ export default function Header() {
             </Link>
           ))}
           <Link
-            href="/appen"
+            href="/mottagningar"
             className="btn-cta mt-3 px-5 py-3 rounded-full text-[0.9rem] font-semibold text-white text-center"
           >
             Boka direkt

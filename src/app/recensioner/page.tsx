@@ -16,7 +16,7 @@ const reviews = [
   {
     initials: "M",
     name: "Maria L.",
-    quote: "Lätt att nå via appen, personlig och engagerad personal och tryggt att ha kontakt med samma läkare. Och sen att få hembesök, det är verkligen suveränt! Så skönt att slippa sitta i väntrum med en massa andra sjuka människor när man själv inte är kry.",
+    quote: "Lätt att nå online, personlig och engagerad personal och tryggt att ha kontakt med samma läkare. Och sen att få hembesök, det är verkligen suveränt! Så skönt att slippa sitta i väntrum med en massa andra sjuka människor när man själv inte är kry.",
     source: "Trustpilot",
     bg: "#e8d5c4",
     color: "#7a4f2e",
@@ -64,7 +64,7 @@ const reviews = [
   {
     initials: "K",
     name: "Karin H.",
-    quote: "Äntligen en vårdcentral utan timslånga väntetider i telefon. Allt sker i appen, smidigt och enkelt. Läkaren svarade samma dag och skickade recept direkt till apoteket.",
+    quote: "Äntligen en vårdcentral utan timslånga väntetider i telefon. Allt sker online, smidigt och enkelt. Läkaren svarade samma dag och skickade recept direkt till apoteket.",
     source: "Google",
     bg: "#e8d4d4",
     color: "#7a2e2e",
