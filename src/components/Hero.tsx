@@ -1,16 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
 
 const bullets = [
   "Din egen läkare och sköterska",
-  "Snabb digital kontakt",
+  "Hjälp samma dag, slipp vårdkön",
   "Fysiska möten på dina villkor — i hemmet, på arbetet eller på mottagningen",
 ];
 
 export default function Hero() {
   const [address, setAddress] = useState("");
+  const [result, setResult] = useState<null | "yes" | "no">(null);
+
+  function handleSearch(e: FormEvent) {
+    e.preventDefault();
+    const q = address.trim().toLowerCase();
+    if (!q) {
+      setResult(null);
+      return;
+    }
+    // Säg Ja till allt inom Stockholm: stadsnamn eller postnummer i 1xx xx-serien.
+    const inStockholm =
+      q.includes("stockholm") || /(^|\D)1\d{2}\s?\d{2}(\D|$)/.test(q);
+    setResult(inStockholm ? "yes" : "no");
+  }
 
   return (
     <section className="bg-[#fdf5f9] min-h-[calc(100vh-4rem)] flex items-center">
@@ -49,20 +63,49 @@ export default function Hero() {
             <p className="text-[1.1rem] font-semibold text-gray-900">
               Se om vi finns i ditt område
             </p>
-            <div className="flex gap-3 flex-col sm:flex-row">
+            <form onSubmit={handleSearch} className="flex gap-3 flex-col sm:flex-row">
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="Skriv en adress, tex. Klittergatan 3, 123"
+                placeholder="Skriv en adress, tex. Klittergatan 3, 123 45 Stockholm"
                 className="flex-1 px-4 py-3.5 rounded-2xl border-2 border-[#E72E8A] bg-white text-[0.95rem] text-gray-800 placeholder:text-gray-400 outline-none focus:ring-4 focus:ring-pink-100 transition-all"
               />
               <button
+                type="submit"
                 className="btn-cta px-6 py-3.5 rounded-2xl text-[0.95rem] font-semibold text-white shrink-0 transition-all"
               >
                 Sök
               </button>
-            </div>
+            </form>
+
+            {result === "yes" && (
+              <div className="flex items-center gap-2.5 rounded-2xl bg-green-50 border border-green-200 px-4 py-3 text-[0.92rem] text-green-800">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-green-600">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span>
+                  Ja, vi finns i ditt område!{" "}
+                  <Link href="/mottagningar" className="font-semibold underline underline-offset-2">
+                    Boka en tid →
+                  </Link>
+                </span>
+              </div>
+            )}
+
+            {result === "no" && (
+              <div className="rounded-2xl bg-white border border-gray-200 px-4 py-3 text-[0.92rem] text-gray-600">
+                Vi har ingen fysisk mottagning där ännu — men du kan få{" "}
+                <Link
+                  href="/mottagningar"
+                  className="font-semibold underline underline-offset-2"
+                  style={{ color: "#E72E8A" }}
+                >
+                  digital vård i hela Sverige
+                </Link>
+                .
+              </div>
+            )}
           </div>
 
           {/* Region link */}

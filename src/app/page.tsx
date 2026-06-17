@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import VarforHemlakare from "@/components/VarforHemlakare";
 import Prickmottagning from "@/components/Prickmottagning";
 import Lunchforelasning from "@/components/Lunchforelasning";
 import Omdomen from "@/components/Omdomen";
@@ -41,6 +42,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <VarforHemlakare />
         <HurFungerar />
         <Prickmottagning />
         <Lunchforelasning />
