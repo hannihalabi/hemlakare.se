@@ -490,11 +490,7 @@ export default async function VardguidenSlugPage({ params }: Props) {
             </div>
             <Link
               href="/appen"
-              className="shrink-0 px-7 py-3.5 rounded-full text-[0.9rem] font-bold text-white transition-all hover:opacity-90"
-              style={{
-                background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                boxShadow: "0 4px 16px rgba(231,46,138,0.3)",
-              }}
+              className="btn-cta shrink-0 px-7 py-3.5 rounded-full text-[0.9rem] font-bold text-white transition-all"
             >
               Öppna appen
             </Link>

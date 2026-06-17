@@ -6,10 +6,10 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Om oss",
-  description: "Vi är en privatfinansierad vårdcentral som tror på vård på dina villkor. Lär känna teamet och idén bakom Hemläkare.se.",
+  description: "Vi är privatfinansierad vård som sätter patienten först. Lär känna teamet och idén bakom Hemläkare.se.",
   openGraph: {
     title: "Om oss — Hemläkare.se",
-    description: "Vi är en privatfinansierad vårdcentral som tror på vård på dina villkor. Lär känna teamet och idén bakom Hemläkare.se.",
+    description: "Vi är privatfinansierad vård som sätter patienten först. Lär känna teamet och idén bakom Hemläkare.se.",
     url: "https://hemlakare.se/om",
   },
 };
@@ -133,7 +133,7 @@ export default function OmOssPage() {
             </h1>
             <p className="text-[1.05rem] text-gray-600 leading-relaxed max-w-2xl">
               Hemläkare.se grundades av läkare och innovatörer som tröttnat på att se patienter
-              falla mellan stolarna. Vi bygger en vårdcentral som faktiskt är tillgänglig,
+              falla mellan stolarna. Vi bygger en vård som faktiskt är tillgänglig,
               personlig och modern.
             </p>
           </div>
@@ -155,7 +155,7 @@ export default function OmOssPage() {
                 relation mellan dig och ditt vårdteam.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
-                Hemläkare.se är resultatet av det övertygandet. Vi är en privatfinansierad vårdcentral
+                Hemläkare.se är resultatet av det övertygandet. Vi är privatfinansierad vård
                 utan kompromisser – för dig som vill ha mer.
               </p>
             </div>
@@ -307,18 +307,13 @@ export default function OmOssPage() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/vardguiden"
-                className="px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all active:scale-[0.97] hover:opacity-90"
-                style={{
-                  background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                  boxShadow: "0 4px 20px rgba(231,46,138,0.35)",
-                }}
+                className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
               >
                 Vårdguiden
               </Link>
               <Link
                 href="/patientavgifter"
-                className="px-10 py-4 rounded-full text-[1rem] font-bold border-2 text-gray-700 hover:bg-gray-50 transition-all"
-                style={{ borderColor: "#E72E8A", color: "#E72E8A" }}
+                className="btn-outline px-10 py-4 rounded-full text-[1rem] font-bold transition-all"
               >
                 Se avgifter
               </Link>

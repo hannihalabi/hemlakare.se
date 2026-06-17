@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Hemläkare ikon</title>
+  <desc id="desc">Rosa rund ikon med ett centrerat vitt stetoskop format som ett hjärta.</desc>
+  <defs>
+    <linearGradient id="pinkGradient" x1="24" y1="18" x2="104" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F02A93"/>
+      <stop offset="1" stop-color="#D9157B"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="56" fill="url(#pinkGradient)"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Heart-shaped stethoscope head, visually centered in the circle -->
+    <path d="M64 88
+             C45 75 27 59 27 41
+             C27 29 36 22 48 22
+             C56 22 61 26 64 32
+             C67 26 72 22 80 22
+             C92 22 101 29 101 41
+             C101 59 83 75 64 88Z"/>
+    <!-- Centered tubing -->
+    <path d="M64 88
+             V99
+             C64 111 75 116 84 108
+             L95 98"/>
+    <!-- Chest piece -->
+    <circle cx="101" cy="92" r="10"/>
+    <path d="M91 101 L95 97"/>
+  </g>
+</svg>

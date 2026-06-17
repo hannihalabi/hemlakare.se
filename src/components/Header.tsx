@@ -42,13 +42,9 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/appen"
-            className="px-5 py-2.5 rounded-full text-[0.875rem] font-semibold text-white transition-all active:scale-[0.97]"
-            style={{
-              background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-              boxShadow: "0 2px 12px rgba(231,46,138,0.35)",
-            }}
+            className="btn-cta px-5 py-2.5 rounded-full text-[0.875rem] font-semibold text-white transition-all"
           >
-            Till appen
+            Boka direkt
           </Link>
         </div>
 
@@ -79,12 +75,9 @@ export default function Header() {
           ))}
           <Link
             href="/appen"
-            className="mt-3 px-5 py-3 rounded-full text-[0.9rem] font-semibold text-white text-center"
-            style={{
-              background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-            }}
+            className="btn-cta mt-3 px-5 py-3 rounded-full text-[0.9rem] font-semibold text-white text-center"
           >
-            Till appen
+            Boka direkt
           </Link>
         </div>
       )}

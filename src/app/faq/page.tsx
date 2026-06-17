@@ -43,11 +43,11 @@ const categories = [
     faqs: [
       {
         q: "Vad kostar det?",
-        a: "Hos Hemläkare.se gäller privata avgifter. Digitala konsultationer kostar 395 kr, mottagningsbesök 695 kr och hembesök 1 295 kr. Se vår avgiftssida för fullständig prislista.",
+        a: "Hos Hemläkare.se gäller fast pris: läkarhjälp kostar 995 kr, oavsett om den sker digitalt eller på mottagning. Hembesök kostar mer. Se vår avgiftssida för fullständig prislista.",
       },
       {
         q: "Gäller mitt frikort?",
-        a: "Nej. Vi är en privatfinansierad vårdcentral utan regionavtal, vilket innebär att frikort och högkostnadsskydd inte gäller hos oss.",
+        a: "Nej. Vi är privatfinansierad vård utan regionavtal, vilket innebär att frikort och högkostnadsskydd inte gäller hos oss.",
       },
       {
         q: "Kan jag använda privat sjukvårdsförsäkring?",
@@ -257,11 +257,7 @@ export default function FaqPage() {
             </div>
             <Link
               href="/appen"
-              className="shrink-0 px-7 py-3.5 rounded-full text-[0.9rem] font-bold text-white transition-all hover:opacity-90"
-              style={{
-                background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                boxShadow: "0 4px 16px rgba(231,46,138,0.3)",
-              }}
+              className="btn-cta shrink-0 px-7 py-3.5 rounded-full text-[0.9rem] font-bold text-white transition-all"
             >
               Öppna appen
             </Link>

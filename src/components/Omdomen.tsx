@@ -48,7 +48,7 @@ export default function Omdomen() {
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-12">
         {/* Heading */}
         <h2 className="text-[2rem] sm:text-[2.4rem] font-bold tracking-tight text-gray-900 text-center">
-          Det här säger vårdcentralens användare
+          Det här säger våra patienter
         </h2>
 
         {/* Rating badges */}
@@ -117,11 +117,7 @@ export default function Omdomen() {
         {/* CTA */}
         <Link
           href="/recensioner"
-          className="px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all active:scale-[0.97] hover:opacity-90"
-          style={{
-            background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-            boxShadow: "0 4px 20px rgba(231,46,138,0.35)",
-          }}
+          className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
         >
           Se fler recensioner
         </Link>

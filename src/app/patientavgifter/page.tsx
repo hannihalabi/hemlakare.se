@@ -5,10 +5,10 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Patientavgifter",
-  description: "Hemläkare.se är en privatfinansierad vårdcentral. Läs om vad vården kostar och vad du får för pengarna.",
+  description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
-    description: "Hemläkare.se är en privatfinansierad vårdcentral. Läs om vad vården kostar och vad du får för pengarna.",
+    description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
     url: "https://hemlakare.se/patientavgifter",
   },
 };
@@ -66,7 +66,7 @@ export default function PatientavgifterPage() {
               </span>
             </h1>
             <p className="text-[1.05rem] text-gray-600 leading-relaxed max-w-2xl">
-              Hemläkare.se är en privatfinansierad vårdcentral utan avtal med region eller landsting.
+              Hemläkare.se är privatfinansierad vård utan avtal med region eller landsting.
               Det innebär att vi inte begränsas av offentliga kösystem, scheman eller besparingar –
               men att du betalar för vården direkt ur egen ficka eller via privat sjukvårdsförsäkring.
             </p>
@@ -152,10 +152,8 @@ export default function PatientavgifterPage() {
 
             <div className="grid sm:grid-cols-2 gap-4">
               {[
-                { type: "Digital konsultation", price: "395 kr", desc: "Text, bild eller video via appen" },
-                { type: "Telefonkonsultation", price: "495 kr", desc: "Samtal med din läkare" },
-                { type: "Besök på mottagning", price: "695 kr", desc: "Fysiskt möte på vårdcentralen" },
-                { type: "Hembesök", price: "1 295 kr", desc: "Läkaren kommer hem till dig" },
+                { type: "Läkarhjälp – digitalt eller på mottagning", price: "995 kr", desc: "Fast pris, samma dag – text, bild, video eller fysiskt besök" },
+                { type: "Hembesök", price: "Från 1 995 kr", desc: "Läkaren kommer hem till dig" },
                 { type: "Recept och remiss", price: "Ingår", desc: "Vid konsultation – ingen extra avgift" },
                 { type: "Provtagning", price: "Från 195 kr", desc: "Beroende på typ av prov" },
               ].map((item) => (
@@ -178,7 +176,7 @@ export default function PatientavgifterPage() {
             </div>
 
             <p className="text-[0.82rem] text-gray-400 text-center">
-              * Priserna är ungefärliga och kan variera beroende på tjänst och region. Kontakta oss för exakt prissättning.
+              * Läkarhjälp har fast pris (995 kr). Övriga tjänster kan variera beroende på omfattning. Kontakta oss för exakt prissättning.
             </p>
           </div>
         </section>
@@ -207,11 +205,7 @@ export default function PatientavgifterPage() {
             </p>
             <Link
               href="/vardguiden"
-              className="px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all active:scale-[0.97] hover:opacity-90"
-              style={{
-                background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                boxShadow: "0 4px 20px rgba(231,46,138,0.35)",
-              }}
+              className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
             >
               Vårdguiden
             </Link>

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const bullets = [
   "Din egen läkare och sköterska",
   "Snabb digital kontakt",
-  "Fysiska möten på dina villkor — i hemmet, på arbetet eller på vårdcentralen",
+  "Fysiska möten på dina villkor — i hemmet, på arbetet eller på mottagningen",
 ];
 
 export default function Hero() {
@@ -18,16 +19,15 @@ export default function Hero() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
             <h1 className="text-[2.75rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.1] tracking-tight text-gray-900">
-              Den{" "}
+              Träffa läkare idag,<br />
               <span
                 className="bg-clip-text text-transparent"
                 style={{
                   backgroundImage: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
                 }}
               >
-                smarta
-              </span>{" "}
-              vårdcentralen
+                skippa vårdcentralen
+              </span>
             </h1>
 
             <ul className="flex flex-col gap-3 mt-2">
@@ -40,7 +40,7 @@ export default function Hero() {
             </ul>
 
             <p className="text-[0.9rem] text-gray-500 mt-1">
-              Vanliga patientavgifter och frikort gäller
+              Fast pris från 995 kr — slipp vårdköer, remisskrångel och väntrum
             </p>
           </div>
 
@@ -58,11 +58,7 @@ export default function Hero() {
                 className="flex-1 px-4 py-3.5 rounded-2xl border-2 border-[#E72E8A] bg-white text-[0.95rem] text-gray-800 placeholder:text-gray-400 outline-none focus:ring-4 focus:ring-pink-100 transition-all"
               />
               <button
-                className="px-6 py-3.5 rounded-2xl text-[0.95rem] font-semibold text-white shrink-0 transition-all active:scale-[0.97] hover:opacity-90"
-                style={{
-                  background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                  boxShadow: "0 4px 18px rgba(231,46,138,0.35)",
-                }}
+                className="btn-cta px-6 py-3.5 rounded-2xl text-[0.95rem] font-semibold text-white shrink-0 transition-all"
               >
                 Sök
               </button>
@@ -71,23 +67,15 @@ export default function Hero() {
 
           {/* Region links */}
           <p className="text-[0.9rem] text-gray-600">
-            Vi har också fysiska vårdcentraler i{" "}
-            <a
-              href="#"
+            Vi har också fysiska mottagningar i{" "}
+            <Link
+              href="/mottagningar"
               className="font-semibold underline decoration-[#E72E8A]/40 underline-offset-2 hover:decoration-[#E72E8A] transition-colors"
               style={{ color: "#E72E8A" }}
             >
-              Region Stockholm
-            </a>{" "}
-            och{" "}
-            <a
-              href="#"
-              className="font-semibold underline decoration-[#E72E8A]/40 underline-offset-2 hover:decoration-[#E72E8A] transition-colors"
-              style={{ color: "#E72E8A" }}
-            >
-              Västra Götalandsregionen
-            </a>{" "}
-            om du hellre föredrar att besöka oss.
+              Stockholm, Göteborg och Solna
+            </Link>{" "}
+            om du hellre vill träffa oss på plats.
           </p>
         </div>
 

@@ -108,7 +108,7 @@ export default function RecensionerPage() {
           {/* Heading */}
           <div className="flex flex-col gap-2">
             <h1 className="text-[2.4rem] font-bold text-gray-900">Recensioner</h1>
-            <p className="text-[1rem] text-gray-500">Det här säger vårdcentralens användare</p>
+            <p className="text-[1rem] text-gray-500">Det här säger våra patienter</p>
           </div>
 
           {/* Rating summary */}

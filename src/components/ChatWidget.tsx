@@ -68,7 +68,7 @@ export default function ChatWidget() {
 
           {/* Message */}
           <p className="text-[0.85rem] text-gray-700 leading-relaxed">
-            Hej där 👋 Välkommen till Hemläkare.se vårdcentral! Behöver du hjälp med något? 🌸
+            Hej där 👋 Välkommen till Hemläkare.se! Behöver du hjälp idag? 🌸
           </p>
 
           <button

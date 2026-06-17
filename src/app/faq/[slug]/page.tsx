@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 const articles: Record<string, { title: string; body: string }> = {
   "vad-kostar-det": {
     title: "Vad kostar det?",
-    body: "Hos Hemläkare.se gäller vanliga patientavgifter och frikort. Du betalar samma avgift som på en vanlig vårdcentral. Frikort och högkostnadsskydd gäller som vanligt.",
+    body: "Hemläkare.se är privatfinansierad vård med fast pris. Läkarhjälp kostar 995 kr, oavsett om den sker digitalt eller på mottagning. Frikort och högkostnadsskydd gäller inte hos oss — men du slipper vårdköer och får hjälp samma dag.",
   },
   "lista-mig": {
     title: "Behöver jag lista mig?",
@@ -15,15 +15,15 @@ const articles: Record<string, { title: string; body: string }> = {
   },
   "var-finns-ni": {
     title: "Var finns ni?",
-    body: "Vi har fysiska vårdcentraler i Region Stockholm och Västra Götalandsregionen. Du kan också söka vård digitalt oavsett var i Sverige du befinner dig.",
+    body: "Vi har fysiska mottagningar i Stockholm, Göteborg och Solna. Du kan också få vård digitalt oavsett var i Sverige du befinner dig.",
   },
   "hur-fungerar-det": {
     title: "Hur fungerar det?",
-    body: "Ladda ner appen, lista dig och starta ett ärende. Din läkare eller sköterska svarar snabbt digitalt. Behöver du ett fysiskt möte kommer vi till dig — hemma, på jobbet eller på vårdcentralen.",
+    body: "Ladda ner appen, lista dig och starta ett ärende. Din läkare eller sköterska svarar snabbt digitalt. Behöver du ett fysiskt möte kommer vi till dig — hemma, på jobbet eller på mottagningen.",
   },
   "bokning": {
     title: "Fråga om bokning",
-    body: "Du bokar tid direkt i appen. Välj om du vill ha ett digitalt möte, hembesök eller besök på vårdcentralen. Vi erbjuder tider som passar din vardag.",
+    body: "Du bokar tid direkt i appen. Välj om du vill ha ett digitalt möte, hembesök eller besök på mottagningen. Vi erbjuder tider som passar din vardag.",
   },
   "prata-i-appen": {
     title: "Prata med vårdpersonalen i appen",

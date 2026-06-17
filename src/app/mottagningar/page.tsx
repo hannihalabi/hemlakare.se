@@ -172,11 +172,7 @@ export default function MottagningarPage() {
               </p>
               <Link
                 href="/appen"
-                className="inline-flex items-center gap-2 w-fit px-7 py-3.5 rounded-full text-[0.95rem] font-bold text-white transition-all hover:opacity-90"
-                style={{
-                  background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                  boxShadow: "0 4px 16px rgba(231,46,138,0.3)",
-                }}
+                className="btn-cta inline-flex items-center gap-2 w-fit px-7 py-3.5 rounded-full text-[0.95rem] font-bold text-white transition-all"
               >
                 Boka tid i appen
               </Link>
@@ -316,18 +312,13 @@ export default function MottagningarPage() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/"
-                className="px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all active:scale-[0.97] hover:opacity-90"
-                style={{
-                  background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                  boxShadow: "0 4px 20px rgba(231,46,138,0.35)",
-                }}
+                className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
               >
                 Sök ditt område
               </Link>
               <Link
                 href="/vardguiden"
-                className="px-10 py-4 rounded-full text-[1rem] font-bold border-2 transition-all hover:bg-gray-50"
-                style={{ borderColor: "#E72E8A", color: "#E72E8A" }}
+                className="btn-outline px-10 py-4 rounded-full text-[1rem] font-bold transition-all"
               >
                 Vårdguiden
               </Link>

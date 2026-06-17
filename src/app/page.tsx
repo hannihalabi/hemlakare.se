@@ -15,7 +15,7 @@ const structuredData = {
   url: "https://hemlakare.se",
   logo: "https://hemlakare.se/og-image.jpg",
   description:
-    "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på vårdcentralen.",
+    "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
   medicalSpecialty: "General Practice",
   availableService: [
     { "@type": "MedicalTherapy", name: "Digital konsultation" },
