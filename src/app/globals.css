@@ -93,3 +93,26 @@ body {
     transform: none;
   }
 }
+
+/* Roterande ord i hero-rubriken */
+@keyframes rotateWordIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rotate-word {
+  display: inline-block;
+  animation: rotateWordIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotate-word {
+    animation: none;
+  }
+}

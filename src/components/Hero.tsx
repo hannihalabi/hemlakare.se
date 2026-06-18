@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import Link from "next/link";
 
 const bullets = [
@@ -9,9 +9,19 @@ const bullets = [
   "Fysiska möten på dina villkor — i hemmet, på arbetet eller på mottagningen",
 ];
 
+const rotatingWords = ["utan kö", "snabb hjälp", "mindre krångel"];
+
 export default function Hero() {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<null | "yes" | "no">(null);
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setWordIndex((i) => (i + 1) % rotatingWords.length);
+    }, 2200);
+    return () => clearInterval(id);
+  }, []);
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
@@ -35,12 +45,13 @@ export default function Hero() {
             <h1 className="text-[2.75rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.1] tracking-tight text-gray-900">
               Privat vård –<br />
               <span
-                className="bg-clip-text text-transparent"
+                key={rotatingWords[wordIndex]}
+                className="rotate-word bg-clip-text text-transparent"
                 style={{
                   backgroundImage: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
                 }}
               >
-                utan kö
+                {rotatingWords[wordIndex]}
               </span>
             </h1>
 
