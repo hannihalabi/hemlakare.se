@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hemläkare.se
 
-## Getting Started
+Webbplats och interaktiv prototyp för Hemläkare.se. Projektet visar hur en
+svensk digital vårdtjänst kan presentera sitt erbjudande, sina mottagningar,
+patientinformation och en enkel kundservicechatt.
 
-First, run the development server:
+> [!IMPORTANT]
+> Projektet är en prototyp. Chatt, bokningsknappar och övriga vårdflöden är
+> inte kopplade till ett riktigt vårdsystem. Personer, adresser, priser,
+> recensioner och annan verksamhetsinformation i koden behöver verifieras
+> innan webbplatsen publiceras.
+
+## Det finns i projektet
+
+- Startsida med tjänster, arbetssätt, omdömen och aktuellt
+- Sidor för mottagningar, patientavgifter, recensioner och om verksamheten
+- FAQ med kategorier och separata svarssidor
+- Vårdguide med olika medicinska ämnesområden
+- Artikelsida med nyheter och hälsorelaterat innehåll
+- Responsiv navigering och sidfot
+- Metadata, sitemap och robots.txt för sökmotorer
+- Interaktiv demo av en kundservicechatt
+- Medarbetarvy för att hantera chattar i demon
+
+## Starta lokalt
+
+Du behöver:
+
+- Node.js 20.9 eller senare
+- npm
+
+Installera projektet:
+
+```bash
+npm install
+```
+
+Starta utvecklingsläget:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Öppna sedan [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Det behövs inga miljövariabler för att köra den nuvarande prototypen.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Vanliga kommandon
 
-## Learn More
+| Kommando | Vad det gör |
+| --- | --- |
+| `npm run dev` | Startar webbplatsen lokalt och uppdaterar den när kod ändras |
+| `npm run lint` | Kontrollerar vanliga kodfel |
+| `npm run build` | Skapar och kontrollerar en produktionsversion |
+| `npm run start` | Startar den färdigbyggda produktionsversionen |
 
-To learn more about Next.js, take a look at the following resources:
+Kör `npm run build` före leverans för att kontrollera att hela webbplatsen kan
+byggas.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Viktiga sidor
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Adress | Innehåll |
+| --- | --- |
+| `/` | Startsida |
+| `/mottagningar` | Fysiska och digitala mottagningar |
+| `/patientavgifter` | Priser och betalningsinformation |
+| `/recensioner` | Patientomdömen |
+| `/om` | Verksamhet, värderingar och team |
+| `/faq` | Vanliga frågor |
+| `/vardguiden` | Medicinska ämnesområden |
+| `/aktuellt` | Artiklar och nyheter |
+| `/chatt-demo` | Presentationssida för chattprototypen |
+| `/personal/chattar` | Medarbetarens chattinkorg i prototypen |
 
-## Deploy on Vercel
+Artiklar, FAQ-svar och delar av vårdguiden har även egna adresser baserade på
+innehållets namn.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Testa chattdemon
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Öppna `/chatt-demo`.
+2. Öppna besökarvyn och medarbetarvyn i två flikar.
+3. Starta en chatt som besökare.
+4. Svara på chatten i `/personal/chattar`.
+
+Demodata sparas bara i webbläsarens `localStorage`. Flikar i samma webbläsare
+synkroniseras, men ingen information skickas till en server. Demon ska därför
+inte användas för riktiga patientärenden eller personuppgifter. Demodata kan
+återställas från presentationssidan eller medarbetarvyn.
+
+Mer underlag om chattens tänkta fortsättning finns i
+[`docs/chat-mvp-it-underlag.md`](docs/chat-mvp-it-underlag.md).
+
+## Var innehållet finns
+
+```text
+src/
+├── app/          Sidor, sidmetadata, sitemap och robots.txt
+├── components/   Återanvändbara delar av gränssnittet
+├── data/         Artiklar och länkar till FAQ
+├── hooks/        Logik som används av chattdemon
+└── lib/          Chattens datamodell och demodata
+
+public/
+└── bilder/       Bilder och illustrationer
+```
+
+Några vanliga platser att ändra:
+
+- Startsidan: `src/app/page.tsx` och `src/components/`
+- Artiklar: `src/data/articles.ts`
+- FAQ: `src/app/faq/` och `src/data/chatFaqLinks.ts`
+- Vårdguiden: `src/app/vardguiden/`
+- Chattdemon: `src/components/ChatWidget.tsx`,
+  `src/components/chat/`, `src/hooks/` och `src/lib/chat-demo.ts`
+- Färger och gemensam formgivning: `src/app/globals.css`
+- Bilder: `public/bilder/`
+
+## Teknik i korthet
+
+Projektet använder:
+
+- Next.js 16 med App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- ESLint
+
+Innehållet ligger för närvarande direkt i projektets filer. Det finns ingen
+databas, inloggning, betalning, bokningsmotor, journalintegration eller CMS.
+
+## Inför produktion
+
+Minst följande behöver göras innan detta kan användas som en riktig vårdtjänst:
+
+- Verifiera allt medicinskt och verksamhetsrelaterat innehåll
+- Ersätta platshållare och saknade bilder
+- Koppla knappar och formulär till riktiga, säkra tjänster
+- Bygga autentisering, behörighet och serverlagring för chatt
+- Genomföra juridisk, medicinsk, säkerhets- och tillgänglighetsgranskning
+- Bestämma driftmiljö och hantering av patient- och personuppgifter
+
+## Bygga och köra i produktion
+
+```bash
+npm run build
+npm run start
+```
+
+Applikationen kan köras hos en leverantör som stödjer en vanlig Next.js- och
+Node.js-server. Val av drift för en riktig vårdtjänst måste göras utifrån
+kraven på säkerhet, personuppgifter och medicinsk information.

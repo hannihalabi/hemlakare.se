@@ -152,7 +152,9 @@ export default function RecensionerPage() {
 
                 <Stars />
 
-                <p className="text-[0.88rem] text-gray-700 leading-relaxed flex-1">"{r.quote}"</p>
+                <p className="text-[0.88rem] text-gray-700 leading-relaxed flex-1">
+                  &ldquo;{r.quote}&rdquo;
+                </p>
               </div>
             ))}
           </div>

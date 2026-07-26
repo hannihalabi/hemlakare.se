@@ -106,7 +106,7 @@ export default function Omdomen() {
               <Stars />
 
               <p className="text-[0.93rem] text-gray-700 leading-relaxed">
-                "{r.quote}"
+                &ldquo;{r.quote}&rdquo;
               </p>
 
               <span className="text-[0.82rem] text-gray-400 mt-auto">{r.source}</span>
