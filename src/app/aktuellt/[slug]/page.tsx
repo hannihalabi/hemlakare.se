@@ -205,14 +205,36 @@ function RichLegacyArticle({ article }: { article: Article }) {
           </div>
 
           {article.cta && (
-            <div className="mt-12 rounded-2xl bg-gray-950 p-6 text-white sm:p-8">
-              <h2 className="text-[1.4rem] font-extrabold">Orolig för en hudförändring?</h2>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-white/75">
-                Beskriv förändringen och bifoga tydliga bilder så kan vården hjälpa dig vidare till rätt bedömning.
-              </p>
-              <Link href={article.cta.href} className="btn-cta mt-5 inline-flex min-h-11 items-center rounded-xl px-5 text-sm font-extrabold">
-                {article.cta.label}
-              </Link>
+            <div className="mt-12 overflow-hidden rounded-2xl border border-pink-100 bg-[#fff7fb] shadow-[0_18px_50px_rgba(231,46,138,0.12)]">
+              <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_290px]">
+                <div className="p-6 sm:p-8">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C81E70]">Nästa steg</p>
+                  <h2 className="mt-3 text-[1.6rem] font-extrabold leading-tight tracking-tight text-gray-950 sm:text-[1.9rem]">
+                    {article.cta.title ?? "Orolig för en hudförändring?"}
+                  </h2>
+                  <p className="mt-4 max-w-2xl text-[1rem] leading-8 text-gray-700">
+                    {article.cta.body ?? "Beskriv förändringen och bifoga tydliga bilder så kan vården hjälpa dig vidare till rätt bedömning."}
+                  </p>
+                  <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <Link href={article.cta.href} className="btn-cta inline-flex min-h-12 items-center justify-center rounded-full px-7 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(231,46,138,0.28)]">
+                      {article.cta.label}
+                    </Link>
+                    {article.cta.note && <p className="text-sm font-semibold text-gray-500">{article.cta.note}</p>}
+                  </div>
+                </div>
+
+                <div className="border-t border-pink-100 bg-white/70 p-6 sm:p-8 lg:border-l lg:border-t-0">
+                  <p className="text-sm font-extrabold text-gray-950">Du får hjälp med</p>
+                  <ul className="mt-4 space-y-3 text-sm font-semibold leading-6 text-gray-700">
+                    {(article.cta.bullets ?? ["Snabb första bedömning", "Råd om nästa steg", "Trygg kontakt med vården"]).map((item) => (
+                      <li key={item} className="flex gap-3">
+                        <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-[#E72E8A] text-[0.72rem] font-black text-white">✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           )}
 

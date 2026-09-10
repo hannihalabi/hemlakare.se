@@ -161,3 +161,34 @@ body {
     opacity: 0;
   }
 }
+
+/* Lugn, kontinuerlig bläddring för recensionskort på startsidan. */
+@keyframes reviewMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.review-marquee-track {
+  animation: reviewMarquee 48s linear infinite;
+}
+
+.review-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-marquee-track {
+    width: 100%;
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .review-marquee-track > * {
+    scroll-snap-align: center;
+  }
+}

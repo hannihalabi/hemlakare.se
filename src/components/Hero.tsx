@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const bullets = [
@@ -133,20 +134,31 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Right — placeholder for image/video */}
+        {/* Right — image/video */}
         <div className="relative flex items-end justify-center">
           <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
-            {/* Replace with <Image> once assets are added */}
-            <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
-              Bild / video placeholder
-            </div>
+            <Image
+              src="/landningspage/hero-1.png"
+              alt="Hemläkare.se erbjuder privat vård online och på mottagning."
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
           </div>
           {/* Phone mockup badge */}
           <div
-            className="absolute -bottom-6 -right-4 w-32 h-56 rounded-3xl shadow-2xl border-4 border-white bg-gradient-to-b from-gray-800 to-gray-900 flex items-center justify-center"
+            className="absolute -bottom-6 -right-4 h-56 w-32 overflow-hidden rounded-[1.65rem] border-4 border-white bg-gray-950 shadow-2xl"
             style={{ rotate: "6deg" }}
           >
-            <span className="text-white/30 text-xs text-center px-2">Boka online</span>
+            <Image
+              src="/landningspage/hero-mobile.png"
+              alt="Mobilvy för att boka vård online hos Hemläkare.se."
+              fill
+              priority
+              sizes="128px"
+              className="rounded-[1.35rem] object-cover"
+            />
           </div>
         </div>
       </div>

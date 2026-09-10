@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Lunchforelasning() {
@@ -16,9 +17,15 @@ export default function Lunchforelasning() {
 
         {/* Body */}
         <div className="w-full grid lg:grid-cols-2 gap-12 items-center">
-          {/* Image — ersätt div med <Image> när barn-bild.jpg laddas upp till /public/bilder/ */}
+          {/* Image */}
           <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100 shadow-sm flex items-center justify-center">
-            <span className="text-pink-300 text-sm font-medium">Bild kommer snart</span>
+            <Image
+              src="/landningspage/landing-2.png"
+              alt="Digital lunchföreläsning om ungas psykiska hälsa för föräldrar."
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
           </div>
 
           {/* Text */}

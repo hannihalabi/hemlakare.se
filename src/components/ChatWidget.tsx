@@ -7,6 +7,7 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { chatFaqLinks as articles } from "@/data/chatFaqLinks";
 import { formatClock, topicOptions, type ChatTopic } from "@/lib/chat-demo";
@@ -574,26 +575,16 @@ function TeamAvatar({ size }: { size: "sm" | "md" }) {
   const dimensions = size === "md" ? "size-11" : "size-10";
   return (
     <div
-      className={`relative ${dimensions} shrink-0 rounded-full bg-[linear-gradient(145deg,#f9cdbb,#eaa68a)] ring-2 ring-white`}
+      className={`relative ${dimensions} shrink-0 overflow-hidden rounded-full bg-pink-50 ring-2 ring-white`}
       aria-hidden="true"
     >
-      <svg viewBox="0 0 44 44" className="size-full overflow-hidden rounded-full">
-        <circle cx="22" cy="17" r="9" fill="#f3c4ad" />
-        <path d="M9 44c1-10 6-14 13-14s12 4 13 14" fill="#c52b69" />
-        <circle cx="18.5" cy="17" r="1.1" fill="#49332b" />
-        <circle cx="25.5" cy="17" r="1.1" fill="#49332b" />
-        <path
-          d="M18.5 21c2.2 1.6 4.8 1.6 7 0"
-          fill="none"
-          stroke="#8b5948"
-          strokeLinecap="round"
-        />
-        <path
-          d="M13.5 14c1-6 5-9 9-9 5 0 8 3 9 8-5-1-9-3-12-5-1 3-3 5-6 6Z"
-          fill="#573528"
-        />
-      </svg>
-      <span className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-emerald-500" />
+      <Image
+        src="/bilder/chatt och admin/kundservice.jpg"
+        alt=""
+        fill
+        sizes={size === "md" ? "44px" : "40px"}
+        className="object-cover"
+      />
     </div>
   );
 }

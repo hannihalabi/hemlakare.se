@@ -23,6 +23,10 @@ export type Article = {
   faq?: ArticleFaq[];
   sources?: ArticleSource[];
   cta?: {
+    title?: string;
+    body?: string;
+    bullets?: string[];
+    note?: string;
     label: string;
     href: string;
   };
@@ -162,11 +166,235 @@ export const articles: Article[] = [
   {
     slug: "allergi-symtom-behandling",
     title: "Allergi – symtom, utredning och behandling",
+    h1: "Allergi: symtom, utredning och behandling",
+    seoTitle: "Allergi: symtom, test och behandling",
+    metaDescription: "Lär dig känna igen allergisymtom, skillnaden mellan allergi och överkänslighet, när du bör söka vård och vilka behandlingar som kan hjälpa.",
     tag: "ALLERGI",
     date: "april 15, 2026",
-    image: "/bilder/aktuellt-1.jpg",
-    excerpt: "Var tredje svensk lider av någon form av allergi. Här är vad du kan göra åt det.",
-    body: "Allergier uppstår när immunsystemet reagerar överdrivet på ofarliga ämnen som pollen, pälsdjur, husdammskvalster eller livsmedel. Symtom inkluderar nysningar, kliande ögon, nässelfeber, astma och i allvarliga fall anafylaxi. Utredning görs med pricktest eller blodprov. Behandling inkluderar antihistaminer, nässpray, undvikande av allergen och i vissa fall allergishot (AIT) som kan ge långvarig lindring.",
+    publishedAtIso: "2026-04-15",
+    updatedAt: "september 10, 2026",
+    updatedAtIso: "2026-09-10",
+    image: "/bilder/artiklar/allergi.jpg",
+    imageAlt: "Person med pollenallergi som nyser utomhus under pollensäsong.",
+    authorName: "Hemläkare.se redaktion",
+    reviewerName: "Hemläkare.se medicinska team",
+    reviewedAt: "september 10, 2026",
+    targetQuery: "allergi symtom behandling",
+    excerpt: "Allergi kan ge nysningar, rinnande ögon, nässelutslag, astma och ibland allvarliga reaktioner. Här får du veta hur allergi utreds och behandlas.",
+    summary: "Allergi innebär att immunförsvaret reagerar mot ett ämne som kroppen egentligen borde tåla, till exempel pollen, pälsdjur, kvalster, livsmedel, läkemedel eller insektsstick. Vanliga symtom är nysningar, täppt eller rinnande näsa, kliande ögon, hosta, astma, nässelutslag, magbesvär och svullnad. Behandlingen beror på vad du reagerar mot och hur svåra besvären är. Vid snabbt tilltagande andningsbesvär, svullnad i mun eller svalg, svimningskänsla eller påverkat allmäntillstånd ska du ringa 112.",
+    keyTakeaways: [
+      "Allergi kan drabba näsa, ögon, luftvägar, hud och mage.",
+      "Pricktest eller blodprov kan stödja diagnosen, men symtombilden är lika viktig.",
+      "Antihistamin hjälper ofta snabbt, medan kortisonnässpray kan behöva några dagar.",
+      "Allergisk astma, nässelutslag och matallergi behöver ibland särskild bedömning.",
+      "Ring 112 vid misstänkt anafylaxi: andningsbesvär, svullnad i svalg eller svimningskänsla."
+    ],
+    body: "Allergi är vanligt, men besvären kan se väldigt olika ut. En person får rinnande näsa och kliande ögon under pollensäsongen. En annan får nässelutslag av ett livsmedel, pipande andning av pälsdjur eller en kraftig reaktion efter ett getingstick. Därför behöver en bra allergibedömning börja med frågan: vad händer, när händer det och vad verkar utlösa det?\n\nEn allergi uppstår när immunförsvaret reagerar mot ett ämne, ett allergen, som de flesta andra tål. Reaktionen kan vara mild och irriterande, men ibland påverkar den sömn, arbete, skola, träning och livskvalitet. Hos personer med astma kan allergi också göra luftvägsbesvär sämre.\n\nMålet med behandling är inte bara att dämpa symtom för dagen. Rätt behandling ska minska inflammationen, förebygga försämringar, hjälpa dig undvika onödiga begränsningar och avgöra när vidare utredning eller allergen immunterapi kan vara aktuellt.",
+    sections: [
+      {
+        id: "vad-ar-allergi",
+        title: "Vad är allergi?",
+        body: [
+          "Allergi betyder att immunförsvaret överreagerar på ett ämne som normalt inte är farligt. Ämnet kallas allergen. Vanliga allergen är pollen, pälsdjur, kvalster, mögel, vissa livsmedel, läkemedel, latex och insektsgift.",
+          "Alla reaktioner är inte allergi. En del är irritation eller överkänslighet utan allergisk mekanism, till exempel rinnande näsa av starka dofter eller magbesvär av vissa livsmedel. Därför är det viktigt att inte bara testa, utan också förstå symtomen."
+        ],
+        table: {
+          headers: ["Typ av besvär", "Vanliga symtom", "Vanliga utlösare"],
+          rows: [
+            ["Allergisk rinit", "Nysningar, klåda, rinnande eller täppt näsa.", "Pollen, pälsdjur, kvalster, mögel."],
+            ["Allergisk konjunktivit", "Kliande, röda och rinnande ögon.", "Pollen och pälsdjur."],
+            ["Allergisk astma", "Hosta, pip i bröstet, andfåddhet.", "Pollen, pälsdjur, kvalster, ansträngning i kombination med allergi."],
+            ["Nässelutslag", "Kliande upphöjda utslag som flyttar sig.", "Infektion, läkemedel, livsmedel eller okänd orsak."],
+            ["Födoämnesallergi", "Klåda i mun, svullnad, magbesvär, utslag eller andningsbesvär.", "Nötter, jordnötter, skaldjur, ägg, mjölk, fisk med flera."]
+          ]
+        }
+      },
+      {
+        id: "symtom",
+        title: "Vanliga symtom på allergi",
+        body: [
+          "Allergisymtom kommer ofta i mönster. Pollenbesvär återkommer under vissa delar av året. Kvalsterbesvär märks ofta mer i hemmet eller på morgonen. Pälsdjursallergi kan komma vid direkt kontakt, men också i miljöer där allergen finns kvar i textilier.",
+          "Symtomens timing är viktig. En snabb reaktion efter mat, läkemedel eller insektsstick bedöms annorlunda än långsamma och diffusa besvär som kommer över flera dagar."
+        ],
+        bullets: [
+          "Nysningar, rinnsnuva eller nästäppa.",
+          "Klåda i näsa, gom, hals eller ögon.",
+          "Röda, rinnande eller svullna ögon.",
+          "Hosta, pipande andning eller tryck över bröstet.",
+          "Nässelutslag, rodnad eller svullnad i huden.",
+          "Magont, illamående, kräkningar eller diarré efter vissa livsmedel.",
+          "Trötthet och sämre sömn vid långdragna näsbesvär."
+        ]
+      },
+      {
+        id: "anafylaxi",
+        title: "Varningssignaler: när allergi kan vara akut",
+        body: [
+          "Anafylaxi, eller allergisk chock, är en allvarlig allergisk reaktion som kan bli livshotande. Den kommer ofta snabbt och kan påverka flera organsystem samtidigt, till exempel hud, luftvägar, mage och cirkulation.",
+          "Ring 112 direkt om du misstänker anafylaxi. Om personen har adrenalinpenna ska den användas enligt ordination, men det ska inte ersätta ambulans."
+        ],
+        bullets: [
+          "Svårt att andas, pipande andning eller tryck över bröstet.",
+          "Svullnad i läppar, tunga, mun eller svalg.",
+          "Yrsel, svimningskänsla, kallsvettning eller kraftig matthet.",
+          "Snabbt spridande nässelutslag eller klåda över kroppen.",
+          "Kräkningar eller diarré tillsammans med andra allergisymtom.",
+          "Oro, förvirring eller känsla av att något är allvarligt fel."
+        ]
+      },
+      {
+        id: "utredning",
+        title: "Så utreds allergi",
+        body: [
+          "En allergiutredning börjar med din berättelse: vilka symtom du får, hur snabbt de kommer, hur ofta de återkommer och vad du tror utlöser dem. Testresultat behöver alltid tolkas tillsammans med symtomen.",
+          "Pricktest och blodprov som mäter specifikt IgE kan visa om kroppen är sensibiliserad mot ett allergen. Ett positivt test betyder inte alltid att ämnet orsakar dina besvär, och ett negativt test utesluter inte alla former av överkänslighet."
+        ],
+        table: {
+          headers: ["Utredning", "När den används", "Vad den kan visa"],
+          rows: [
+            ["Symtomgenomgång", "Alltid som första steg.", "Mönster, utlösare och svårighetsgrad."],
+            ["Pricktest", "Vid misstänkt IgE-förmedlad allergi.", "Snabb hudreaktion mot utvalda allergen."],
+            ["Blodprov/specifikt IgE", "När pricktest inte passar eller behöver kompletteras.", "Antikroppar mot specifika allergen."],
+            ["PEF/spirometri", "Vid hosta, pip eller misstänkt astma.", "Hur luftvägarna fungerar."],
+            ["Provokation", "I utvalda fall och under kontrollerade former.", "Om ett misstänkt ämne faktiskt utlöser reaktion."]
+          ]
+        }
+      },
+      {
+        id: "behandling",
+        title: "Behandling: vad hjälper mot allergi?",
+        body: [
+          "Behandlingen beror på typ av allergi. Vid pollenallergi räcker receptfria läkemedel för många, men återkommande eller svåra besvär kan behöva en mer planerad behandling. Vid allergisk rinit är kortisonnässpray ofta effektivt, särskilt vid nästäppa.",
+          "Antihistamin kan hjälpa snabbt mot klåda, nysningar, rinnsnuva och nässelutslag. Ögondroppar kan hjälpa vid ögonbesvär. Vid astmasymtom behövs bedömning av luftvägarna och ofta särskild astmabehandling."
+        ],
+        bullets: [
+          "Antihistamintabletter, nässpray eller ögondroppar kan lindra snabbt.",
+          "Kortisonnässpray kan vara bäst vid täppt näsa och inflammation.",
+          "Saltvattensköljning kan minska pollen och sekret i näsan.",
+          "Astmasymtom ska inte behandlas som bara vanlig pollenallergi.",
+          "Undvik utlösande allergen när det är möjligt, men gör det på ett rimligt sätt.",
+          "Vid svår allergi kan specialistbedömning och allergen immunterapi vara aktuellt."
+        ]
+      },
+      {
+        id: "pollenallergi",
+        title: "Pollenallergi: planera före säsongen",
+        body: [
+          "Pollenallergi ger ofta nysningar, rinnande näsa, nästäppa, kliande ögon och trötthet. Besvären kan bli värre vid torrt, varmt och blåsigt väder, och lättare efter regn.",
+          "Om du vet att du brukar få besvär varje år är det klokt att börja behandling innan symtomen blivit som värst. Kortisonnässpray behöver ofta några dagars regelbunden användning innan full effekt märks."
+        ],
+        bullets: [
+          "Följ pollenprognosen under säsong.",
+          "Vädra gärna när pollenhalterna är lägre.",
+          "Skölj hår eller byt kläder efter mycket utevistelse om du får besvär.",
+          "Torka inte sängkläder utomhus under hög pollensäsong.",
+          "Sök hjälp om receptfria läkemedel inte räcker."
+        ]
+      },
+      {
+        id: "matallergi",
+        title: "Matallergi och korsreaktioner",
+        body: [
+          "Matallergi kan ge allt från lindrig klåda i munnen till allvarliga reaktioner. Hos pollenallergiker är det vanligt med korsreaktioner mot rå frukt, grönsaker eller nötter, ofta som klåda i mun och svalg. Det kallas ibland oralt allergisyndrom.",
+          "Undvik inte stora livsmedelsgrupper utan bedömning om du inte haft tydliga reaktioner. Onödiga kostrestriktioner kan göra vardagen svårare och hos barn kan det påverka näringsintag."
+        ],
+        bullets: [
+          "Sök vård vid återkommande reaktioner efter mat.",
+          "Ring 112 vid andningsbesvär, svullnad i svalg eller svimningskänsla.",
+          "Berätta alltid om reaktionens tidsförlopp och mängden du åt.",
+          "Barn med misstänkt matallergi bör bedömas så att kosten blir säker och näringsrik."
+        ]
+      },
+      {
+        id: "ait",
+        title: "Allergivaccination: när kan AIT vara aktuellt?",
+        body: [
+          "Allergen immunterapi, ofta kallat allergivaccination eller AIT, innebär att kroppen gradvis vänjs vid ett allergen. Behandlingen kan vara aktuell vid vissa allergier, till exempel pollen, kvalster eller bi- och getinggift, särskilt om vanliga läkemedel inte räcker.",
+          "AIT är en långsiktig behandling och kräver noggrann bedömning. Den passar inte alla, men kan minska symtom och läkemedelsbehov hos rätt patient."
+        ]
+      },
+      {
+        id: "nar-soka-vard",
+        title: "När ska du söka vård?",
+        body: [
+          "Sök vård om allergibesvären påverkar sömn, arbete, skola, träning eller livskvalitet trots egenbehandling. Du bör också söka hjälp om du får astmaliknande symtom, återkommande nässelutslag, misstänkt matallergi eller om du behöver veta vad du faktiskt är allergisk mot.",
+          "Sök också vård om du använder receptfria läkemedel under lång tid utan tillräcklig effekt. En strukturerad behandlingsplan kan ofta ge betydligt bättre kontroll."
+        ],
+        bullets: [
+          "Receptfria läkemedel hjälper inte tillräckligt.",
+          "Du får hosta, pip i bröstet eller andfåddhet.",
+          "Besvären stör sömn, arbete, skola eller träning.",
+          "Du misstänker allergi mot mat, läkemedel eller insektsstick.",
+          "Du har haft en kraftig reaktion och behöver akutplan eller adrenalinpenna.",
+          "Du undviker mycket i vardagen utan att veta vad du reagerar på."
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: "Hur vet jag om det är allergi?",
+        answer: "Allergi misstänks när symtom återkommer i tydliga mönster, till exempel vid pollen, pälsdjur, kvalster, mat eller insektsstick. Pricktest eller blodprov kan stödja diagnosen, men måste tolkas tillsammans med dina symtom."
+      },
+      {
+        question: "Vad hjälper bäst mot pollenallergi?",
+        answer: "Antihistamin kan lindra snabbt, särskilt klåda och nysningar. Vid nästäppa och mer ihållande besvär är kortisonnässpray ofta effektivt, men behöver användas regelbundet i några dagar för full effekt."
+      },
+      {
+        question: "När är allergi akut?",
+        answer: "Ring 112 vid misstänkt anafylaxi, till exempel andningsbesvär, svullnad i mun eller svalg, svimningskänsla, kraftig matthet eller snabbt spridande utslag tillsammans med andra symtom."
+      },
+      {
+        question: "Kan allergi ge trötthet?",
+        answer: "Ja. Allergi kan störa sömnen genom nästäppa, klåda, hosta och ögonbesvär. Inflammation och långdragna symtom kan också göra att du känner dig trött och mindre fokuserad."
+      },
+      {
+        question: "Är ett positivt allergitest alltid en allergi?",
+        answer: "Nej. Ett positivt test kan visa sensibilisering, men betyder inte alltid att ämnet orsakar besvär. Därför är symtom, tidsförlopp och exponering avgörande för diagnosen."
+      },
+      {
+        question: "Kan allergi behandlas långsiktigt?",
+        answer: "Ja. Många får bra kontroll med rätt läkemedel och planering. Vid vissa allergier kan allergen immunterapi, AIT, vara aktuellt och ge mer långvarig lindring."
+      }
+    ],
+    sources: [
+      {
+        title: "Allergisk chock – anafylaxi",
+        publisher: "1177",
+        url: "https://www.1177.se/olyckor--skador/akuta-rad---forsta-hjalpen/allergisk-chock--anafylaxi/"
+      },
+      {
+        title: "Är pollenmedicin receptfritt?",
+        publisher: "Läkemedelsverket",
+        url: "https://fragor.lakemedelsverket.se/org/lakemedelsverket/d/receptfria-lakemedel-mot-pollenallergi/"
+      },
+      {
+        title: "Rinit, allergisk och dess inverkan på astma",
+        publisher: "Internetmedicin",
+        url: "https://www.internetmedicin.se/allergologi/rinit-allergisk-och-dess-inverkan-pa-astma-aria"
+      },
+      {
+        title: "Anafylaxi",
+        publisher: "1177 för vårdpersonal",
+        url: "https://vardpersonal.1177.se/kunskapsstod/kliniska-kunskapsstod/anafylaxi/?region=stockholm&selectionCode=profession_primarvard"
+      },
+      {
+        title: "Allergi",
+        publisher: "Astma- och Allergiförbundet",
+        url: "https://astmaoallergiforbundet.se/information-rad/allergi/"
+      }
+    ],
+    cta: {
+      title: "Osäker på vad du reagerar mot?",
+      body: "Få hjälp att reda ut symtom, möjliga utlösare och vilken behandling som passar. Vi kan bedöma om du behöver allergitest, astmakontroll eller vidare utredning.",
+      bullets: [
+        "Kartläggning av symtom och utlösare",
+        "Råd om receptfria och receptbelagda alternativ",
+        "Hjälp vidare vid astma, matallergi eller kraftiga reaktioner"
+      ],
+      note: "Vid andningsbesvär eller svullnad i svalg: ring 112.",
+      label: "Få hjälp med allergi",
+      href: "/vardguiden/lung-allergisjukdomar"
+    },
   },
   {
     slug: "depression-tecken-hjalp",
@@ -243,11 +471,220 @@ export const articles: Article[] = [
   {
     slug: "solvax-och-solskydd",
     title: "Solskydd – vilket SPF behöver du egentligen?",
+    h1: "Solskydd och SPF: så skyddar du huden på riktigt",
+    seoTitle: "Solskydd och SPF: vilket skydd behöver du?",
+    metaDescription: "Lär dig välja rätt SPF, förstå UVA och UVB, smörja rätt mängd och skydda barn mot solen med råd från 1177, Cancerfonden och Läkemedelsverket.",
     tag: "HUD",
     date: "maj 2, 2026",
-    image: "/bilder/aktuellt-1.jpg",
-    excerpt: "De flesta använder för lite solkräm och för lågt SPF. Här är experternas råd.",
-    body: "Hudcancer är den snabbast ökande cancerformen i Sverige. SPF 30 blockerar 97% av UVB-strålning, SPF 50 blockerar 98%. Skillnaden är liten – men du behöver applicera riklig mängd (2 mg/cm²) och förnya var 2:e timme. Välj ett bredspektrum-solskydd som skyddar mot både UVA och UVB. Barn under 6 månader ska inte vara i direkt sol. Undvik sol 11–15 när UV-index är som högst. Kontrollera dina leverfläckar regelbundet hos oss.",
+    publishedAtIso: "2026-05-02",
+    updatedAt: "september 10, 2026",
+    updatedAtIso: "2026-09-10",
+    image: "/bilder/artiklar/solskydd-1.jpg",
+    imageAlt: "Solskyddskräm appliceras på hud för att skydda mot UV-strålning.",
+    authorName: "Hemläkare.se redaktion",
+    reviewerName: "Hemläkare.se medicinska team",
+    reviewedAt: "september 10, 2026",
+    targetQuery: "vilket SPF behöver jag",
+    excerpt: "SPF 30 räcker ofta om det används rätt, men barn och känslig hud behöver extra skydd. Här får du en praktisk guide till UVA, UVB, mängd och återapplicering.",
+    summary: "För de flesta vuxna är SPF 30 eller högre ett bra val, men solskyddskräm ska ses som ett komplement till skugga, kläder, hatt och solglasögon. Barn bör skyddas extra noggrant och små barn ska inte vara i direkt sol. Välj bredspektrumskydd mot både UVA och UVB, använd riklig mängd och smörj igen efter bad, svettning och ungefär varannan timme vid stark sol.",
+    keyTakeaways: [
+      "SPF anger främst skydd mot UVB, strålningen som gör att huden bränner sig.",
+      "Välj minst SPF 30 och kontrollera att produkten även skyddar mot UVA.",
+      "Solskyddskräm fungerar bara som utlovat om du använder tillräckligt mycket.",
+      "Kläder, hatt, solglasögon och skugga är basen; solkräm är komplementet.",
+      "Barns hud är känsligare än vuxnas och behöver extra skydd mot direkt sol."
+    ],
+    body: "Det korta svaret är att de flesta vuxna bör välja minst SPF 30 när solen är stark, och SPF 50 kan vara klokt för barn, ljus hud, fjäll, strand, båt, utlandsresa eller om du lätt bränner dig. Men den viktigaste frågan är inte bara vilken siffra som står på flaskan. Det avgörande är hur länge du är i solen, om skyddet täcker både UVA och UVB, hur mycket du använder och om du fyller på efter bad eller svettning.\n\nSolskydd handlar alltså inte om att kunna sola längre. Det handlar om att minska den totala UV-belastningen på huden. UV-strålning kan ge brännskador, soleksem, pigmentförändringar, snabbare hudåldrande och ökad risk för hudcancer. Du kan dessutom få skador även molniga dagar och även när huden inte känns varm.\n\nDen bästa strategin är enkel: planera dagen efter solen, välj skugga när UV-strålningen är stark, täck huden med kläder och använd solskyddsmedel på hud som inte täcks. Då blir SPF ett verkligt skydd, inte en falsk trygghet.",
+    sections: [
+      {
+        id: "vad-betyder-spf",
+        title: "Vad betyder SPF?",
+        body: [
+          "SPF står för Sun Protection Factor och beskriver framför allt skyddet mot UVB-strålning. UVB är den del av UV-ljuset som tydligast gör att huden blir röd och bränd. En högre SPF ger mer skydd, men skillnaden mellan höga faktorer är mindre än många tror.",
+          "I praktiken är SPF 30 ofta en bra lägstanivå, men bara om du använder tillräcklig mängd. Om du smörjer för tunt blir det verkliga skyddet betydligt lägre än siffran på förpackningen."
+        ],
+        table: {
+          headers: ["SPF", "Passar ofta för", "Viktigt att komma ihåg"],
+          rows: [
+            ["SPF 15", "Kort vardagsexponering när UV-index är lågt.", "Ofta för lågt vid stark sommarsol, strand, fjäll eller utlandsresa."],
+            ["SPF 30", "De flesta vuxna vid svensk vår- och sommarsol.", "Bra basnivå om den används rikligt och fylls på."],
+            ["SPF 50", "Barn, ljus eller känslig hud, stark sol, bad, båt, snö och utlandsresa.", "Ger extra marginal när risken att bränna sig är hög."],
+            ["SPF 50+", "Mycket känslig hud eller läkemedel/sjukdom som ökar solkänslighet.", "Bör kombineras med kläder och skugga, inte ersätta dem."]
+          ]
+        }
+      },
+      {
+        id: "uva-uvb",
+        title: "UVA och UVB: därför behöver du bredspektrumskydd",
+        body: [
+          "Solen avger flera typer av UV-strålning. UVB bidrar starkt till att du bränner dig, medan UVA tränger djupare ned i huden och bidrar till hudåldrande, pigmentförändringar och vissa ljuskänslighetsreaktioner. Både UVA och UVB kan skada huden.",
+          "Välj därför ett solskydd som tydligt anger skydd mot både UVA och UVB. SPF-talet räcker inte som enda kvalitetsmarkör, eftersom det främst säger något om UVB-skyddet."
+        ]
+      },
+      {
+        id: "hur-mycket-solskydd",
+        title: "Hur mycket solskyddskräm ska man använda?",
+        body: [
+          "De flesta använder för lite solskyddsmedel. För att komma nära skyddet på förpackningen behöver du lägga på ett jämnt och rikligt lager. Som tumregel brukar en vuxen behöva ungefär en handfull solskyddskräm för hela kroppen.",
+          "Glöm inte områden som ofta missas: öron, nacke, hårfäste, läppar, ovansidan av händer och fötter, bakom knän och axlar. Använd solstift eller läpprodukt med SPF på läppar, näsa och andra extra utsatta punkter."
+        ],
+        bullets: [
+          "Smörj innan du går ut eller innan bad om du ska vara länge ute.",
+          "Massera in jämnt och täck all hud som inte skyddas av kläder.",
+          "Fyll på efter bad, handdukstorkning eller kraftig svettning.",
+          "Vid bad och stark sol: smörj ungefär varannan timme.",
+          "Låt inte solskyddsmedel ligga öppet i stark värme eller direkt sol."
+        ]
+      },
+      {
+        id: "barn-solskydd",
+        title: "Solskydd för barn",
+        body: [
+          "Barns hud är känsligare än vuxnas. Barn under ett år bör helst inte vara i direkt solljus alls. Skugga, solhatt och täckande kläder är förstahandsvalet, särskilt mitt på dagen.",
+          "För barn som kryper, går eller badar kan solskyddsmedel behövas på hud som inte går att täcka. Välj vattenfast solskydd för barn med SPF 30 eller högre, gärna SPF 50 när solen är stark eller barnet badar mycket."
+        ],
+        bullets: [
+          "Planera lek och bad före eller efter de starkaste soltimmarna.",
+          "Använd solhatt som skuggar ansikte, öron och nacke.",
+          "Välj täta, luftiga kläder eller UV-kläder vid bad och lång utevistelse.",
+          "Smörj utsatta områden som ansikte, händer och fötter.",
+          "Var extra försiktig nära vatten, sand och snö som reflekterar ljus."
+        ]
+      },
+      {
+        id: "uv-index",
+        title: "Använd UV-index i stället för magkänsla",
+        body: [
+          "UV-index visar hur stark UV-strålningen är. När UV-index är 3 eller högre behöver huden skyddas. I Sverige kan UV-index bli högt redan på våren, särskilt mitt på dagen, även när luften fortfarande känns sval.",
+          "Väderkänslan lurar ofta. Moln kan släppa igenom mycket UV-strålning, vind gör att solen känns svagare än den är och vatten, sand och snö reflekterar ljuset så att huden får mer strålning."
+        ],
+        bullets: [
+          "Var extra försiktig mellan ungefär klockan 11 och 15.",
+          "Sök skugga när solen står högt.",
+          "Skydda dig även molniga dagar om UV-index är högt.",
+          "Tänk extra på solskydd vid strand, båt, fjäll, snö och utlandsresa."
+        ]
+      },
+      {
+        id: "dagligt-solskydd",
+        title: "Behöver man solskydd varje dag?",
+        body: [
+          "I Sverige är UV-strålningen låg under de mörkaste vintermånaderna, men under vår, sommar och soliga dagar med snö kan huden behöva skydd även vid vardagsaktiviteter. Ansikte, öron, nacke och händer får ofta mest dagsljus över tid.",
+          "Om du använder hudvård med aktiva ingredienser, har pigmentbenägen hud, rosacea, tidigare hudcancer eller läkemedel som gör huden ljuskänslig kan dagligt solskydd vara extra viktigt under ljusa månader."
+        ]
+      },
+      {
+        id: "vanliga-misstag",
+        title: "Vanliga misstag med solskydd",
+        body: [
+          "Det vanligaste misstaget är att använda solskyddskräm för att kunna vara längre i solen. Då kan den skyddande effekten minska, eftersom den totala tiden i UV-strålning ökar. Solskydd ska hjälpa dig att minska skadan, inte förlänga exponeringen.",
+          "Ett annat misstag är att lita på gamla produkter. Solskyddsmedel fungerar sämre om de varit öppnade länge, legat varmt eller passerat hållbarheten."
+        ],
+        bullets: [
+          "För lite kräm ger mycket lägre skydd än SPF-talet antyder.",
+          "Solskydd behöver fyllas på, särskilt efter bad och svettning.",
+          "Moln, vind och vatten gör inte solen ofarlig.",
+          "Solbränna är en hudskada, inte ett hälsotecken.",
+          "Solarium ger UV-exponering och bör undvikas."
+        ]
+      },
+      {
+        id: "nar-soka-vard",
+        title: "När ska du söka vård efter sol?",
+        body: [
+          "De flesta milda solskador kan lindras genom att undvika mer sol, kyla huden och använda mjukgörande lotion. Men vissa reaktioner behöver rådgivning, särskilt hos barn eller om huden får blåsor.",
+          "Kontakta vården om ett barn får blåsor efter solbränna, om du får kraftiga besvär, feber, allmänpåverkan, tecken på infektion eller om en hudförändring uppstår eller förändras efter solexponering."
+        ],
+        bullets: [
+          "Sök råd vid blåsor, kraftig smärta eller utbredd solbränna.",
+          "Var extra uppmärksam på små barn och personer med känslig hud.",
+          "Kontrollera leverfläckar som ändrar färg, form eller storlek.",
+          "Läs även vår guide om hudcancer och leverfläckar om du är orolig för en fläck."
+        ]
+      },
+      {
+        id: "lakemedel-sol",
+        title: "Läkemedel kan göra huden extra solkänslig",
+        body: [
+          "Vissa läkemedel kan öka hudens känslighet för solljus, framför allt UVA. Det kan ge kraftigare solreaktioner än du brukar få, även om du normalt tål solen bra.",
+          "Läs bipacksedeln och fråga läkare eller apotekspersonal om du använder läkemedel och är osäker. Vid ökad ljuskänslighet räcker det inte alltid med vanlig solkräm; kläder, skugga och bredspektrumskydd med hög SPF blir extra viktigt."
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: "Vilken SPF behöver jag?",
+        answer: "För de flesta vuxna är SPF 30 eller högre en bra nivå när solen är stark. Välj SPF 50 vid ljus eller känslig hud, för barn, vid bad, strand, båt, fjäll, snö eller utlandsresa."
+      },
+      {
+        question: "Är SPF 50 mycket bättre än SPF 30?",
+        answer: "SPF 50 ger mer marginal, men skillnaden blir bara relevant om du använder tillräckligt mycket och fyller på. För tunt lager gör att det faktiska skyddet blir mycket lägre än siffran på flaskan."
+      },
+      {
+        question: "Skyddar solskyddskräm mot både UVA och UVB?",
+        answer: "Inte automatiskt. SPF-talet beskriver främst UVB-skyddet. Välj ett solskydd som tydligt anger UVA- och UVB-skydd eller bredspektrumskydd."
+      },
+      {
+        question: "Måste jag smörja mig när det är molnigt?",
+        answer: "Ja, om UV-index är högt eller du ska vara ute länge. Moln kan släppa igenom UV-strålning, och huden kan skadas även om solen inte känns stark."
+      },
+      {
+        question: "Hur ofta ska man fylla på solskydd?",
+        answer: "Fyll på efter bad, handdukstorkning eller mycket svettning. Vid stark sol och bad är ungefär varannan timme en bra tumregel."
+      },
+      {
+        question: "Kan barn använda samma solskydd som vuxna?",
+        answer: "Barn bör använda solskydd som är anpassat för barn, gärna vattenfast och med SPF 30 eller högre. Barn under ett år bör helst inte vistas i direkt sol."
+      },
+      {
+        question: "Får jag D-vitamin om jag använder solskydd?",
+        answer: "Ja, de flesta får tillräckligt med D-vitamin ändå genom kortare vardaglig solexponering och kost. Att bränna sig behövs inte för D-vitamin och ökar risken för hudskador."
+      }
+    ],
+    sources: [
+      {
+        title: "Så skyddar du dig mot solen",
+        publisher: "1177",
+        url: "https://www.1177.se/liv--halsa/sol-och-varme/sa-skyddar-du-dig-mot-solen/"
+      },
+      {
+        title: "Solskador på huden",
+        publisher: "1177",
+        url: "https://www.1177.se/olyckor--skador/brannskador-och-koldskador/solskador-pa-huden/"
+      },
+      {
+        title: "Myter om solskydd",
+        publisher: "Läkemedelsverket",
+        url: "https://www.lakemedelsverket.se/sv/om-lakemedelsverket/press-och-nyheter/kort-om/myter-om-solskydd"
+      },
+      {
+        title: "Vilka krav finns på solskyddsmedel?",
+        publisher: "Läkemedelsverket",
+        url: "https://fragor.lakemedelsverket.se/org/lakemedelsverket/d/vilka-krav-finns-pa-solskyddsmedel/"
+      },
+      {
+        title: "Vanliga frågor och svar om solen",
+        publisher: "Cancerfonden",
+        url: "https://www.cancerfonden.se/minska-risken/solen/vanliga-fragor-och-svar-om-solen"
+      },
+      {
+        title: "Rapport från SSM:s vetenskapliga råd om ultraviolett strålning 2025",
+        publisher: "Strålsäkerhetsmyndigheten",
+        url: "https://www.stralsakerhetsmyndigheten.se/publikationer/rapporter/stralskydd/2026/202609/"
+      }
+    ],
+    cta: {
+      title: "Osäker på en solskada eller leverfläck?",
+      body: "Få hjälp att bedöma om dina besvär kan hanteras hemma eller behöver undersökas vidare. Du beskriver vad du ser och kan bifoga bilder om det gäller en hudförändring.",
+      bullets: [
+        "Snabb första rådgivning",
+        "Möjlighet att bifoga bilder",
+        "Hjälp vidare vid misstänkt hudförändring"
+      ],
+      note: "Du behöver inte veta om det är allvarligt innan du söker råd.",
+      label: "Starta bedömning",
+      href: "/vardguiden/hud-konssjukdomar"
+    },
   },
   {
     slug: "skovlig-ledvark",
@@ -297,11 +734,230 @@ export const articles: Article[] = [
   {
     slug: "kost-for-bra-tarmsundhet",
     title: "Bra tarmhälsa – kosten som gör störst skillnad",
+    h1: "Kost för bra tarmhälsa: maten som gör störst skillnad",
+    seoTitle: "Kost för bra tarmhälsa: fibrer, fullkorn och magvänliga råd",
+    metaDescription: "Så äter du för en lugnare mage och bättre tarmhälsa: fibrer, fullkorn, baljväxter, fermenterad mat, IBS-råd och när du bör söka vård.",
     tag: "KOST",
     date: "april 10, 2026",
-    image: "/bilder/aktuellt-1.jpg",
-    excerpt: "Tarmfloran påverkar allt från immunförsvaret till humöret. Så vårdar du den.",
-    body: "Tarmfloran – de miljarder bakterier som lever i din tarm – påverkar matsmältning, immunförsvar, viktkontroll och till och med psykisk hälsa. Mat som stärker tarmfloran: fermenterade produkter (yoghurt, kefir, surkål), fiberrik kost (baljväxter, grönsaker, fullkorn), prebiotika (lök, vitlök, purjolök) och olivolja. Undvik: för mycket rött kött, ultraprocessad mat och onödig antibiotika. En god tarmhälsa byggs långsiktigt.",
+    publishedAtIso: "2026-04-10",
+    updatedAt: "september 10, 2026",
+    updatedAtIso: "2026-09-10",
+    image: "/bilder/artiklar/tarmhalsa.webp",
+    imageAlt: "Fiberrik mat med grönsaker, baljväxter och fullkorn som stöd för tarmhälsa.",
+    authorName: "Hemläkare.se redaktion",
+    reviewerName: "Hemläkare.se medicinska team",
+    reviewedAt: "september 10, 2026",
+    targetQuery: "kost för bra tarmhälsa",
+    excerpt: "Tarmhälsa byggs framför allt av vanor som går att hålla: mer fibrer, fullkorn, baljväxter, frukt, grönsaker och regelbundna måltider.",
+    summary: "Den bästa kosten för tarmhälsa är oftast inte en strikt diet, utan ett stabilt kostmönster med mer växtbaserad, fiberrik mat: fullkorn, baljväxter, grönsaker, frukt, bär, nötter och frön. Fibrer hjälper tarmen att arbeta, ger näring till tarmens bakterier och kan bidra till regelbunden avföring. Men öka gradvis, särskilt om du har IBS, gaser eller känslig mage. Sök vård vid blod i avföringen, ofrivillig viktnedgång, nattliga besvär, långvarig diarré eller ny förstoppning som inte går över.",
+    keyTakeaways: [
+      "Tarmhälsa gynnas mest av helheten: fibrer, fullkorn, baljväxter, frukt och grönsaker över tid.",
+      "Öka fiberintaget långsamt och drick mer vätska, annars kan gaser och förstoppning bli värre.",
+      "Lösliga fibrer från till exempel havre, frukt, grönsaker och baljväxter tolereras ofta bättre vid känslig mage.",
+      "Fermenterad mat och probiotika kan hjälpa vissa, men effekten varierar och är inte en universallösning.",
+      "Blod i avföringen, viktnedgång, feber eller långvarigt förändrade avföringsvanor ska bedömas av vården."
+    ],
+    body: "Tarmhälsa har blivit ett stort ämne, och med det kommer många löften: detox, mikrobiomtester, dyra tillskott och dieter som påstår sig passa alla. Den tråkigare men betydligt mer användbara sanningen är att tarmen oftast mår bäst av regelbundenhet, tillräckligt med fibrer, varierad mat och vanor som du kan hålla även när livet är lite rörigt.\n\nTarmfloran, eller tarmens mikrobiota, består av många olika mikroorganismer. Den påverkas av vad du äter, men också av läkemedel, infektioner, stress, sömn, rörelse och tidigare sjukdomar. Därför ska tarmhälsa inte reduceras till en enda ingrediens. Det är mönstret över tid som räknas.\n\nFör de flesta vuxna är den viktigaste förändringen enkel att beskriva men ibland svår att göra: ät mer fiberrik mat från flera olika källor. Fullkorn, baljväxter, rotfrukter, grönsaker, frukt, bär, nötter och frön bidrar med olika typer av fibrer och näringsämnen. Samtidigt behöver råden anpassas. En person med förstoppning kan må bättre av mer fibrer och vätska, medan någon med IBS kan behöva öka långsammare och välja fibertyper med mer omsorg.",
+    sections: [
+      {
+        id: "vad-ar-tarmhalsa",
+        title: "Vad menas med bra tarmhälsa?",
+        body: [
+          "Bra tarmhälsa handlar inte om att magen alltid ska vara helt tyst. En frisk mage kan låta, bilda gaser och variera lite från dag till dag. Det viktiga är att du inte har återkommande smärta, diarré, förstoppning, uppblåsthet eller andra besvär som begränsar vardagen.",
+          "En fungerande tarm hjälper kroppen att bryta ner mat, ta upp näring, transportera avföring och samspela med immunförsvaret. Kosten är en viktig del, men den behöver ses tillsammans med sömn, stress, rörelse och eventuella sjukdomar."
+        ],
+        bullets: [
+          "Avföringen kommer regelbundet och utan större besvär.",
+          "Du har inte återkommande magsmärta som styr vardagen.",
+          "Du kan äta varierat utan att behöva undvika stora livsmedelsgrupper i onödan.",
+          "Tillfälliga magbesvär går över och följer begripliga mönster.",
+          "Du vet när symtom bör bedömas av vården."
+        ]
+      },
+      {
+        id: "fiberrik-mat",
+        title: "Fibrer: grunden i en tarmvänlig kost",
+        body: [
+          "Fibrer är kolhydrater från växtriket som inte bryts ner helt i tunntarmen. De påverkar tarmen på olika sätt: vissa binder vatten och gör avföringen mjukare, andra ger volym och hjälper tarmens rörelser, och vissa kan fermenteras av bakterier i tjocktarmen.",
+          "För många är ett gradvis högre fiberintag den viktigaste förändringen för magen. Men om du ökar för snabbt kan du få mer gaser, uppblåsthet och magknip. Därför är taktiken nästan lika viktig som valet av mat."
+        ],
+        table: {
+          headers: ["Livsmedel", "Varför det hjälper", "Magvänligt sätt att börja"],
+          rows: [
+            ["Havregryn och råg", "Ger fullkorn och lösliga fibrer.", "Byt frukost 2–3 dagar i veckan först."],
+            ["Bönor, linser och kikärter", "Bidrar med fibrer, protein och fermenterbara kolhydrater.", "Börja med några matskedar och skölj konserverade baljväxter."],
+            ["Grönsaker och rotfrukter", "Ger fibrer, vätska och många olika näringsämnen.", "Lägg till en näve extra per måltid."],
+            ["Frukt och bär", "Ger ofta lösliga fibrer och kan vara lättare för magen.", "Välj hela frukter hellre än juice."],
+            ["Nötter och frön", "Ger fibrer och omättade fetter.", "Börja med en liten näve eller en matsked frön."]
+          ]
+        }
+      },
+      {
+        id: "fullkorn-baljvaxter",
+        title: "Fullkorn och baljväxter gör störst skillnad över tid",
+        body: [
+          "Fullkorn betyder att hela sädeskornet finns kvar. Det ger mer fibrer, mineraler och bioaktiva ämnen än siktade spannmålsprodukter. Baljväxter som bönor, linser och ärter är samtidigt ett av de mest effektiva sätten att höja fiberintaget utan att måltiden behöver bli komplicerad.",
+          "Ett bra mål är inte att äta perfekt, utan att göra fiberrika val till standard oftare: havregryn i frukosten, grovt bröd, fullkornsris, matvete, linssoppa, bönor i tacos eller kikärter i sallad."
+        ],
+        bullets: [
+          "Byt vitt bröd mot rågbröd eller annat fullkornsbröd.",
+          "Välj havregryn, müsli med fullkorn eller osötad gröt oftare.",
+          "Lägg linser i köttfärssås, soppor eller grytor.",
+          "Byt en del av pastan eller riset mot fullkornsvariant.",
+          "Ha bönor eller kikärter som färdig genväg i kylen."
+        ]
+      },
+      {
+        id: "fermenterat-probiotika",
+        title: "Fermenterad mat och probiotika: bra för vissa, inte magi",
+        body: [
+          "Yoghurt, fil, kefir, surkål, kimchi och andra fermenterade livsmedel kan passa bra i en varierad kost. De kan bidra med bakteriekulturer och göra det lättare att skapa regelbundna matvanor. Men fermenterad mat botar inte alla magbesvär, och personer med känslig mage kan reagera på till exempel syra, laktos eller vissa kolhydrater.",
+          "Probiotika kan hjälpa vissa, särskilt vid vissa former av diarré eller IBS-liknande besvär, men effekten beror på produkt, bakteriestam och individ. Om du provar är det klokt att testa en sak i taget under några veckor och följa symtomen."
+        ],
+        bullets: [
+          "Välj naturella produkter oftare än sötade.",
+          "Börja med små mängder om du lätt får gaser.",
+          "Utvärdera en produkt i taget så du vet vad som påverkar magen.",
+          "Avsluta om besvären tydligt blir värre.",
+          "Se probiotika som ett möjligt komplement, inte grunden i tarmhälsa."
+        ]
+      },
+      {
+        id: "ibs-kanslig-mage",
+        title: "Om du har IBS eller känslig mage",
+        body: [
+          "Vid IBS kan samma mat som är nyttig för många ge mer symtom hos vissa. Baljväxter, lök, vitlök, kål, råg och vissa frukter kan ge gaser och smärta eftersom de innehåller kolhydrater som jäser i tarmen. Det betyder inte att maten är farlig, men den kan behöva anpassas.",
+          "FODMAP-kost kan lindra IBS-symtom hos en del, men bör helst göras tillsammans med dietist. Poängen är inte att utesluta så mycket som möjligt för alltid, utan att hitta vilka livsmedel och mängder just din mage tolererar."
+        ],
+        table: {
+          headers: ["Vid känslig mage", "Smart strategi", "Undvik fällan"],
+          rows: [
+            ["Mycket gaser", "Öka fibrer långsamt och välj mindre portioner baljväxter.", "Att gå från låg fiber till mycket bönor över en natt."],
+            ["Förstoppning", "Testa mer vätska, rörelse och lösliga fibrer.", "Att lägga till fibrer utan att dricka mer."],
+            ["Diarré", "Ät regelbundet och minska sådant som tydligt triggar.", "Att självdiagnostisera allergi eller glutenproblem direkt."],
+            ["IBS-misstanke", "För symtomdagbok och sök stöd vid långvariga besvär.", "Att fastna i en strikt diet utan plan för återintroduktion."]
+          ]
+        }
+      },
+      {
+        id: "sa-borjar-du",
+        title: "En enkel 4-veckors plan för bättre tarmvanor",
+        body: [
+          "Det bästa upplägget är ofta det som känns lite för enkelt. Om du ändrar allt samtidigt vet du inte vad som hjälpte eller störde magen. Välj hellre en ny vana per vecka och låt kroppen hinna med.",
+          "Målet är inte maximal fiber på kortast tid. Målet är en mage som fungerar bättre och ett kostmönster du kan fortsätta med."
+        ],
+        table: {
+          headers: ["Vecka", "Fokus", "Exempel"],
+          rows: [
+            ["1", "Regelbundenhet", "Ät frukost eller lunch vid ungefär samma tid varje dag."],
+            ["2", "En extra växtkälla", "Lägg till frukt, bär eller grönsak till två måltider."],
+            ["3", "Fullkorn", "Byt till havre, rågbröd eller fullkornspasta några gånger i veckan."],
+            ["4", "Baljväxter", "Lägg till linser, bönor eller kikärter i små portioner."]
+          ]
+        }
+      },
+      {
+        id: "mat-att-minska",
+        title: "Matvanor som kan störa magen",
+        body: [
+          "Det finns ingen enskild förbjuden mat för alla. Däremot kan stora mängder alkohol, mycket fet eller stark mat, stora måltider sent på kvällen, mycket sockeralkoholer och en väldigt fiberfattig kost ge mer magbesvär hos många.",
+          "Rött och processat kött bör inte ta för stor plats i kosten. Ett mer växtbaserat mönster med fullkorn, grönsaker, frukt och baljväxter är bättre för både mage och långsiktig hälsa."
+        ],
+        bullets: [
+          "Minska ultraprocessad mat om den tränger undan riktig mat med fibrer.",
+          "Var försiktig med stora mängder sötningsmedel som slutar på -ol, till exempel sorbitol.",
+          "Begränsa alkohol om magen ofta blir orolig.",
+          "Ät långsammare och testa mindre portioner om du blir uppblåst efter måltid.",
+          "Undvik onödigt restriktiva dieter utan tydlig anledning."
+        ]
+      },
+      {
+        id: "nar-soka-vard",
+        title: "När ska du söka vård för mag- och tarmbesvär?",
+        body: [
+          "Kost kan hjälpa mycket, men alla magbesvär ska inte lösas med kostförändringar. Nya, långvariga eller tydligt försämrade symtom bör bedömas, särskilt om du har röda flaggor.",
+          "Sök vård om du har blod i avföringen, ofrivillig viktnedgång, feber, nattliga diarréer, svår smärta, långvarig diarré, ny förstoppning som inte går över eller om du misstänker celiaki, inflammatorisk tarmsjukdom eller tarmcancer. Testa inte glutenfritt innan celiakiutredning om det går att undvika, eftersom det kan påverka provsvar."
+        ],
+        bullets: [
+          "Blod eller svart avföring.",
+          "Ofrivillig viktnedgång eller uttalad trötthet.",
+          "Diarré eller smärta som väcker dig på natten.",
+          "Feber, kräkningar eller tecken på uttorkning.",
+          "Nytt förändrat avföringsmönster som håller i sig.",
+          "Magbesvär som påverkar arbete, sömn eller vardag trots egenvård."
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: "Vilken mat är bäst för tarmhälsan?",
+        answer: "För de flesta är grunden fullkorn, baljväxter, grönsaker, frukt, bär, nötter och frön. Variation är viktig eftersom olika livsmedel ger olika typer av fibrer och näringsämnen."
+      },
+      {
+        question: "Hur snabbt märks det om jag äter mer fibrer?",
+        answer: "Vissa märker skillnad på avföring och mättnad inom några dagar, men tarmen kan behöva flera veckor för att vänja sig. Öka gradvis och drick tillräckligt med vätska."
+      },
+      {
+        question: "Kan fibrer göra magen värre?",
+        answer: "Ja, särskilt om du ökar snabbt eller har IBS. Då kan gaser, uppblåsthet och magknip öka. Börja med små mängder och välj gärna lösliga fibrer från till exempel havre, frukt och vissa grönsaker."
+      },
+      {
+        question: "Är probiotika bra för tarmhälsan?",
+        answer: "Probiotika kan hjälpa vissa, men effekten varierar mellan produkter och personer. Det är klokt att se probiotika som ett komplement, inte som ersättning för fiberrik och varierad mat."
+      },
+      {
+        question: "Behöver jag undvika gluten för en bättre mage?",
+        answer: "Inte om du inte har celiaki eller tydliga besvär som utreds. Om celiaki misstänks bör du inte börja med glutenfri kost innan provtagning, eftersom det kan göra tester mindre tillförlitliga."
+      },
+      {
+        question: "När är magbesvär ett varningstecken?",
+        answer: "Sök vård vid blod i avföringen, ofrivillig viktnedgång, feber, nattliga diarréer, svår smärta, långvarig diarré eller ny förstoppning som inte går över."
+      }
+    ],
+    sources: [
+      {
+        title: "Grönsaker och frukt – råd",
+        publisher: "Livsmedelsverket",
+        url: "https://stage.livsmedelsverket.se/matvanor-halsa--miljo/kostrad/rad-om-bra-mat-hitta-ditt-satt/gronsaker-och-frukt---rad/"
+      },
+      {
+        title: "Nya nordiska näringsrekommendationer",
+        publisher: "Livsmedelsverket",
+        url: "https://www.livsmedelsverket.se/om-oss/press/nyheter/pressmeddelanden/idag-lanseras-nya-nordiska-naringsrekommendationer"
+      },
+      {
+        title: "IBS – känslig tarm",
+        publisher: "1177",
+        url: "https://www.1177.se/sjukdomar--besvar/mage-och-tarm/tarmbesvar/ibs--kanslig-tarm/"
+      },
+      {
+        title: "Förstoppning",
+        publisher: "1177",
+        url: "https://www.1177.se/Stockholm/sjukdomar--besvar/mage-och-tarm/diarre-forstoppning-och-blod-i-avforingen/forstoppning/"
+      },
+      {
+        title: "Blod i avföringen hos vuxna",
+        publisher: "1177",
+        url: "https://www.1177.se/Gavleborg/sjukdomar--besvar/mage-och-tarm/diarre-forstoppning-och-blod-i-avforingen/blod-i-avforingen-hos-vuxna/"
+      },
+      {
+        title: "Eat a diet rich in wholegrains, vegetables, fruit and beans",
+        publisher: "World Cancer Research Fund",
+        url: "https://www.wcrf.org/research-policy/evidence-for-our-recommendations/wholegrains-veg-fruit-beans/"
+      }
+    ],
+    cta: {
+      title: "Har du magbesvär som inte släpper?",
+      body: "Få hjälp att förstå om dina besvär passar med förstoppning, IBS, matintolerans eller något som behöver utredas vidare. Vi hjälper dig sortera symtom, kostmönster och nästa steg.",
+      bullets: [
+        "Bedömning av mag- och tarmbesvär",
+        "Råd om kost, egenvård och varningssignaler",
+        "Hjälp vidare vid blod i avföring, viktnedgång eller långvariga symtom"
+      ],
+      note: "Vid kraftig smärta, blod i avföringen eller påverkat allmäntillstånd: sök vård akut.",
+      label: "Få hjälp med magen",
+      href: "/vardguiden/mag-tarmsjukdomar"
+    },
   },
   {
     slug: "kolesterolsankande-kost",
@@ -608,11 +1264,229 @@ export const articles: Article[] = [
   {
     slug: "somnloshet-kronisk",
     title: "Kronisk sömnlöshet – effektiv behandling utan sömnpiller",
+    h1: "Kronisk sömnlöshet: behandling som hjälper på riktigt",
+    seoTitle: "Kronisk sömnlöshet: symtom, orsaker och behandling",
+    metaDescription: "Lär dig vad kronisk sömnlöshet är, när du bör söka hjälp och varför KBT-i ofta rekommenderas före sömnmedel vid långvariga sömnproblem.",
     tag: "LIVSSTIL",
     date: "april 18, 2026",
-    image: "/bilder/aktuellt-1.jpg",
-    excerpt: "KBT-i är mer effektivt än sömnpiller på lång sikt. Här är hur det fungerar.",
-    body: "Kronisk insomni (sömnlöshet mer än 3 nätter/vecka i mer än 3 månader) drabbar 10% av befolkningen. Sömnpiller ger kortvarig lindring men skapar beroende och försämrar sömnkvalitet. KBT för insomni (KBT-i) är förstahandsbehandling och har visat 80% förbättring. Metoden inkluderar sömnrestriktion, stimuluskontroll och kognitiv omstrukturering av sovrelaterade tankar. Vi kan hjälpa dig komma igång digitalt.",
+    publishedAtIso: "2026-04-18",
+    updatedAt: "september 10, 2026",
+    updatedAtIso: "2026-09-10",
+    image: "/bilder/artiklar/somnloshet-kronisk.jpg",
+    imageAlt: "Person som ligger vaken i sängen under natten vid kronisk sömnlöshet.",
+    authorName: "Hemläkare.se redaktion",
+    reviewerName: "Hemläkare.se medicinska team",
+    reviewedAt: "september 10, 2026",
+    targetQuery: "kronisk sömnlöshet",
+    excerpt: "Sömnlöshet som pågår länge kan påverka humör, koncentration, arbete och hälsa. Här får du veta när du bör söka hjälp och varför KBT-i ofta är förstahandsval.",
+    summary: "Kronisk sömnlöshet innebär att du under längre tid har svårt att somna, vaknar ofta, vaknar för tidigt eller sover så dåligt att vardagen påverkas. KBT för insomni, ofta kallat KBT-i, rekommenderas i första hand vid långvariga sömnsvårigheter eftersom behandlingen angriper vanor, tankar och mönster som håller besvären vid liv. Sömnmedel kan ibland behövas kortvarigt, men bör inte vara huvudlösningen vid kroniska problem.",
+    keyTakeaways: [
+      "Sök hjälp om sömnproblemen påverkar vardagen och inte blir bättre trots egna förändringar.",
+      "KBT-i är ofta förstahandsbehandling vid långvarig sömnlöshet.",
+      "Sömndagbok är ett viktigt verktyg för att förstå mönster och utlösande faktorer.",
+      "Sömnmedel kan lindra kortvarigt men löser sällan orsaken till kronisk insomni.",
+      "Snarkning, andningsuppehåll, rastlösa ben, smärta, depression och ångest kan behöva utredas."
+    ],
+    body: "Kronisk sömnlöshet är mer än några dåliga nätter. Det handlar om återkommande svårigheter att somna, sova sammanhängande eller vakna utvilad, samtidigt som sömnproblemen påverkar dagtid. Du kan bli trött, lättirriterad, nedstämd, få sämre koncentration och känna att kroppen aldrig riktigt återhämtar sig.\n\nDet viktiga är att sömnlöshet går att behandla. Många fastnar i en ond cirkel där oro för sömnen, oregelbundna rutiner, tupplurar, skärmar, stress och allt längre tid i sängen gör problemet mer långvarigt. Därför räcker det inte alltid med allmänna råd som att dricka mindre kaffe eller lägga sig tidigare.\n\nVid långvariga sömnsvårigheter är målet att hitta orsaken och bryta mönstret som håller besvären vid liv. Ofta är KBT-i den mest träffsäkra behandlingen, men ibland behöver läkaren också bedöma stress, psykisk ohälsa, läkemedel, smärta, klimakteriebesvär, sköldkörtelrubbning, sömnapné eller restless legs.",
+    sections: [
+      {
+        id: "vad-ar-kronisk-somnloshet",
+        title: "Vad är kronisk sömnlöshet?",
+        body: [
+          "Sömnlöshet, eller insomni, innebär att du har svårt att somna, vaknar ofta under natten, vaknar för tidigt eller upplever att sömnen inte ger återhämtning. För att det ska vara ett vårdproblem ska det också påverka hur du fungerar på dagen.",
+          "Begreppet kronisk används när besvären är långvariga. I praktiken söker många vård när problemen har pågått i flera veckor eller månader, särskilt om de påverkar arbete, studier, humör, relationer eller säkerhet i vardagen."
+        ],
+        table: {
+          headers: ["Typ av sömnproblem", "Vanlig upplevelse", "Kan tala för"],
+          rows: [
+            ["Svårt att somna", "Du ligger vaken länge trots trötthet.", "Stress, oro, oregelbunden dygnsrytm eller för mycket tid i sängen."],
+            ["Vaknar ofta", "Sömnen blir splittrad och ytlig.", "Stress, alkohol, smärta, nattliga toalettbesök eller sömnapné."],
+            ["Vaknar för tidigt", "Du vaknar tidigt och kan inte somna om.", "Depression, stress, ålder eller dygnsrytmförskjutning."],
+            ["Inte utvilad", "Du sover många timmar men känner dig ändå trött.", "Sömnapné, låg sömnkvalitet, läkemedel eller annan sjukdom."]
+          ]
+        }
+      },
+      {
+        id: "symtom",
+        title: "Vanliga symtom på långvariga sömnproblem",
+        body: [
+          "Sömnlöshet märks inte bara på natten. Det är ofta dagtidssymtomen som avgör hur mycket hjälp du behöver. En person kan sova få timmar men fungera bra, medan en annan sover längre men har tydlig funktionspåverkan.",
+          "Vanliga dagtidssymtom är trötthet, försämrad koncentration, minnessvårigheter, nedstämdhet, oro, värk, muskelspänning och lägre stresstålighet."
+        ],
+        bullets: [
+          "Svårt att somna trots att du är trött.",
+          "Upprepade uppvaknanden under natten.",
+          "Tidigt uppvaknande utan att kunna somna om.",
+          "Oro inför natten och rädsla för att inte kunna sova.",
+          "Trötthet, irritation eller nedstämdhet dagen efter.",
+          "Sämre fokus, minne och prestationsförmåga."
+        ]
+      },
+      {
+        id: "orsaker",
+        title: "Vad orsakar kronisk sömnlöshet?",
+        body: [
+          "Sömnlöshet börjar ofta med en tydlig utlösande faktor: stress, sjukdom, sorg, småbarnsperiod, arbetsbelastning, smärta, läkemedel eller förändrad dygnsrytm. Problemet blir långvarigt när kroppen lär sig koppla sängen till vakenhet, kamp och oro.",
+          "Det är också vanligt att sömnproblem förekommer tillsammans med andra tillstånd. Ångest, depression, utmattning, ADHD, klimakteriebesvär, smärta, reflux, nattliga urinträngningar och snarkning med andningsuppehåll kan alla störa sömnen."
+        ],
+        bullets: [
+          "Stress och oro.",
+          "Oregelbundna sovtider eller skiftarbete.",
+          "Koffein, nikotin och alkohol.",
+          "Smärta, klåda, hosta eller reflux.",
+          "Depression, ångest eller utmattning.",
+          "Sömnapné, restless legs eller annan sömnsjukdom.",
+          "Läkemedel som påverkar sömn eller vakenhet."
+        ]
+      },
+      {
+        id: "kbt-i",
+        title: "KBT-i: förstahandsbehandling vid långvarig sömnlöshet",
+        body: [
+          "KBT-i betyder kognitiv beteendeterapi för insomni. Behandlingen är praktisk och strukturerad. Du får kartlägga sömnen, förstå vad som håller problemet vid liv och stegvis ändra beteenden och tankemönster som gör att hjärnan förknippar sängen med vakenhet.",
+          "Till skillnad från sömnmedel handlar KBT-i inte bara om att få en bättre natt. Målet är att sömnen ska bli mer stabil över tid, även efter avslutad behandling."
+        ],
+        table: {
+          headers: ["Del i KBT-i", "Vad det innebär", "Syfte"],
+          rows: [
+            ["Sömndagbok", "Du registrerar sovtider, uppvaknanden och dagvanor.", "Hitta mönster och mäta förbättring."],
+            ["Stimuluskontroll", "Sängen används främst för sömn, inte grubbel och vaken kamp.", "Återkoppla sängen till sömnighet."],
+            ["Sömnrestriktion", "Tiden i sängen justeras till faktisk sömntid och ökas gradvis.", "Bygga starkare sömntryck och mer sammanhängande sömn."],
+            ["Kognitiva tekniker", "Du arbetar med oro, katastroftankar och prestationskrav kring sömn.", "Minska stressen som håller dig vaken."],
+            ["Återfallsprevention", "Du lär dig hantera sämre perioder utan att hamna i gamla mönster.", "Göra förbättringen mer hållbar."]
+          ]
+        }
+      },
+      {
+        id: "sjalvhjalp",
+        title: "Vad kan du göra själv?",
+        body: [
+          "Sömnråd botar inte alltid kronisk insomni, men de kan minska belastningen på sömnsystemet. De fungerar bäst när de är konkreta och genomförbara, inte som en lång lista med regler som skapar mer stress.",
+          "Välj två eller tre förändringar i taget och följ dem konsekvent i minst två veckor. För många förändringar samtidigt gör det svårare att veta vad som faktiskt hjälper."
+        ],
+        bullets: [
+          "Gå upp ungefär samma tid varje dag, även efter en dålig natt.",
+          "Få dagsljus på morgonen och rör på dig under dagen.",
+          "Undvik koffein sent på dagen och var försiktig med nikotin.",
+          "Undvik alkohol som sömnstrategi; den kan försämra sömnkvaliteten.",
+          "Lägg undan skärmar och arbete i god tid före läggdags.",
+          "Om du inte somnar: gå upp en stund och återvänd när du blir sömnig.",
+          "Undvik långa tupplurar, särskilt sent på dagen."
+        ]
+      },
+      {
+        id: "sommnmedel",
+        title: "När behövs sömnmedel?",
+        body: [
+          "Sömnmedel kan ibland vara motiverat under en kort period, till exempel vid akut kris, tillfällig svår sömnlöshet eller när sömnbristen ger tydlig funktionspåverkan. Men läkemedel bör användas med försiktighet och följas upp.",
+          "Vid kronisk sömnlöshet löser sömnmedel sällan grundproblemet. Vissa preparat kan ge biverkningar, tolerans, beroende eller dagtrötthet. Därför är det viktigt att behandlingen anpassas individuellt och att orsakerna till sömnproblemen utreds."
+        ],
+        bullets: [
+          "Använd inte någon annans sömnmedel.",
+          "Kombinera inte sömnmedel med alkohol.",
+          "Var försiktig om du kör bil eller arbetar med riskfyllda moment dagen efter.",
+          "Diskutera nedtrappning med läkare om du använt sömnmedel länge.",
+          "Sök hjälp om du känner att du inte kan sova utan tabletter."
+        ]
+      },
+      {
+        id: "nar-soka-vard",
+        title: "När ska du söka vård?",
+        body: [
+          "Sök hjälp om sömnproblemen inte blir bättre trots att du försökt förändra dina vanor, eller om sömnen påverkar arbete, studier, relationer, humör eller säkerhet. Ju tidigare du får stöd, desto lättare är det ofta att bryta mönstret.",
+          "Du bör också söka vård om du har kraftig dagtrötthet, snarkar med andningsuppehåll, somnar ofrivilligt dagtid, har rastlösa ben, nattliga panikkänslor, depression, ångest, smärta eller läkemedel som kan påverka sömnen."
+        ],
+        bullets: [
+          "Sömnproblemen har pågått i flera veckor och påverkar vardagen.",
+          "Du känner dig nedstämd, orolig eller utmattad.",
+          "Du snarkar kraftigt eller någon har märkt andningsuppehåll.",
+          "Du har obehag i benen som lindras av rörelse på kvällen.",
+          "Du använder alkohol eller tabletter för att kunna sova.",
+          "Du är så trött dagtid att bilkörning eller arbete blir riskfyllt."
+        ]
+      },
+      {
+        id: "utredning",
+        title: "Så går en sömnutredning till",
+        body: [
+          "En första bedömning görs ofta i primärvården. Läkaren går igenom sömnvanor, stress, psykisk hälsa, läkemedel, alkohol, koffein, smärta och andra symtom. Du kan få fylla i skattningsformulär och föra sömndagbok.",
+          "Ibland behövs prover eller vidare utredning. Vid misstanke om sömnapné eller annan sömnsjukdom kan du remitteras för sömnregistrering."
+        ]
+      },
+      {
+        id: "akut-hjalp",
+        title: "När är sömnproblem mer akut?",
+        body: [
+          "Sömnlöshet i sig är sällan akut, men vissa situationer kräver snabb hjälp. Sök akut vård eller kontakta 112 om du har tankar på att skada dig själv eller inte orkar leva. Kontakta vården skyndsamt om sömnbristen gör att du riskerar olyckor, till exempel i trafiken eller på arbetet.",
+          "Om sömnproblemen kommer tillsammans med kraftig upprymdhet, minskat sömnbehov, impulsivitet eller ovanligt hög energi kan det vara tecken på hypomani eller mani och bör bedömas av vården."
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: "Vad räknas som kronisk sömnlöshet?",
+        answer: "Kronisk sömnlöshet innebär långvariga svårigheter att somna, sova sammanhängande eller känna sig återhämtad, samtidigt som du påverkas dagtid. Många söker hjälp när besvären pågått i flera veckor eller månader."
+      },
+      {
+        question: "Är KBT-i bättre än sömnmedel?",
+        answer: "Vid långvarig sömnlöshet rekommenderas KBT-i ofta i första hand eftersom behandlingen riktar in sig på de mönster som håller problemet vid liv. Sömnmedel kan ibland lindra kortvarigt men löser sällan orsaken."
+      },
+      {
+        question: "Kan man få KBT för sömnproblem digitalt?",
+        answer: "Ja, KBT och internetbaserad behandling kan vara ett alternativ för vissa. En vårdbedömning kan hjälpa dig avgöra om digital behandling passar eller om du behöver annan utredning först."
+      },
+      {
+        question: "När ska jag söka hjälp för sömnproblem?",
+        answer: "Sök hjälp om sömnen påverkar din vardag, ditt humör, din koncentration eller din säkerhet och inte förbättras trots egna förändringar. Sök också vid snarkning med andningsuppehåll, kraftig dagtrötthet eller psykisk ohälsa."
+      },
+      {
+        question: "Är det farligt att sova dåligt några nätter?",
+        answer: "Några enstaka dåliga nätter är vanligt och oftast inte farligt. Problemet är när sömnsvårigheterna blir återkommande och påverkar hur du fungerar under dagen."
+      },
+      {
+        question: "Kan alkohol hjälpa mig att sova?",
+        answer: "Alkohol kan göra att du känner dig sömnig, men försämrar ofta sömnkvaliteten och kan göra att du vaknar mer under natten. Det är därför ingen bra strategi vid sömnproblem."
+      }
+    ],
+    sources: [
+      {
+        title: "Sömnsvårigheter",
+        publisher: "1177",
+        url: "https://www.1177.se/liv--halsa/stresshantering-och-somn/somnsvarigheter/"
+      },
+      {
+        title: "KBT, kognitiv beteendeterapi",
+        publisher: "1177",
+        url: "https://www.1177.se/undersokning-behandling/behandlingar-vid-psykiska-sjukdomar-och-besvar/kognitiv-beteendeterapi-kbt/"
+      },
+      {
+        title: "Insomni",
+        publisher: "Socialstyrelsens försäkringsmedicinska beslutsstöd",
+        url: "https://forsakringsmedicin.socialstyrelsen.se/beslutsstod-for-diagnoser/diagnoser/nervsystemets-sjukdomar/insomni/"
+      },
+      {
+        title: "Läkemedel vid sömnstörning/insomni",
+        publisher: "Läkemedelsboken",
+        url: "https://lakemedelsboken.se/terapiomraden/psykiatri/somnstorningar2/insomni/behandling/farmakologisk-behandling/lakemedel-vid-somnstorninginsomni/"
+      },
+      {
+        title: "Psykoterapi eller medicin hjälp för sömnlösa när egenvård inte räcker",
+        publisher: "SBU",
+        url: "https://www.sbu.se/sv/pressmeddelanden/tidigare-pressmeddelanden/aldre-an-fem-ar/pressmeddelande-2010/psykoterapi-eller-medicin-hjalp-for-somnlosa-nar-egenvard-inte-racker/"
+      }
+    ],
+    cta: {
+      title: "Sover du dåligt trots att du försökt själv?",
+      body: "Få hjälp att förstå varför sömnen inte fungerar och vad nästa steg bör vara. Vi kan bedöma sömnvanor, stress, läkemedel och symtom som kan behöva utredas.",
+      bullets: [
+        "Kartläggning av sömn och dagtrötthet",
+        "Råd om KBT-i och egenbehandling",
+        "Hjälp vidare vid misstänkt sömnapné, stress eller psykisk ohälsa"
+      ],
+      note: "Du behöver inte vänta tills sömnproblemen tar över vardagen.",
+      label: "Få hjälp med sömnen",
+      href: "/vardguiden/psykisk-halsa"
+    },
   },
   {
     slug: "prostataproblem",

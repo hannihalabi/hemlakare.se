@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Om oss", href: "/om" },
   { label: "Mottagningar", href: "/mottagningar" },
   { label: "Frågor & svar", href: "/faq" },
+  { label: "Artiklar", href: "/aktuellt" },
   { label: "Vårdguiden", href: "/vardguiden" },
 ];
 
