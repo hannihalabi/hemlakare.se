@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
@@ -61,16 +62,12 @@ export default function Footer() {
         <div className="flex flex-col gap-5">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="10" fill="url(#fGrad)" />
-              <path d="M16 23s-7-4.5-7-9.5A4.5 4.5 0 0 1 16 11a4.5 4.5 0 0 1 7 2.5C23 18.5 16 23 16 23Z" fill="white" fillOpacity="0.95" />
-              <defs>
-                <linearGradient id="fGrad" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#E72E8A" />
-                  <stop offset="1" stopColor="#D81B7D" />
-                </linearGradient>
-              </defs>
-            </svg>
+            <Image
+              src="/bilder/logo/hemlakare-icon-stethoscope.svg"
+              alt=""
+              width={32}
+              height={32}
+            />
             <span className="text-[1rem] font-semibold tracking-tight">hemläkare.se</span>
           </div>
 

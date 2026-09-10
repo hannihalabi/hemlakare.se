@@ -10,9 +10,12 @@ import {
 import Link from "next/link";
 import { chatFaqLinks as articles } from "@/data/chatFaqLinks";
 import { formatClock, topicOptions, type ChatTopic } from "@/lib/chat-demo";
-import { useChatDemo } from "@/hooks/useChatDemo";
+import { useVisitorChat } from "@/hooks/useVisitorChat";
 
 type WidgetView = "intro" | "topic" | "conversation";
+
+const BUBBLE_SHOW_DELAY_MS = 2_500;
+const BUBBLE_AUTO_DISMISS_MS = 10_000;
 
 export default function ChatWidget() {
   const {
@@ -21,7 +24,7 @@ export default function ChatWidget() {
     sendMessage,
     rateConversation,
     startNewVisitorConversation,
-  } = useChatDemo();
+  } = useVisitorChat();
   const [open, setOpen] = useState(false);
   const [bubble, setBubble] = useState(false);
   const [view, setView] = useState<WidgetView>("intro");
@@ -36,9 +39,22 @@ export default function ChatWidget() {
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setBubble(true), 2500);
+    const timer = window.setTimeout(
+      () => setBubble(true),
+      BUBBLE_SHOW_DELAY_MS,
+    );
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!bubble) return;
+
+    const timer = window.setTimeout(
+      () => setBubble(false),
+      BUBBLE_AUTO_DISMISS_MS,
+    );
+    return () => window.clearTimeout(timer);
+  }, [bubble]);
 
   useEffect(() => {
     if (!open) return;
@@ -94,11 +110,11 @@ export default function ChatWidget() {
     window.setTimeout(() => launcherRef.current?.focus(), 0);
   }
 
-  function handleStartConversation(event: FormEvent) {
+  async function handleStartConversation(event: FormEvent) {
     event.preventDefault();
     if (!safetyAccepted) return;
 
-    startConversation({
+    await startConversation({
       visitorName: visitorName.trim() || "Besökare",
       topic: selectedTopic,
     });
@@ -108,7 +124,7 @@ export default function ChatWidget() {
   function handleSend(event: FormEvent) {
     event.preventDefault();
     if (!visitorConversation || !draft.trim()) return;
-    sendMessage(visitorConversation.id, draft, "visitor");
+    sendMessage(visitorConversation.id, draft);
     setDraft("");
   }
 
@@ -538,7 +554,7 @@ export default function ChatWidget() {
         <button
           ref={launcherRef}
           onClick={openWidget}
-          className="group flex min-h-14 items-center rounded-full bg-[#e72e8a] text-white shadow-[0_8px_28px_rgba(231,46,138,0.38)] transition hover:-translate-y-0.5 hover:bg-[#d81b7d] hover:shadow-[0_12px_34px_rgba(231,46,138,0.44)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink-200 active:translate-y-0"
+          className="chat-launcher-attention group flex min-h-14 items-center rounded-full bg-[#e72e8a] text-white shadow-[0_8px_28px_rgba(231,46,138,0.38)] transition hover:-translate-y-0.5 hover:bg-[#d81b7d] hover:shadow-[0_12px_34px_rgba(231,46,138,0.44)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink-200 active:translate-y-0"
           aria-label="Öppna chatten"
           aria-haspopup="dialog"
         >

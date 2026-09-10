@@ -116,3 +116,48 @@ body {
     animation: none;
   }
 }
+
+/* Mjuk uppmärksamhetspuls för chattknappen utan att flytta dess innehåll. */
+@keyframes chatLauncherAttention {
+  0%,
+  58%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  68% {
+    opacity: 0.75;
+    transform: scale(1.01);
+  }
+  90% {
+    opacity: 0;
+    transform: scale(1.14);
+  }
+}
+
+.chat-launcher-attention {
+  position: relative;
+}
+
+.chat-launcher-attention::before {
+  position: absolute;
+  inset: -3px;
+  border: 3px solid rgba(231, 46, 138, 0.68);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+  animation: chatLauncherAttention 2.6s ease-out infinite;
+}
+
+.chat-launcher-attention:hover::before,
+.chat-launcher-attention:focus-visible::before {
+  animation-play-state: paused;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-launcher-attention::before {
+    animation: none;
+    opacity: 0;
+  }
+}

@@ -12,7 +12,7 @@ const demoSteps = [
   {
     number: "02",
     title: "Ärendet når kön",
-    body: "Öppna personalvyn. Det nya ärendet visas direkt under Nya med olästmarkering.",
+    body: "Öppna adminpanelen. Det nya ärendet visas direkt under Nya med olästmarkering.",
   },
   {
     number: "03",
@@ -59,10 +59,10 @@ export default function ChatDemoPresentation() {
               <span className="hidden sm:inline">Återställ demo</span>
             </button>
             <Link
-              href="/personal/chattar"
+              href="/admin"
               className="btn-cta flex min-h-10 items-center gap-2 rounded-xl px-3.5 text-xs font-bold"
             >
-              Öppna personalvy
+              Öppna admin
               <ArrowRightIcon className="size-4" />
             </Link>
           </div>
@@ -98,11 +98,11 @@ export default function ChatDemoPresentation() {
                 <ExternalIcon className="size-4" />
               </Link>
               <Link
-                href="/personal/chattar"
+                href="/admin"
                 target="_blank"
                 className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-slate-400 hover:bg-slate-50"
               >
-                Öppna medarbetarens inkorg
+                Öppna adminpanelen
                 <ExternalIcon className="size-4" />
               </Link>
             </div>
@@ -382,7 +382,7 @@ export default function ChatDemoPresentation() {
               Återställ demo
             </button>
             <Link
-              href="/personal/chattar"
+              href="/admin"
               target="_blank"
               className="flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-xs font-bold text-[#312a3c] transition hover:bg-pink-50"
             >

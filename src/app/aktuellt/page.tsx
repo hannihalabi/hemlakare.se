@@ -3,6 +3,9 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Link from "next/link";
 import { articles } from "@/data/articles";
+import { getPublishedContentSafe } from "@/lib/content-server";
+
+export const revalidate = 300;
 
 export const metadata = {
   title: "Aktuellt",
@@ -14,7 +17,13 @@ export const metadata = {
   },
 };
 
-export default function AktuelltPage() {
+export default async function AktuelltPage() {
+  const cmsContent = await getPublishedContentSafe();
+  const cmsSlugs = new Set(cmsContent.map((item) => item.slug));
+  const allContent = [
+    ...cmsContent.map((item) => ({ ...item, date: item.publishedAt ? new Intl.DateTimeFormat("sv-SE", { dateStyle: "long" }).format(new Date(item.publishedAt)) : "Publicerad", image: item.ogImage ?? "" })),
+    ...articles.filter((article) => !cmsSlugs.has(article.slug)),
+  ];
   return (
     <>
       <Header />
@@ -23,7 +32,7 @@ export default function AktuelltPage() {
           <h1 className="text-[2.4rem] font-bold text-gray-900">Aktuellt</h1>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((a) => (
+            {allContent.map((a) => (
               <article
                 key={a.slug}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col"

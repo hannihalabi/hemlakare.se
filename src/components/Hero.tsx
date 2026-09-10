@@ -4,9 +4,9 @@ import { useState, useEffect, type FormEvent } from "react";
 import Link from "next/link";
 
 const bullets = [
-  "Din egen läkare och sköterska",
-  "Hjälp samma dag, slipp vårdkön",
-  "Fysiska möten på dina villkor — i hemmet, på arbetet eller på mottagningen",
+  "Endast svenskutbildade läkare",
+  "Vård samma dag - ingen väntan",
+  "Vi ger alla möjlighet till privatfinansierad vård",
 ];
 
 const rotatingWords = ["utan kö", "snabb hjälp", "mindre krångel"];

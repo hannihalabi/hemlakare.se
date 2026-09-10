@@ -3,6 +3,9 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hemlakare.se"),
+  icons: {
+    icon: "/icon.svg",
+  },
   title: {
     default: "Hemläkare.se — Din läkare, på dina villkor",
     template: "%s — Hemläkare.se",

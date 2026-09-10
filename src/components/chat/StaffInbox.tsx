@@ -9,16 +9,29 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import Link from "next/link";
-import { useChatDemo } from "@/hooks/useChatDemo";
+import { useAdminConversations } from "@/hooks/useAdminConversations";
 import {
-  DEMO_EMPLOYEE,
   formatClock,
   formatRelativeTime,
   type ChatConversation,
   type ConversationStatus,
 } from "@/lib/chat-demo";
+import type { AdminRole } from "@/lib/content-types";
+import ContentWorkspace from "@/components/admin/ContentWorkspace";
+import SeoWorkspace from "@/components/admin/SeoWorkspace";
 
 type QueueFilter = "new" | "mine" | "waiting" | "resolved" | "all";
+type AdminTab = "chat" | "blog" | "statistics";
+
+const adminTabs: Array<{
+  id: AdminTab;
+  label: string;
+  icon: "chat" | "blog" | "statistics";
+}> = [
+  { id: "chat", label: "Chatt", icon: "chat" },
+  { id: "blog", label: "Blogg", icon: "blog" },
+  { id: "statistics", label: "Statistik", icon: "statistics" },
+];
 
 const queueItems: Array<{
   id: QueueFilter;
@@ -47,21 +60,22 @@ const quickReplies = [
   },
 ];
 
-export default function StaffInbox() {
+export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () => void; currentUser: { id?: string; email: string; name: string; role: AdminRole } }) {
   const {
     conversations,
     sendMessage,
     assignConversation,
     setConversationStatus,
     markRead,
-    resetDemo,
-  } = useChatDemo();
+    refresh,
+  } = useAdminConversations();
   const [filter, setFilter] = useState<QueueFilter>("new");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState("demo-1041");
   const [draft, setDraft] = useState("");
   const [showDetails, setShowDetails] = useState(false);
   const [mobileThreadOpen, setMobileThreadOpen] = useState(false);
+  const [activeAdminTab, setActiveAdminTab] = useState<AdminTab>("chat");
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   const counts = useMemo(
@@ -69,13 +83,27 @@ export default function StaffInbox() {
       new: conversations.filter((item) => item.status === "new").length,
       mine: conversations.filter(
         (item) =>
-          item.assignedTo === DEMO_EMPLOYEE && item.status !== "resolved",
+          item.assignedTo === currentUser.name && item.status !== "resolved",
       ).length,
       waiting: conversations.filter((item) => item.status === "waiting").length,
       resolved: conversations.filter((item) => item.status === "resolved")
         .length,
       all: conversations.length,
     }),
+    [conversations, currentUser.name],
+  );
+
+  const unreadChatCount = useMemo(
+    () =>
+      conversations.reduce(
+        (total, conversation) =>
+          total +
+          conversation.messages.filter(
+            (message) =>
+              message.sender === "visitor" && !message.readByStaff,
+          ).length,
+        0,
+      ),
     [conversations],
   );
 
@@ -87,7 +115,7 @@ export default function StaffInbox() {
         if (filter === "new") return conversation.status === "new";
         if (filter === "mine")
           return (
-            conversation.assignedTo === DEMO_EMPLOYEE &&
+            conversation.assignedTo === currentUser.name &&
             conversation.status !== "resolved"
           );
         if (filter === "waiting") return conversation.status === "waiting";
@@ -106,7 +134,7 @@ export default function StaffInbox() {
         );
       })
       .sort((a, b) => b.updatedAt - a.updatedAt);
-  }, [conversations, filter, search]);
+  }, [conversations, currentUser.name, filter, search]);
 
   const selectedConversation =
     conversations.find((conversation) => conversation.id === selectedId) ??
@@ -138,12 +166,7 @@ export default function StaffInbox() {
     if (!selectedConversation.assignedTo) {
       assignConversation(selectedConversation.id);
     }
-    sendMessage(
-      selectedConversation.id,
-      draft,
-      "employee",
-      DEMO_EMPLOYEE,
-    );
+    sendMessage(selectedConversation.id, draft);
     setDraft("");
   }
 
@@ -167,32 +190,27 @@ export default function StaffInbox() {
     if (!selectedConversation.assignedTo) {
       assignConversation(selectedConversation.id);
     }
-    sendMessage(
-      selectedConversation.id,
-      quickReplies[1].body,
-      "employee",
-      DEMO_EMPLOYEE,
-    );
+    sendMessage(selectedConversation.id, quickReplies[1].body);
   }
 
   const canReply =
     selectedConversation &&
     selectedConversation.status !== "resolved" &&
     (!selectedConversation.assignedTo ||
-      selectedConversation.assignedTo === DEMO_EMPLOYEE);
+      selectedConversation.assignedTo === currentUser.name);
 
   return (
     <div className="flex h-dvh min-h-[680px] flex-col overflow-hidden bg-[#f4f5f7] text-slate-900">
       <div className="flex min-h-9 shrink-0 items-center justify-center gap-2 bg-[#312a3c] px-4 text-center text-[0.7rem] font-semibold tracking-wide text-white">
         <BeakerIcon className="size-3.5 text-pink-300" />
-        <span className="sm:hidden">PROTOTYP · DEMODATA</span>
+        <span className="sm:hidden">ADMIN MVP · DATABAS</span>
         <span className="hidden sm:inline">
-          INTERAKTIV PROTOTYP
+          ADMIN MVP
           <span className="mx-2 text-white/45">·</span>
-          FIKTIVA UPPGIFTER
+          DATABASANSLUTEN
           <span className="mx-2 text-white/45">·</span>
           <span className="text-white/70">
-            INGEN RIKTIG INLOGGNING ELLER BACKEND
+            SÄKER SESSION OCH RIKTIG BACKEND
           </span>
         </span>
       </div>
@@ -227,17 +245,17 @@ export default function StaffInbox() {
             Öppna besökarvy
           </Link>
           <button
-            onClick={resetDemo}
+            onClick={() => void refresh()}
             className="grid size-10 place-items-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e72e8a]"
-            aria-label="Återställ demodata"
-            title="Återställ demodata"
+            aria-label="Uppdatera inkorg"
+            title="Uppdatera inkorg"
           >
             <RefreshIcon className="size-4" />
           </button>
           <div className="ml-1 flex items-center gap-2">
             <EmployeeAvatar />
             <div className="hidden sm:block">
-              <p className="text-xs font-bold text-slate-900">{DEMO_EMPLOYEE}</p>
+              <p className="text-xs font-bold text-slate-900">{currentUser.name}</p>
               <p className="text-[0.65rem] font-semibold text-emerald-700">
                 Tillgänglig
               </p>
@@ -247,6 +265,19 @@ export default function StaffInbox() {
         </div>
       </header>
 
+      <div className="flex min-h-0 flex-1">
+        <AdminSidebar
+          activeTab={activeAdminTab}
+          unreadChatCount={unreadChatCount}
+          onSelectTab={setActiveAdminTab}
+          onSignOut={onSignOut}
+        />
+
+        {activeAdminTab === "blog" ? (
+          <ContentWorkspace role={currentUser.role} />
+        ) : activeAdminTab === "statistics" ? (
+          <SeoWorkspace role={currentUser.role} />
+        ) : (
       <div className="grid min-h-0 flex-1 md:grid-cols-[310px_minmax(0,1fr)] lg:grid-cols-[220px_330px_minmax(0,1fr)] 2xl:grid-cols-[220px_350px_minmax(460px,1fr)_290px]">
         <aside className="hidden min-h-0 flex-col border-r border-slate-200 bg-[#fbfbfc] lg:flex">
           <nav className="flex-1 px-3 py-5" aria-label="Ärendeköer">
@@ -448,7 +479,7 @@ export default function StaffInbox() {
                     >
                       Ta ärendet
                     </button>
-                  ) : selectedConversation.assignedTo !== DEMO_EMPLOYEE &&
+                  ) : selectedConversation.assignedTo !== currentUser.name &&
                     selectedConversation.status !== "resolved" ? (
                     <button
                       onClick={takeConversation}
@@ -623,7 +654,7 @@ export default function StaffInbox() {
                             maxLength={2_000}
                             placeholder={
                               selectedConversation.assignedTo &&
-                              selectedConversation.assignedTo !== DEMO_EMPLOYEE
+                              selectedConversation.assignedTo !== currentUser.name
                                 ? `Tilldelad ${selectedConversation.assignedTo}`
                                 : "Skriv ett svar…"
                             }
@@ -741,7 +772,65 @@ export default function StaffInbox() {
           )}
         </aside>
       </div>
+        )}
+      </div>
     </div>
+  );
+}
+
+function AdminSidebar({
+  activeTab,
+  unreadChatCount,
+  onSelectTab,
+  onSignOut,
+}: {
+  activeTab: AdminTab;
+  unreadChatCount: number;
+  onSelectTab: (tab: AdminTab) => void;
+  onSignOut?: () => void;
+}) {
+  return (
+    <aside className="flex w-[76px] shrink-0 flex-col items-center border-r border-slate-200 bg-[#211c2b] px-2 py-4 text-white">
+      <nav className="flex flex-1 flex-col items-center gap-2" aria-label="Adminmeny">
+        {adminTabs.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onSelectTab(item.id)}
+            className={`group relative flex min-h-[58px] w-full flex-col items-center justify-center gap-1 rounded-2xl text-[0.62rem] font-extrabold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${
+              activeTab === item.id
+                ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20"
+                : "text-white/55 hover:bg-white/10 hover:text-white"
+            }`}
+            aria-current={activeTab === item.id ? "page" : undefined}
+            title={item.label}
+          >
+            <AdminTabIcon name={item.icon} className="size-5" />
+            <span>{item.label}</span>
+            {item.id === "chat" && unreadChatCount > 0 && (
+              <span
+                className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-red-600 text-[0.6rem] font-extrabold leading-none text-white ring-2 ring-[#211c2b]"
+                aria-label={`${unreadChatCount} olästa meddelanden`}
+              >
+                {unreadChatCount > 9 ? "9+" : unreadChatCount}
+              </span>
+            )}
+          </button>
+        ))}
+      </nav>
+
+      {onSignOut && (
+        <button
+          type="button"
+          onClick={onSignOut}
+          className="grid size-11 place-items-center rounded-2xl text-white/55 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300"
+          aria-label="Logga ut"
+          title="Logga ut"
+        >
+          <LogOutIcon className="size-5" />
+        </button>
+      )}
+    </aside>
   );
 }
 
@@ -1015,6 +1104,17 @@ function QueueIcon({
   return <InboxIcon className={className} />;
 }
 
+function AdminTabIcon({
+  name,
+  className,
+}: IconProps & {
+  name: "chat" | "blog" | "statistics";
+}) {
+  if (name === "blog") return <BlogIcon className={className} />;
+  if (name === "statistics") return <StatsIcon className={className} />;
+  return <ChatIcon className={className} />;
+}
+
 function BaseIcon({
   className,
   children,
@@ -1202,6 +1302,34 @@ function ChatIcon(props: IconProps) {
   return (
     <BaseIcon {...props}>
       <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" />
+    </BaseIcon>
+  );
+}
+
+function BlogIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" />
+      <path d="M8 8h8M8 12h8M8 16h5" />
+    </BaseIcon>
+  );
+}
+
+function StatsIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M4 19V5M4 19h16" />
+      <path d="M8 16v-5M12 16V8M16 16v-8" />
+    </BaseIcon>
+  );
+}
+
+function LogOutIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M10 17 15 12 10 7" />
+      <path d="M15 12H3" />
+      <path d="M21 4v16" />
     </BaseIcon>
   );
 }

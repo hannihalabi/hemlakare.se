@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { articles as aktuelltArticles } from "@/data/articles";
+import { getPublishedContentSlugsSafe } from "@/lib/content-server";
 
 const BASE = "https://hemlakare.se";
 
@@ -42,7 +43,7 @@ const vardguidenSlugs = [
   "oron-nas-hals",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${BASE}/patientavgifter`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
@@ -56,8 +57,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/vardguiden/barn-ungdomshalsa`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];
 
-  const aktuelltRoutes: MetadataRoute.Sitemap = aktuelltArticles.map((a) => ({
-    url: `${BASE}/aktuellt/${a.slug}`,
+  const cmsSlugs = await getPublishedContentSlugsSafe();
+  const articleSlugs = [...new Set([...aktuelltArticles.map((article) => article.slug), ...cmsSlugs])];
+  const aktuelltRoutes: MetadataRoute.Sitemap = articleSlugs.map((slug) => ({
+    url: `${BASE}/aktuellt/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.6,

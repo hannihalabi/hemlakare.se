@@ -1,16 +1,5 @@
-import type { Metadata } from "next";
-import StaffInbox from "@/components/chat/StaffInbox";
-
-export const metadata: Metadata = {
-  title: "Chattinkorg – interaktiv MVP",
-  description:
-    "Interaktiv prototyp av Hemläkares medarbetarvy för administrativ kundservice.",
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+import { permanentRedirect } from "next/navigation";
 
 export default function StaffChatPage() {
-  return <StaffInbox />;
+  permanentRedirect("/admin");
 }

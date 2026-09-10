@@ -20,7 +20,7 @@ patientinformation och en enkel kundservicechatt.
 - Responsiv navigering och sidfot
 - Metadata, sitemap och robots.txt för sökmotorer
 - Interaktiv demo av en kundservicechatt
-- Medarbetarvy för att hantera chattar i demon
+- Adminpanel för att hantera chattar i demon
 
 ## Starta lokalt
 
@@ -43,7 +43,10 @@ npm run dev
 
 Öppna sedan [http://localhost:3000](http://localhost:3000).
 
-Det behövs inga miljövariabler för att köra den nuvarande prototypen.
+För adminpanelen behövs `DATABASE_URL` och `ADMIN_SESSION_SECRET` (minst 32
+tecken). Börja med att kopiera `.env.example` till `.env.local` och fyll i
+värdena. Utan dem kan de publika sidorna fortfarande byggas, men admin- och
+chattfunktionerna kan inte logga in.
 
 ## Vanliga kommandon
 
@@ -70,7 +73,7 @@ byggas.
 | `/vardguiden` | Medicinska ämnesområden |
 | `/aktuellt` | Artiklar och nyheter |
 | `/chatt-demo` | Presentationssida för chattprototypen |
-| `/personal/chattar` | Medarbetarens chattinkorg i prototypen |
+| `/admin` | Adminpanel med chattinkorg i prototypen |
 
 Artiklar, FAQ-svar och delar av vårdguiden har även egna adresser baserade på
 innehållets namn.
@@ -78,17 +81,17 @@ innehållets namn.
 ## Testa chattdemon
 
 1. Öppna `/chatt-demo`.
-2. Öppna besökarvyn och medarbetarvyn i två flikar.
+2. Öppna besökarvyn och adminpanelen i två flikar.
 3. Starta en chatt som besökare.
-4. Svara på chatten i `/personal/chattar`.
+4. Svara på chatten i `/admin`.
 
-Demodata sparas bara i webbläsarens `localStorage`. Flikar i samma webbläsare
-synkroniseras, men ingen information skickas till en server. Demon ska därför
-inte användas för riktiga patientärenden eller personuppgifter. Demodata kan
-återställas från presentationssidan eller medarbetarvyn.
+Chattinkorgen använder projektets databas när den är konfigurerad. Om
+databasen saknas visas en tydlig konfigurationsstatus i adminpanelen.
 
-Mer underlag om chattens tänkta fortsättning finns i
-[`docs/chat-mvp-it-underlag.md`](docs/chat-mvp-it-underlag.md).
+Första lokala inloggningen kräver dessutom en användare i `admin_users`.
+Migrationen skapar tabellen men inget lösenord. Skapa användaren i din lokala
+eller preview-databas med en bcrypt-hash, och använd sedan samma e-postadress
+och lösenord i `/admin`.
 
 ## Var innehållet finns
 
@@ -125,8 +128,10 @@ Projektet använder:
 - Tailwind CSS 4
 - ESLint
 
-Innehållet ligger för närvarande direkt i projektets filer. Det finns ingen
-databas, inloggning, betalning, bokningsmotor, journalintegration eller CMS.
+Artiklarna ligger i dag både som befintligt filinnehåll och i ett CMS-schema i
+databasen. Adminpanelen `/admin` har backend-inloggning, versionshantering,
+granskningsflöde, SEO-statistik och källor. Betalning, bokningsmotor och
+journalintegration ingår ännu inte.
 
 ## Inför produktion
 
