@@ -242,17 +242,22 @@ export default function ChatWidget() {
           {view === "intro" && (
             <div className="flex min-h-0 flex-1 flex-col overflow-y-auto bg-[#faf7f9]">
               <div className="bg-[linear-gradient(145deg,#fff2f8_0%,#fff_68%)] px-5 pb-5 pt-6">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-pink-100 bg-white px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-[#c81e70]">
-                  <span className="size-1.5 rounded-full bg-emerald-500" />
-                  Kundservice online
-                </span>
-                <h3 className="mt-4 text-[1.55rem] font-bold leading-tight tracking-[-0.025em] text-slate-950">
+                <h3 className="text-[1.55rem] font-bold leading-tight tracking-[-0.025em] text-slate-950">
                   Hej! Hur kan vi hjälpa dig?
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   Vi svarar på administrativa frågor om bokning, priser och hur
                   Hemläkare fungerar.
                 </p>
+                <div className="relative mt-4 h-48 overflow-hidden rounded-2xl border border-white/70 bg-pink-50 shadow-sm">
+                  <Image
+                    src="/landningspage/hemlakare-grupp.png"
+                    alt="Hemläkare.se team"
+                    fill
+                    sizes="(max-width: 640px) 100vw, 360px"
+                    className="object-cover object-[center_28%]"
+                  />
+                </div>
                 <button
                   onClick={() => setView("topic")}
                   className="btn-cta mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-5 text-sm font-bold"
@@ -263,21 +268,6 @@ export default function ChatWidget() {
                 <p className="mt-2 text-center text-[0.72rem] font-medium text-slate-500">
                   Svarar vanligtvis inom 2 minuter
                 </p>
-              </div>
-
-              <div className="mx-4 mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-3.5">
-                <div className="flex gap-3">
-                  <ShieldIcon className="mt-0.5 size-5 shrink-0 text-amber-700" />
-                  <div>
-                    <p className="text-xs font-bold text-amber-950">
-                      För din trygghet
-                    </p>
-                    <p className="mt-1 text-xs leading-5 text-amber-900/80">
-                      Chatten är inte avsedd för symtom, personnummer eller
-                      medicinska bedömningar. Vid fara för liv, ring 112.
-                    </p>
-                  </div>
-                </div>
               </div>
 
               <div className="mx-4 mb-5 mt-4 rounded-2xl border border-slate-200 bg-white p-4">

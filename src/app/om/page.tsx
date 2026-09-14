@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
@@ -159,7 +160,15 @@ export default function OmOssPage() {
                 utan kompromisser – för dig som vill ha mer.
               </p>
             </div>
-            <ImagePlaceholder label="Bild på grundarteamet eller mottagningen" />
+            <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-gray-100 shadow-xl">
+              <Image
+                src="/landningspage/hemlakare-grupp.png"
+                alt="Teamet bakom Hemläkare.se."
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </section>
 

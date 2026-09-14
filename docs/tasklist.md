@@ -72,7 +72,7 @@ Den nuvarande sajten har bra grundform och många sidor, men den beter sig mer s
 - Sitemap använder `new Date()` för alla routes varje gång den byggs/servas. Se `src/app/sitemap.ts:47`. Det gör `lastmod` mindre trovärdigt.
 - Sitemap innehåller duplicerade vårdguide-URL:er för akut vård och barn/ungdomars hälsa. Se `src/app/sitemap.ts:55` samt `src/app/sitemap.ts:15`.
 - Admin och chattdemo har `robots: { index: false, follow: false }`, vilket är rätt start. Se `src/app/admin/page.tsx:8` och `src/app/chatt-demo/page.tsx`.
-- Lint gick igenom. `npm run build` gick igenom med Next.js 16.2.4 och genererade 205 statiska/dynamiska routes.
+- Lint gick igenom. `npm run build` gick igenom med Next.js 16.2.4 och genererade 199 statiska/dynamiska routes.
 
 ### Backend och admin
 
@@ -82,9 +82,9 @@ Den nuvarande sajten har bra grundform och många sidor, men den beter sig mer s
 - Chattreferens skapas med slumpad `#1000-9999`, men kolumnen är unique och det finns ingen retry vid kollision. Se `src/app/api/chat/conversations/route.ts:15`.
 - Adminhooken hämtar konversationer initialt och efter mutation, men ingen polling, SSE eller realtime. Se `src/hooks/useAdminConversations.ts:36`.
 - Besökarhooken hämtar konversation initialt och efter egna meddelanden, men inte automatiskt efter personalsvar. Se `src/hooks/useVisitorChat.ts:39`.
-- StaffInbox-bannern visar nu korrekt backend- och sessionsstatus.
-- StaffInbox använder den inloggade användarens session för filtrering och tilldelning.
-- Adminflikarna `Blogg` och `Statistik` är implementerade enligt Fas 5.
+- StaffInbox visar fortfarande prototypbanner "INGEN RIKTIG INLOGGNING ELLER BACKEND" trots att backend nu finns. Se `src/components/chat/StaffInbox.tsx:191`.
+- StaffInbox använder `DEMO_EMPLOYEE` för filtrering/tilldelning/identitet i UI trots att session finns. Se `src/components/chat/StaffInbox.tsx:14` och `src/components/chat/StaffInbox.tsx:84`.
+- Adminflikarna `Blogg` och `Statistik` finns, men visar coming soon. Se `src/components/chat/StaffInbox.tsx:24` och `src/components/chat/StaffInbox.tsx:808`.
 
 ## Strategisk SEO-position
 
@@ -143,7 +143,6 @@ Bygg färre men starkare kluster:
 1. Privatläkare
    - `/privatlakare`
    - `/privatlakare-stockholm`
-   - `/privatlakare-goteborg`
    - `/privatlakare-solna`
    - `/privatlakare-pris`
    - `/privatlakare-vs-vardcentral`
@@ -151,7 +150,6 @@ Bygg färre men starkare kluster:
 2. Hembesök
    - `/hembesok-lakare`
    - `/hembesok-lakare-stockholm`
-   - `/hembesok-lakare-goteborg`
    - `/hembesok-lakare-solna`
    - `/hembesok-pris`
    - `/hembesok-vad-kan-lakaren-gora`
@@ -244,7 +242,7 @@ Varje guide bör ha:
 - [P0-015] Skapa verklig `/og-image.jpg` eller dynamisk OG-route. Klart när Open Graph/Twitter-bild fungerar.
 - [P0-016] Lägg till self-referential canonical på indexerbara sidor via Next metadata `alternates`.
 - [P0-017] Rätta sitemap: ta bort dubbletter, ta bort sidor som inte ska indexeras, använd stabila `lastModified` baserat på faktiskt content-datum.
-- [x] [P0-018] Ta bort prototyptext i admin som säger att backend saknas, eller visa korrekt miljöstatus.
+- [P0-018] Ta bort prototyptext i admin som säger att backend saknas, eller visa korrekt miljöstatus.
 - [P0-019] Lägg till produktionens 404/not-found med sökvägar tillbaka till viktiga sidor.
 - [P0-020] Ersätt hero- och sektionsplaceholders med verkliga bilder där de behövs för förtroende.
 - [P0-021] Lägg till alt-texter som beskriver verkligt innehåll, inte generiska placeholders.
@@ -289,25 +287,25 @@ Varje guide bör ha:
 - [P1-051] Bygg lokala landningssidor för stadsdelar först när ni har unik serviceinformation, inte doorway-sidor.
 - [P1-052] Skapa lokal citation-lista: Vården.se, Hitta, Eniro, branschregister, relevanta försäkringspartners.
 
-### Fas 5: Adminpanelen som SEO-operativsystem
+### ✅ Fas 5: Adminpanelen som SEO-operativsystem
 
-- [x] [P1-053] Bygg Blogg/CMS-fliken: lista, skapa, redigera, förhandsgranska, schemalägga, publicera, avpublicera.
-- [x] [P1-054] Lägg till workflow-status: draft, SEO review, medical review, legal/privacy review, ready, scheduled, published, noindex.
-- [x] [P1-055] Lägg till rollstyrning: admin, editor, medical_reviewer, staff.
-- [x] [P1-056] Lägg till audit log för contentändringar, inte bara chatt.
-- [x] [P1-057] Lägg till versionshistorik och rollback för artiklar/sidor.
-- [x] [P1-058] Lägg till fält för meta title, meta description, canonical, OG image, schema och robots.
-- [x] [P1-059] Lägg till källbibliotek med primära källor och `lastCheckedAt`.
-- [x] [P1-060] Lägg till internlänksförslag i editor.
-- [x] [P1-061] Lägg till SEO-score som varnar, inte styr: saknad H1, duplicerad title, tunn text, saknad CTA, saknade källor.
-- [x] [P1-062] Lägg till publiceringskalender och ämnesbacklog.
-- [x] [P1-063] Lägg till statistikflik med import av GSC-export (queries, impressions, CTR, position), manuella konverteringsmått och contentstatus per URL.
-- [x] [P1-064] Lägg till broken link/image checker i admin.
-- [x] [P1-065] Koppla admin till sitemap-regenerering och cache revalidation efter publicering.
+- [P1-053] Bygg Blogg/CMS-fliken: lista, skapa, redigera, förhandsgranska, schemalägga, publicera, avpublicera.
+- [P1-054] Lägg till workflow-status: draft, SEO review, medical review, legal/privacy review, ready, scheduled, published, noindex.
+- [P1-055] Lägg till rollstyrning: admin, editor, medical_reviewer, staff.
+- [P1-056] Lägg till audit log för contentändringar, inte bara chatt.
+- [P1-057] Lägg till versionshistorik och rollback för artiklar/sidor.
+- [P1-058] Lägg till fält för meta title, meta description, canonical, OG image, schema och robots.
+- [P1-059] Lägg till källbibliotek med primära källor och `lastCheckedAt`.
+- [P1-060] Lägg till internlänksförslag i editor.
+- [P1-061] Lägg till SEO-score som varnar, inte styr: saknad H1, duplicerad title, tunn text, saknad CTA, saknade källor.
+- [P1-062] Lägg till publiceringskalender och ämnesbacklog.
+- [P1-063] Lägg till statistikflik med GSC queries, impressions, CTR, position, conversions och contentstatus per URL.
+- [P1-064] Lägg till broken link/image checker i admin.
+- [P1-065] Koppla admin till sitemap-regenerering och cache revalidation efter publicering.
 
-### Fas 6: Chatten som konverterings- och supportlager
+### ⚠️ Fas 6: Chatten som konverterings- och supportlager
 
-- [x] [P1-066] Byt från `DEMO_EMPLOYEE` till inloggad session i StaffInbox.
+- [P1-066] Byt från `DEMO_EMPLOYEE` till inloggad session i StaffInbox.
 - [P1-067] Lägg till polling, SSE eller realtime för nya meddelanden.
 - [P1-068] Lägg till referensnummergenerator med sekvens eller retry vid unik constraint-kollision.
 - [P1-069] Lägg till rate limit, bot-skydd och spamfilter på publik chatt.

@@ -38,39 +38,61 @@ export default function Hero() {
   }
 
   return (
-    <section className="bg-[#fdf5f9] min-h-[calc(100vh-4rem)] flex items-center">
-      <div className="max-w-7xl mx-auto px-6 py-20 w-full grid lg:grid-cols-2 gap-14 items-center">
-        {/* Left */}
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-[2.75rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.1] tracking-tight text-gray-900">
-              Privat vård –<br />
-              <span
-                key={rotatingWords[wordIndex]}
-                className="rotate-word bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
-                }}
-              >
-                {rotatingWords[wordIndex]}
-              </span>
-            </h1>
+    <section className="bg-[#fdf5f9] min-h-[calc(100svh-4rem)] flex items-start lg:items-center">
+      <div className="max-w-7xl mx-auto px-6 py-8 sm:py-12 lg:py-20 w-full grid gap-5 sm:gap-8 lg:grid-cols-2 lg:gap-x-14 lg:gap-y-8 lg:items-center">
+        {/* Copy */}
+        <div className="flex flex-col gap-3 sm:gap-4 lg:col-start-1">
+          <h1 className="text-[2.45rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.06] sm:leading-[1.1] tracking-tight text-gray-900">
+            Privat vård –<br />
+            <span
+              key={rotatingWords[wordIndex]}
+              className="rotate-word bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)",
+              }}
+            >
+              {rotatingWords[wordIndex]}
+            </span>
+          </h1>
 
-            <ul className="flex flex-col gap-3 mt-2">
-              {bullets.map((b) => (
-                <li key={b} className="flex items-start gap-3">
-                  <HeartIcon />
-                  <span className="text-[1rem] text-gray-700 leading-snug">{b}</span>
-                </li>
-              ))}
-            </ul>
+          <ul className="flex flex-col gap-2.5 sm:gap-3 mt-2">
+            {bullets.map((b) => (
+              <li key={b} className="flex items-start gap-3">
+                <HeartIcon />
+                <span className="text-[1rem] text-gray-700 leading-snug">{b}</span>
+              </li>
+            ))}
+          </ul>
 
-            <p className="text-[0.9rem] text-gray-500 mt-1">
-              Fast pris från 995 kr — slipp vårdköer, remisskrångel och väntrum
-            </p>
+          <p className="text-[0.9rem] text-gray-500 mt-1">
+            Fast pris från 995 kr — slipp vårdköer, remisskrångel och väntrum
+          </p>
+        </div>
+
+        {/* Image/video */}
+        <div className="relative flex items-center justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <div className="w-full aspect-[16/11] lg:aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
+            <Image
+              src="/landningspage/hero-1.png"
+              alt="Hemläkare.se erbjuder privat vård online och på mottagning."
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
           </div>
+          <Image
+            src="/landningspage/hero-mobil-1.png"
+            alt="Mobilvy för att chatta med läkare hos Hemläkare.se."
+            width={190}
+            height={254}
+            priority
+            className="absolute bottom-2 right-2 h-auto w-[27%] min-w-[92px] max-w-[150px] rotate-[10deg] drop-shadow-[0_18px_28px_rgba(15,23,42,0.24)] sm:-bottom-8 sm:-right-5 sm:w-[33%] sm:min-w-[140px] sm:max-w-[220px] sm:drop-shadow-[0_24px_38px_rgba(15,23,42,0.24)] lg:-bottom-10 lg:-right-7 lg:w-[34%] lg:max-w-[235px]"
+          />
+        </div>
 
-          {/* Address search */}
+        {/* Address search */}
+        <div className="flex flex-col gap-8 lg:col-start-1">
           <div className="flex flex-col gap-3">
             <p className="text-[1.1rem] font-semibold text-gray-900">
               Se om vi finns i ditt område
@@ -132,34 +154,6 @@ export default function Hero() {
             </Link>{" "}
             om du hellre vill träffa oss på plats.
           </p>
-        </div>
-
-        {/* Right — image/video */}
-        <div className="relative flex items-end justify-center">
-          <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
-            <Image
-              src="/landningspage/hero-1.png"
-              alt="Hemläkare.se erbjuder privat vård online och på mottagning."
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
-          {/* Phone mockup badge */}
-          <div
-            className="absolute -bottom-6 -right-4 h-56 w-32 overflow-hidden rounded-[1.65rem] border-4 border-white bg-gray-950 shadow-2xl"
-            style={{ rotate: "6deg" }}
-          >
-            <Image
-              src="/landningspage/hero-mobile.png"
-              alt="Mobilvy för att boka vård online hos Hemläkare.se."
-              fill
-              priority
-              sizes="128px"
-              className="rounded-[1.35rem] object-cover"
-            />
-          </div>
         </div>
       </div>
     </section>
