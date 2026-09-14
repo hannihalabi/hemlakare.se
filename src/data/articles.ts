@@ -56,6 +56,15 @@ export type ArticleSource = {
 
 export const articles: Article[] = [
   {
+    slug: "testartikel-publiceringsflode-2026-09-14",
+    title: "Testartikel: automatiserat publiceringsflöde",
+    tag: "TEST",
+    date: "september 14, 2026",
+    image: "/bilder/aktuellt-1.jpg",
+    excerpt: "Detta är en tydligt märkt testartikel som verifierar publiceringsflödet från GitHub till Hemläkare.se.",
+    body: "Detta är en testartikel utan medicinskt innehåll. Den har skapats för att verifiera att en ändring i GitHub-repots main-branch automatiskt byggs och publiceras i produktion av Vercel. Inga befintliga artiklar eller sidor har ändrats i testet.",
+  },
+  {
     slug: "vanligaste-orsakerna-januari-2026",
     title: "De vanligaste orsakerna till att svenskar sökte vård i januari 2026",
     tag: "VÅRDNYTT",
