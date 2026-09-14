@@ -10,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: "Mottagningar — Hemläkare.se",
     description: "Hemläkare.se har fysiska mottagningar i Stockholm och Göteborg samt digitala mottagningar tillgängliga över hela Sverige.",
-    url: "https://hemlakare.se/mottagningar",
+    url: "https://xn--hemlkare-3za.se/mottagningar",
   },
 };
 

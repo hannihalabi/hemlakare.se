@@ -13,8 +13,8 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "MedicalOrganization",
   name: "Hemläkare.se",
-  url: "https://hemlakare.se",
-  logo: "https://hemlakare.se/og-image.jpg",
+  url: "https://xn--hemlkare-3za.se",
+  logo: "https://xn--hemlkare-3za.se/og-image.jpg",
   description:
     "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
   medicalSpecialty: "General Practice",

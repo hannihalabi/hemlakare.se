@@ -9,7 +9,7 @@ export const metadata = {
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
     description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
-    url: "https://hemlakare.se/patientavgifter",
+    url: "https://xn--hemlkare-3za.se/patientavgifter",
   },
 };
 

@@ -403,7 +403,7 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       title: `${title} | Hemläkare.se`,
       description,
-      url: `https://hemlakare.se/vardguiden/${slug}`,
+      url: `https://xn--hemlkare-3za.se/vardguiden/${slug}`,
     },
   };
 }

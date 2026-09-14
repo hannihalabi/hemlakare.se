@@ -16,11 +16,11 @@ function extractTargets(contentId: string, slug: string, body: string, ogImage: 
     if (!value || value.startsWith("#") || value.startsWith("mailto:") || value.startsWith("tel:")) return;
     let parsed: URL;
     try {
-      parsed = new URL(value, "https://hemlakare.se");
+      parsed = new URL(value, "https://xn--hemlkare-3za.se");
     } catch {
       return;
     }
-    if (parsed.origin !== "https://hemlakare.se") return;
+    if (parsed.origin !== "https://xn--hemlkare-3za.se") return;
     const normalized = `${kind}:${parsed.pathname}${parsed.search}`;
     if (seen.has(normalized)) return;
     seen.add(normalized);
@@ -35,7 +35,7 @@ function extractTargets(contentId: string, slug: string, body: string, ogImage: 
 }
 
 async function checkTarget(target: LinkTarget) {
-  const url = `https://hemlakare.se${target.target}`;
+  const url = `https://xn--hemlkare-3za.se${target.target}`;
   try {
     const response = await fetch(url, { method: "HEAD", redirect: "manual", signal: AbortSignal.timeout(4000) });
     return { ...target, status: response.status, ok: response.ok };

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { articles as aktuelltArticles } from "@/data/articles";
 import { getPublishedContentSlugsSafe } from "@/lib/content-server";
 
-const BASE = "https://hemlakare.se";
+const BASE = "https://xn--hemlkare-3za.se";
 
 const faqSlugs = [
   "vad-kostar-det",

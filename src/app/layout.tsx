@@ -4,7 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hemlakare.se"),
+  metadataBase: new URL("https://xn--hemlkare-3za.se"),
   icons: {
     icon: "/icon.svg",
   },
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     title: "Hemläkare.se — Din läkare, på dina villkor",
     description: "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
-    url: "https://hemlakare.se",
+    url: "https://xn--hemlkare-3za.se",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Hemläkare.se" }],
   },
   twitter: {

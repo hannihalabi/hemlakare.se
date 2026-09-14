@@ -14,7 +14,7 @@ export const metadata = {
   openGraph: {
     title: "Aktuellt — Hemläkare.se",
     description: "Nyheter, hälsoråd och information från Hemläkare.se.",
-    url: "https://hemlakare.se/aktuellt",
+    url: "https://xn--hemlkare-3za.se/aktuellt",
   },
 };
 

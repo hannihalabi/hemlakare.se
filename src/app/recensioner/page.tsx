@@ -8,7 +8,7 @@ export const metadata = {
   openGraph: {
     title: "Recensioner — Hemläkare.se",
     description: "Vad våra patienter säger om Hemläkare.se. Läs recensioner från Google, Vården.se och Trustpilot.",
-    url: "https://hemlakare.se/recensioner",
+    url: "https://xn--hemlkare-3za.se/recensioner",
   },
 };
 

@@ -12,7 +12,7 @@ export const metadata = {
     title: "Akut vård — Vårdguiden | Hemläkare.se",
     description:
       "Akut vård innefattar tidig identifiering, riskvärdering, diagnostik och åtgärder utifrån symtom, tillstånd och skador som är tidskänsliga och potentiellt farliga för liv och hälsa.",
-    url: "https://hemlakare.se/vardguiden/akut-vard",
+    url: "https://xn--hemlkare-3za.se/vardguiden/akut-vard",
   },
 };
 

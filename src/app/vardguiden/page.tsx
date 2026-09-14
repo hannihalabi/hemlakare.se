@@ -10,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: "Vårdguiden — Hemläkare.se",
     description: "Hitta information om olika sjukdomar, organ och åkommor. Din guide till bättre hälsa med Hemläkare.se.",
-    url: "https://hemlakare.se/vardguiden",
+    url: "https://xn--hemlkare-3za.se/vardguiden",
   },
 };
 

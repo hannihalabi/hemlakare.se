@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://hemlakare.se/sitemap.xml",
+    sitemap: "https://xn--hemlkare-3za.se/sitemap.xml",
   };
 }

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Frågor & svar — Hemläkare.se",
     description: "Svar på vanliga frågor om Hemläkare.se — kostnader, listning, bokning och hur vården fungerar.",
-    url: "https://hemlakare.se/faq",
+    url: "https://xn--hemlkare-3za.se/faq",
   },
 };
 

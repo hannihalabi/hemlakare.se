@@ -11,7 +11,7 @@ export const metadata = {
   openGraph: {
     title: "Om oss — Hemläkare.se",
     description: "Vi är privatfinansierad vård som sätter patienten först. Lär känna teamet och idén bakom Hemläkare.se.",
-    url: "https://hemlakare.se/om",
+    url: "https://xn--hemlkare-3za.se/om",
   },
 };
 

@@ -23,13 +23,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description,
     alternates: {
-      canonical: cmsArticle?.canonicalUrl ?? `https://hemlakare.se/aktuellt/${slug}`,
+      canonical: cmsArticle?.canonicalUrl ?? `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
     },
     robots: cmsArticle?.robots.includes("noindex") ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
       title: `${title} — Hemläkare.se`,
       description,
-      url: `https://hemlakare.se/aktuellt/${slug}`,
+      url: `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
       images: article?.image ? [{ url: article.image, alt: article.imageAlt ?? article.title }] : cmsArticle?.ogImage ? [{ url: cmsArticle.ogImage }] : undefined,
     },
     twitter: article?.image ? {
@@ -56,7 +56,7 @@ export default async function AktuelltSlugPage({ params }: { params: Promise<{ s
     description: cmsArticle.metaDescription ?? cmsArticle.excerpt,
     datePublished: cmsArticle.publishedAt,
     dateModified: cmsArticle.updatedAt,
-    mainEntityOfPage: `https://hemlakare.se/aktuellt/${cmsArticle.slug}`,
+    mainEntityOfPage: `https://xn--hemlkare-3za.se/aktuellt/${cmsArticle.slug}`,
     author: cmsArticle.authorName ? { "@type": "Person", name: cmsArticle.authorName } : undefined,
     reviewedBy: cmsArticle.reviewerName ? { "@type": "Person", name: cmsArticle.reviewerName } : undefined,
   } : getLegacyArticleSchema(legacyArticle);
@@ -298,8 +298,8 @@ function getLegacyArticleSchema(article?: Article) {
     description: article.metaDescription ?? article.excerpt,
     datePublished: article.publishedAtIso ?? article.date,
     dateModified: article.updatedAtIso ?? article.publishedAtIso ?? article.date,
-    mainEntityOfPage: `https://hemlakare.se/aktuellt/${article.slug}`,
-    image: `https://hemlakare.se${article.image}`,
+    mainEntityOfPage: `https://xn--hemlkare-3za.se/aktuellt/${article.slug}`,
+    image: `https://xn--hemlkare-3za.se${article.image}`,
     author: article.authorName ? { "@type": "Organization", name: article.authorName } : undefined,
     reviewedBy: article.reviewerName ? { "@type": "Organization", name: article.reviewerName } : undefined,
     publisher: { "@type": "Organization", name: "Hemläkare.se" },

@@ -22,7 +22,7 @@ export async function POST() {
       tag: article.tag,
       metaTitle: article.title,
       metaDescription: article.excerpt,
-      canonicalUrl: `https://hemlakare.se/aktuellt/${article.slug}`,
+      canonicalUrl: `https://xn--hemlkare-3za.se/aktuellt/${article.slug}`,
       ogImage: article.image,
     }));
     const rows = await sql.query(
