@@ -43,7 +43,7 @@ export default function Hero() {
         {/* Copy */}
         <div className="flex flex-col gap-3 sm:gap-4 lg:col-start-1">
           <h1 className="text-[2.45rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.06] sm:leading-[1.1] tracking-tight text-gray-900">
-            Privat vård –<br />
+            Privat VÅRD –<br />
             <span
               key={rotatingWords[wordIndex]}
               className="rotate-word bg-clip-text text-transparent"
