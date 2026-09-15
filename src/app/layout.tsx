@@ -5,6 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://xn--hemlkare-3za.se"),
+  applicationName: "Hemläkare",
   icons: {
     icon: "/icon.svg",
   },
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   },
   description: "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
   openGraph: {
-    siteName: "Hemläkare.se",
+    siteName: "Hemläkare",
     locale: "sv_SE",
     type: "website",
     title: "Hemläkare.se — Din läkare, på dina villkor",
