@@ -54,7 +54,7 @@ export type ArticleSource = {
   url: string;
 };
 
-export const articles: Article[] = [
+const allArticles: Article[] = [
   {
     slug: "krupp-barn-symtom",
     title: "Krupp hos barn – symtom, egenvård och när du söker vård",
@@ -2901,10 +2901,18 @@ const monthMap: Record<string, number> = {
 };
 
 function parseDate(date: string): Date {
-  const [month, day, year] = date.replace(",", "").split(" ");
+  const parts = date.replace(",", "").split(" ");
+  const [month, day, year] = monthMap[parts[0]] !== undefined
+    ? [parts[0], parts[1], parts[2]]
+    : [parts[1], parts[0], parts[2]];
   return new Date(Number(year), monthMap[month], Number(day));
 }
 
-articles.sort((a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime());
+allArticles.sort((a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime());
+
+// Keep only the quality-reviewed publishing window. Older legacy articles remain
+// in this source file for audit/history but are not publicly routable or indexed.
+const publicationCutoff = new Date(2026, 3, 8);
+export const articles = allArticles.filter((article) => parseDate(article.date) > publicationCutoff);
 
 export const articlesBySlug = Object.fromEntries(articles.map((a) => [a.slug, a]));

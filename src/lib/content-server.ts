@@ -1,5 +1,7 @@
-import { getSql } from "@/lib/db";
 import type { ContentItem, ContentMetric, ContentSource, ContentStatus } from "@/lib/content-types";
+import { getSql } from "@/lib/db";
+
+const MIN_PUBLISHED_AT = "2026-04-09";
 
 type Row = Record<string, unknown>;
 
@@ -157,7 +159,7 @@ async function queryContentBySlug(slug: string) {
     left join lateral (
       select * from content_metrics m where m.content_id = c.id order by m.metric_date desc limit 1
     ) metrics on true
-    where c.slug = $1 and c.status = 'published'
+    where c.slug = $1 and c.status = 'published' and c.published_at >= date '${MIN_PUBLISHED_AT}'
     limit 1
   `, [slug]);
   if (!rows[0]) return null;
@@ -166,7 +168,10 @@ async function queryContentBySlug(slug: string) {
 }
 
 export async function queryPublishedContent() {
-  const rows = await queryContentItems("published");
+  const rows = (await queryContentItems("published")).filter((row) => {
+    const publishedAt = (row as Row).published_at;
+    return publishedAt && new Date(String(publishedAt)) >= new Date(`${MIN_PUBLISHED_AT}T00:00:00Z`);
+  });
   const mapped = await Promise.all(rows.map(async (row) => {
     const item = row as Row;
     const sources = await querySourcesForContent(String(item.id));
@@ -194,7 +199,7 @@ export async function getPublishedContentBySlugSafe(slug: string) {
 export async function getPublishedContentSlugsSafe() {
   try {
     const sql = getSql();
-    const rows = await sql`select slug from content_items where status = 'published' order by published_at desc`;
+    const rows = await sql`select slug from content_items where status = 'published' and published_at >= ${MIN_PUBLISHED_AT}::date order by published_at desc`;
     return rows.map((row) => String(row.slug));
   } catch {
     return [];
