@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description,
     alternates: {
-      canonical: cmsArticle?.canonicalUrl ?? `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
+      canonical: cmsArticle?.canonicalUrl?.replace("https://hemlakare.se", "https://xn--hemlkare-3za.se") ?? `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
     },
     robots: cmsArticle?.robots.includes("noindex") ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {

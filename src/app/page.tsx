@@ -8,6 +8,11 @@ import Aktuellt from "@/components/Aktuellt";
 import HurFungerar from "@/components/HurFungerar";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const structuredData = {
   "@context": "https://schema.org",

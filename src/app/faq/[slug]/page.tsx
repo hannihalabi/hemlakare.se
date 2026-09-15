@@ -40,6 +40,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = articles[slug];
   return {
     title: article ? `${article.title} — Hemläkare.se` : "FAQ — Hemläkare.se",
+    alternates: {
+      canonical: `/faq/${slug}`,
+    },
+    openGraph: {
+      url: `https://xn--hemlkare-3za.se/faq/${slug}`,
+    },
   };
 }
 

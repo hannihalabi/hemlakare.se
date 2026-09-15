@@ -6,6 +6,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Patientavgifter",
   description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
+  alternates: { canonical: "/patientavgifter" },
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
     description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",

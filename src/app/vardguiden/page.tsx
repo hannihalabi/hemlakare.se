@@ -7,6 +7,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Vårdguiden",
   description: "Hitta information om olika sjukdomar, organ och åkommor. Din guide till bättre hälsa med Hemläkare.se.",
+  alternates: { canonical: "/vardguiden" },
   openGraph: {
     title: "Vårdguiden — Hemläkare.se",
     description: "Hitta information om olika sjukdomar, organ och åkommor. Din guide till bättre hälsa med Hemläkare.se.",

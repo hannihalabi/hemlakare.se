@@ -8,6 +8,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Om oss",
   description: "Vi är privatfinansierad vård som sätter patienten först. Lär känna teamet och idén bakom Hemläkare.se.",
+  alternates: { canonical: "/om" },
   openGraph: {
     title: "Om oss — Hemläkare.se",
     description: "Vi är privatfinansierad vård som sätter patienten först. Lär känna teamet och idén bakom Hemläkare.se.",

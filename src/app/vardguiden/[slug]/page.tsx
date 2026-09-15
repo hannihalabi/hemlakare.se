@@ -400,6 +400,9 @@ export async function generateMetadata({ params }: Props) {
   return {
     title,
     description,
+    alternates: {
+      canonical: `/vardguiden/${slug}`,
+    },
     openGraph: {
       title: `${title} | Hemläkare.se`,
       description,

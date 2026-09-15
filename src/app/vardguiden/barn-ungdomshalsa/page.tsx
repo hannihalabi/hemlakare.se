@@ -8,6 +8,7 @@ export const metadata = {
   title: "Barn- och ungdomars hälsa — Vårdguiden",
   description:
     "Barn och ungdomars hälsa berör allt från det nyfödda barnet till tonåringen på väg in i vuxenlivet, och från barnhälsovården med förebyggande hälsoinsatser till högspecialiserad vård.",
+  alternates: { canonical: "/vardguiden/barn-ungdomshalsa" },
   openGraph: {
     title: "Barn- och ungdomars hälsa — Vårdguiden | Hemläkare.se",
     description:

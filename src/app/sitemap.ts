@@ -14,8 +14,6 @@ const faqSlugs = [
 ];
 
 const vardguidenSlugs = [
-  "akut-vard",
-  "barn-ungdomshalsa",
   "cancer",
   "endokrina-sjukdomar",
   "hjart-karlsjukdomar",

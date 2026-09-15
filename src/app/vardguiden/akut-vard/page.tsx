@@ -8,6 +8,7 @@ export const metadata = {
   title: "Akut vård — Vårdguiden",
   description:
     "Akut vård innefattar tidig identifiering, riskvärdering, diagnostik och åtgärder utifrån symtom, tillstånd och skador som är tidskänsliga och potentiellt farliga för liv och hälsa.",
+  alternates: { canonical: "/vardguiden/akut-vard" },
   openGraph: {
     title: "Akut vård — Vårdguiden | Hemläkare.se",
     description:

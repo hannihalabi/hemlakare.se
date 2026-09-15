@@ -11,6 +11,7 @@ export const revalidate = 300;
 export const metadata = {
   title: "Aktuellt",
   description: "Nyheter, hälsoråd och information från Hemläkare.se.",
+  alternates: { canonical: "/aktuellt" },
   openGraph: {
     title: "Aktuellt — Hemläkare.se",
     description: "Nyheter, hälsoråd och information från Hemläkare.se.",

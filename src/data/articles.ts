@@ -398,15 +398,6 @@ export const articles: Article[] = [
     }
   },
   {
-    slug: "testartikel-publiceringsflode-2026-09-14",
-    title: "Testartikel: automatiserat publiceringsflöde",
-    tag: "TEST",
-    date: "september 14, 2026",
-    image: "/bilder/aktuellt-1.jpg",
-    excerpt: "Detta är en tydligt märkt testartikel som verifierar publiceringsflödet från GitHub till Hemläkare.se.",
-    body: "Detta är en testartikel utan medicinskt innehåll. Den har skapats för att verifiera att en ändring i GitHub-repots main-branch automatiskt byggs och publiceras i produktion av Vercel. Inga befintliga artiklar eller sidor har ändrats i testet.",
-  },
-  {
     slug: "vanligaste-orsakerna-januari-2026",
     title: "De vanligaste orsakerna till att svenskar sökte vård i januari 2026",
     tag: "VÅRDNYTT",
@@ -811,7 +802,7 @@ export const articles: Article[] = [
     body: "Hudens åldrande beror till 80% på yttre faktorer – framförallt UV-strålning. Kollagenproduktionen minskar med åldern, vilket ger rynkor och slapphet. Bevisade åtgärder: daglig SPF 30+, retinol (A-vitamin) på kvällen, C-vitamin serum på morgonen, hyaluronsyra för fukt och sluta röka. Socker orsakar glykering som bryter ner kollagen. Inget kräm botar åldring, men dessa hjälper. Vid oroliga hudförändringar – kontakta oss.",
   },
   {
-    slug: "migrän-behandling",
+    slug: "migran-behandling",
     title: "Migrän – orsaker, triggers och effektiv behandling",
     tag: "NEUROLOGI",
     date: "februari 12, 2026",
@@ -1320,7 +1311,7 @@ export const articles: Article[] = [
     body: "Livsmedel som bevisats sänka LDL-kolesterol: havregryn (betaglukan), nötter (valnötter, mandel), feta fiskar (lax, makrill), olivolja, avokado, bönor och linser, sojaprodukter och växtsterolin-berikade margariner. Undvik smör, kokosfett, chark och fet mejeriprodukter. En omstrukturering av kosten kan ge märkbara resultat på 6–8 veckor. Kombinera med motion för bäst effekt.",
   },
   {
-    slug: "sköldkörteln-symtom",
+    slug: "skoldkorteln-symtom",
     title: "Sköldkörtelsjukdomar – symtom du inte ska ignorera",
     tag: "HORMONER",
     date: "december 18, 2025",
@@ -1984,7 +1975,7 @@ export const articles: Article[] = [
     body: "Alzheimers är den vanligaste demensformen och drabbar 100 000 svenskar. Tidiga tecken: glömmer nyligen inlärda saker (inte gamla minnen), svårt att hitta rätt ord, förlorar saker, försämrat omdöme och drar sig undan socialt. Normalt åldrande: glömmer namn men minns senare, tappar saker men hittar dem. Det finns idag bromsmediciner och stöd. Tidig utredning via oss ger bäst förutsättningar.",
   },
   {
-    slug: "sår-som-inte-laker",
+    slug: "sar-som-inte-laker",
     title: "Sår som inte läker – möjliga orsaker och när du ska söka vård",
     tag: "HUD",
     date: "december 12, 2023",
@@ -2380,7 +2371,7 @@ export const articles: Article[] = [
     body: "DASH (Dietary Approaches to Stop Hypertension) är kostmönstret med starkast evidens för blodtryckssänkning. Principerna: rikligt med frukt, grönsaker, fullkorn och mejeriprodukter med låg fetthalt. Begränsa: rött kött, socker, mättat fett och framförallt salt (under 5–6 g/dag). Kalium (bananer, potatis, avokado) motverkar saltets blodtryckshöjande effekt. Kombinera med rörelse för optimal effekt.",
   },
   {
-    slug: "njurbäckeninflammation",
+    slug: "njurbackeninflammation",
     title: "Njurbäckeninflammation – symtom och varför det är allvarligare än UVI",
     tag: "UROLOGI",
     date: "april 30, 2020",
@@ -2398,7 +2389,7 @@ export const articles: Article[] = [
     body: "Hypoglykemi definieras som blodsocker under 4 mmol/L. Symtom: darrningar, svettningar, hjärtklappning, hunger, yrsel, förvirring och i svåra fall medvetslöshet. Hos diabetiker: för mycket insulin, hoppat måltid eller ovanlig träning. Hos icke-diabetiker: reaktiv hypoglykemi efter socker, alkohol på tom mage, leversjukdom. Akutbehandling: 15g snabba kolhydrater (3 druvsockertabletter, 1,5 dl juice). Upprepa om inte bättre efter 15 min.",
   },
   {
-    slug: "sömnapne",
+    slug: "somnapne",
     title: "Sömnapné – vanligare än du tror och kopplat till allvarliga sjukdomar",
     tag: "LIVSSTIL",
     date: "februari 15, 2020",
@@ -2632,7 +2623,7 @@ export const articles: Article[] = [
     body: "Överaktiv blåsa (OAB) ger plötsliga, svårkontrollerade trängningar att kissa, ofta med läckage (trängningsinkontinens). Drabbar 15% av befolkningen. Orsaker: överaktiva blåsmuskler, neurologiska tillstånd, östrogenbrist (menopaus) och urinvägsinfektion. Behandling: blåsträning (effektivt förstahandsval), bäckenbottenövningar, antikolinergika (solifenacin, tolterodin), mirabegron och i svåra fall botulinumtoxin-injektioner i blåsan.",
   },
   {
-    slug: "kortisonet-bipåverkan",
+    slug: "kortisonet-bipaverkan",
     title: "Kortison – viktigt läkemedel med biverkningar du bör känna till",
     tag: "LÄKEMEDEL",
     date: "december 15, 2017",

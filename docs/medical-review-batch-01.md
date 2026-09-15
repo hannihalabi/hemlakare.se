@@ -661,7 +661,7 @@ Nej. De flesta behöver inte tas bort. Hur en förändring ska hanteras avgörs 
 ### Interna länkar
 
 - `/aktuellt/solvax-och-solskydd` – ankare: `skydda huden mot solen`
-- `/aktuellt/sår-som-inte-laker` – ankare: `sår som inte läker`
+- `/aktuellt/sar-som-inte-laker` – ankare: `sår som inte läker`
 - `/mottagningar` – ankare: `bedömning av hudförändringar`
 
 ### Externa källor

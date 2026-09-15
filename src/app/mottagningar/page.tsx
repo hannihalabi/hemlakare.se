@@ -7,6 +7,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Mottagningar",
   description: "Hemläkare.se har fysiska mottagningar i Stockholm och Göteborg samt digitala mottagningar tillgängliga över hela Sverige.",
+  alternates: { canonical: "/mottagningar" },
   openGraph: {
     title: "Mottagningar — Hemläkare.se",
     description: "Hemläkare.se har fysiska mottagningar i Stockholm och Göteborg samt digitala mottagningar tillgängliga över hela Sverige.",

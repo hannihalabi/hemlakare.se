@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Frågor & svar",
   description: "Svar på vanliga frågor om Hemläkare.se — kostnader, listning, bokning och hur vården fungerar.",
+  alternates: { canonical: "/faq" },
   openGraph: {
     title: "Frågor & svar — Hemläkare.se",
     description: "Svar på vanliga frågor om Hemläkare.se — kostnader, listning, bokning och hur vården fungerar.",

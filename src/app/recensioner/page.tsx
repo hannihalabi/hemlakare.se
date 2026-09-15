@@ -5,6 +5,7 @@ import ChatWidget from "@/components/ChatWidget";
 export const metadata = {
   title: "Recensioner",
   description: "Vad våra patienter säger om Hemläkare.se. Läs recensioner från Google, Vården.se och Trustpilot.",
+  alternates: { canonical: "/recensioner" },
   openGraph: {
     title: "Recensioner — Hemläkare.se",
     description: "Vad våra patienter säger om Hemläkare.se. Läs recensioner från Google, Vården.se och Trustpilot.",
