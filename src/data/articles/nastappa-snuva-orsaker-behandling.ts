@@ -24,62 +24,13 @@ const article: Article = {
   ],
   body: "Nästäppa och snuva är mycket vanligt. Näsans slemhinna kan svullna och bilda mer sekret när den reagerar på virus, allergen eller andra irritanter. Vid en vanlig förkylning kommer ofta snuva eller nästäppa tillsammans med halsont, hosta och trötthet. Vid allergi är klåda i näsan och ögonen, nysningar och vattnig snuva typiskt. Det finns också personer som får återkommande nästäppa utan infektion eller allergi. Då kan det handla om vasomotorisk rinit. Eftersom behandlingen skiljer sig åt är det klokt att utgå från mönstret i symtomen och hur länge de har funnits.",
   sections: [
-    {
-      id: "vanliga-orsaker",
-      title: "Vanliga orsaker till nästäppa och snuva",
-      body: [
-        "Förkylning orsakas nästan alltid av virus och påverkar framför allt de övre luftvägarna. Slemhinnan i näsan blir svullen och bildar mer slem. För vuxna är snuva eller nästäppa, halsont, hosta och trötthet vanliga symtom. Feber kan förekomma men är ofta inte hög.",
-        "Allergisk rinit ger ofta nysningar, vattnig snuva, nästäppa och klåda. Besvären kan vara säsongsbundna, till exempel vid pollenallergi, eller finnas under större delar av året vid exempelvis pälsdjurs- eller kvalsterallergi. Vasomotorisk rinit ger liknande nässymtom men utan infektion eller allergi och kan utlösas av starka lukter, alkohol, torr luft eller temperaturväxlingar."
-      ]
-    },
-    {
-      id: "farg-pa-snoret",
-      title: "Vad betyder gult eller grönt snor?",
-      body: [
-        "Vid en förkylning kan snoret ändra färg och bli tjockare under sjukdomsförloppet. Gult eller grönt snor är därför inte ett säkert tecken på en bakterieinfektion och betyder inte i sig att antibiotika behövs.",
-        "Antibiotika hjälper inte mot vanlig förkylning eftersom förkylning nästan alltid orsakas av virus. Bedömningen behöver i stället utgå från hela symtombilden, till exempel hur länge du varit sjuk, om feber tillkommer eller återkommer och om du får tydlig värk från bihålor, öron eller andra delar av luftvägarna."
-      ]
-    },
-    {
-      id: "egenvard",
-      title: "Egenvård som kan lindra nästäppa",
-      body: [
-        "Koksaltlösning i form av nässpray, näsdroppar eller nässköljning kan användas för att fukta slemhinnan och göra det lättare att få bort segt sekret. Vid förkylning går besvären vanligen över av sig själva och behandlingen syftar främst till att lindra symtomen.",
-        "Om nästäppan stör sömnen kan det också kännas lättare att vila med huvudet något högre. Undvik tobaksrök och andra tydliga irritanter om de förvärrar besvären. Vid misstänkt allergi är det mer effektivt att behandla själva allergin än att enbart försöka öppna näsan tillfälligt."
-      ]
-    },
-    {
-      id: "nasspray",
-      title: "Avsvällande nässpray – använd kortvarigt",
-      body: [
-        "Avsvällande nässpray kan ge snabb lindring vid nästäppa, men den ska användas enligt doseringen och tidsgränsen i produktinformationen. Läkemedelsverket varnar för att för lång användning kan göra nästäppan värre när behandlingen avslutas. Det kan leda till att man fortsätter använda sprayen och hamnar i en ond cirkel.",
-        "Koksalt är ett alternativ som kan användas utan samma risk för läkemedelsutlöst rebound-nästäppa. Om du behöver avsvällande nässpray ofta eller under längre tid än rekommenderat bör orsaken till nästäppan bedömas i stället för att behandlingen bara fortsätter. Receptfria läkemedel kan ha risker och ska användas enligt bipacksedel och förpackning."
-      ]
-    },
-    {
-      id: "forkylning-allergi",
-      title: "Förkylning eller allergi – vad talar för vilket?",
-      body: [
-        "Förkylning utvecklas ofta under något dygn och kan ge halsont, hosta och sjukdomskänsla tillsammans med nässymtom. Allergi ger oftare tydliga nysningar, klåda i näsan eller ögonen och tunn, vattnig snuva. Allergiska besvär kan dessutom återkomma i samma miljö eller under samma säsong.",
-        "Mönstret ger ledtrådar men är inte alltid tillräckligt för att avgöra orsaken. Om du har återkommande besvär och receptfri behandling inte hjälper kan en vårdcentral bedöma om det finns skäl att utreda allergi eller annan rinit."
-      ]
-    },
-    {
-      id: "nar-soka-vard",
-      title: "När bör du söka vård?",
-      body: [
-        "Vid en vanlig förkylning behöver de flesta vuxna inte söka vård. Enligt 1177 bör du kontakta vårdcentral om febern varar mer än fyra dygn, om febern kommer tillbaka efter ett par feberfria dagar eller om du får fler symtom från öron, hals, luftrör eller bihålor.",
-        "Kontakta också vårdcentral om du har återkommande nästäppa, rinnsnuva och nysningar som inte blir bättre trots receptfri nässpray. Blodig snuva eller snuva enbart från ena näsborren bör bedömas. Ring 1177 om du behöver hjälp att bedöma symtom eller välja vårdnivå. Vid svåra andningsbesvär eller annat livshotande tillstånd ska 112 kontaktas."
-      ]
-    },
-    {
-      id: "vad-varden-gor",
-      title: "Så kan besvären utredas i vården",
-      body: [
-        "Vid långvariga eller återkommande besvär börjar bedömningen ofta med frågor om när symtomen kommer, om de är ensidiga eller dubbelsidiga och om du samtidigt har klåda, nysningar, feber, smärta eller ögonbesvär. Läkaren kan undersöka näsan och svalget och bedöma om symtomen passar bäst med infektion, allergi eller annan rinit.",
-        "Vid misstänkt allergi kan ytterligare utredning ibland bli aktuell. Ensidiga eller blodiga symtom behöver särskild uppmärksamhet eftersom de inte följer det vanliga mönstret för en okomplicerad förkylning."
-      ]
-    }
+    { id: "vanliga-orsaker", title: "Vanliga orsaker till nästäppa och snuva", body: ["Förkylning orsakas nästan alltid av virus och påverkar framför allt de övre luftvägarna. Slemhinnan i näsan blir svullen och bildar mer slem. För vuxna är snuva eller nästäppa, halsont, hosta och trötthet vanliga symtom. Feber kan förekomma men är ofta inte hög.", "Allergisk rinit ger ofta nysningar, vattnig snuva, nästäppa och klåda. Besvären kan vara säsongsbundna, till exempel vid pollenallergi, eller finnas under större delar av året vid exempelvis pälsdjurs- eller kvalsterallergi. Vasomotorisk rinit ger liknande nässymtom men utan infektion eller allergi och kan utlösas av starka lukter, alkohol, torr luft eller temperaturväxlingar."] },
+    { id: "farg-pa-snoret", title: "Vad betyder gult eller grönt snor?", body: ["Vid en förkylning kan snoret ändra färg och bli tjockare under sjukdomsförloppet. Gult eller grönt snor är därför inte ett säkert tecken på en bakterieinfektion och betyder inte i sig att antibiotika behövs.", "Antibiotika hjälper inte mot vanlig förkylning eftersom förkylning nästan alltid orsakas av virus. Bedömningen behöver i stället utgå från hela symtombilden, till exempel hur länge du varit sjuk, om feber tillkommer eller återkommer och om du får tydlig värk från bihålor, öron eller andra delar av luftvägarna."] },
+    { id: "egenvard", title: "Egenvård som kan lindra nästäppa", body: ["Koksaltlösning i form av nässpray, näsdroppar eller nässköljning kan användas för att fukta slemhinnan och göra det lättare att få bort segt sekret. Vid förkylning går besvären vanligen över av sig själva och behandlingen syftar främst till att lindra symtomen.", "Om nästäppan stör sömnen kan det också kännas lättare att vila med huvudet något högre. Undvik tobaksrök och andra tydliga irritanter om de förvärrar besvären. Vid misstänkt allergi är det mer effektivt att behandla själva allergin än att enbart försöka öppna näsan tillfälligt."] },
+    { id: "nasspray", title: "Avsvällande nässpray – använd kortvarigt", body: ["Avsvällande nässpray kan ge snabb lindring vid nästäppa, men den ska användas enligt doseringen och tidsgränsen i produktinformationen. Läkemedelsverket varnar för att för lång användning kan göra nästäppan värre när behandlingen avslutas. Det kan leda till att man fortsätter använda sprayen och hamnar i en ond cirkel.", "Koksalt är ett alternativ som kan användas utan samma risk för läkemedelsutlöst rebound-nästäppa. Om du behöver avsvällande nässpray ofta eller under längre tid än rekommenderat bör orsaken till nästäppan bedömas i stället för att behandlingen bara fortsätter. Receptfria läkemedel kan ha risker och ska användas enligt bipacksedel och förpackning."] },
+    { id: "forkylning-allergi", title: "Förkylning eller allergi – vad talar för vilket?", body: ["Förkylning utvecklas ofta under något dygn och kan ge halsont, hosta och sjukdomskänsla tillsammans med nässymtom. Allergi ger oftare tydliga nysningar, klåda i näsan eller ögonen och tunn, vattnig snuva. Allergiska besvär kan dessutom återkomma i samma miljö eller under samma säsong.", "Mönstret ger ledtrådar men är inte alltid tillräckligt för att avgöra orsaken. Om du har återkommande besvär och receptfri behandling inte hjälper kan en vårdcentral bedöma om det finns skäl att utreda allergi eller annan rinit."] },
+    { id: "nar-soka-vard", title: "När bör du söka vård?", body: ["Vid en vanlig förkylning behöver de flesta vuxna inte söka vård. Enligt 1177 bör du kontakta vårdcentral om febern varar mer än fyra dygn, om febern kommer tillbaka efter ett par feberfria dagar eller om du får fler symtom från öron, hals, luftrör eller bihålor.", "Kontakta också vårdcentral om du har återkommande nästäppa, rinnsnuva och nysningar som inte blir bättre trots receptfri nässpray. Blodig snuva eller snuva enbart från ena näsborren bör bedömas. Ring 1177 om du behöver hjälp att bedöma symtom eller välja vårdnivå. Vid svåra andningsbesvär eller annat livshotande tillstånd ska 112 kontaktas."] },
+    { id: "vad-varden-gor", title: "Så kan besvären utredas i vården", body: ["Vid långvariga eller återkommande besvär börjar bedömningen ofta med frågor om när symtomen kommer, om de är ensidiga eller dubbelsidiga och om du samtidigt har klåda, nysningar, feber, smärta eller ögonbesvär. Läkaren kan undersöka näsan och svalget och bedöma om symtomen passar bäst med infektion, allergi eller annan rinit.", "Vid misstänkt allergi kan ytterligare utredning ibland bli aktuell. Ensidiga eller blodiga symtom behöver särskild uppmärksamhet eftersom de inte följer det vanliga mönstret för en okomplicerad förkylning."] }
   ],
   faq: [
     { question: "Hur länge kan nästäppa vid förkylning sitta i?", answer: "Förkylningen går oftast över av sig själv, men hosta och vissa luftvägssymtom kan dröja kvar. Sök vård om du försämras, får feber i mer än fyra dygn eller får nya symtom från exempelvis öron eller bihålor." },
@@ -97,8 +48,8 @@ const article: Article = {
   cta: {
     title: "Besvär som inte går över?",
     body: "Återkommande eller långvarig nästäppa kan behöva bedömas för att hitta rätt orsak och behandling.",
-    buttonText: "Läs om våra tjänster",
-    buttonHref: "/tjanster"
+    label: "Läs om våra tjänster",
+    href: "/tjanster"
   }
 };
 
