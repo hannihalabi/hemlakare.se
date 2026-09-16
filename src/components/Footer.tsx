@@ -5,6 +5,7 @@ const quickLinks = [
   ["Frågor & svar", "/faq"],
   ["Recensioner", "/recensioner"],
   ["Patientavgifter", "/patientavgifter"],
+  ["Hälsokontroller", "/patientavgifter#halsokontroller"],
   ["Här finns vi", "/mottagningar"],
   ["Vårdguiden", "/vardguiden"],
   ["Om företaget", "/om"],
@@ -23,12 +24,12 @@ const kontakt = [
 ];
 
 const mottagningar = [
-  ["Göteborg", "/mottagningar"],
   ["Äldremottagning", "/mottagningar#specialmottagningar"],
   ["Stockholm", "/mottagningar"],
   ["Prickmottagning", "/mottagningar#specialmottagningar"],
   ["BVC", "/mottagningar#specialmottagningar"],
   ["Hembesök", "/mottagningar#specialmottagningar"],
+  ["Vaccination hemma", "/mottagningar#vaccination-hemma"],
   ["Ungas Psykiska Hälsa", "/mottagningar#specialmottagningar"],
 ];
 

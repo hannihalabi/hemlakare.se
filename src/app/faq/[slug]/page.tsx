@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/site";
 const articles: Record<string, { title: string; body: string }> = {
   "vad-kostar-det": {
     title: "Vad kostar det?",
-    body: "Hemläkare.se är privatfinansierad vård med fast pris. Läkarhjälp kostar 995 kr, oavsett om den sker digitalt eller på mottagning. Frikort och högkostnadsskydd gäller inte hos oss — men du slipper vårdköer och får hjälp samma dag.",
+    body: "Hemläkare.se är privatfinansierad vård. Just nu kostar läkarhjälp 995 kr i lanseringspris, jämfört med ordinarie pris 1 995 kr. Erbjudandet gäller under en begränsad introduktionsperiod. Frikort och högkostnadsskydd gäller inte hos oss.",
   },
   "lista-mig": {
     title: "Behöver jag lista mig?",
@@ -16,7 +16,7 @@ const articles: Record<string, { title: string; body: string }> = {
   },
   "var-finns-ni": {
     title: "Var finns ni?",
-    body: "Vi har fysiska mottagningar i Stockholm, Göteborg och Solna. Du kan också få vård digitalt oavsett var i Sverige du befinner dig.",
+    body: "Vi finns just nu enbart i Stockholm. Här erbjuder vi mottagningsbesök, digital vård, hembesök och vaccination hemma.",
   },
   "hur-fungerar-det": {
     title: "Hur fungerar det?",

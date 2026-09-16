@@ -7,7 +7,7 @@ import Link from "next/link";
 const bullets = [
   "Endast svenskutbildade läkare",
   "Vård samma dag - ingen väntan",
-  "Vi ger alla möjlighet till privatfinansierad vård",
+  "Mottagning och hembesök i Stockholm",
 ];
 
 const rotatingWords = ["utan kö", "snabb hjälp", "mindre krångel"];
@@ -33,7 +33,7 @@ export default function Hero() {
       return;
     }
     const inStockholm =
-      q.includes("stockholm") || /(^|\D)1\d{2}\s?\d{2}(\D|$)/.test(q);
+      q.includes("stockholm") || /(^|\D)1(?:0|1|2|6)\d\s?\d{2}(\D|$)/.test(q);
     setResult(inStockholm ? "yes" : "no");
   }
 
@@ -63,16 +63,36 @@ export default function Hero() {
             ))}
           </ul>
 
-          <p className="text-[0.9rem] text-gray-500 mt-1">
-            Fast pris från 995 kr — slipp vårdköer, remisskrångel och väntrum
-          </p>
+          <div className="mt-2 w-fit rounded-2xl border-2 border-[#E72E8A]/25 bg-white px-5 py-4 shadow-[0_12px_30px_-18px_rgba(216,27,125,0.65)]">
+            <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.12em] text-[#D81B7D]">
+              Lanseringspris · begränsad tid
+            </p>
+            <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="text-[2rem] font-black tracking-tight text-gray-900">995 kr</span>
+              <span className="text-[0.88rem] text-gray-500">
+                ord. <del className="decoration-2">1 995 kr</del>
+              </span>
+              <span className="rounded-full bg-green-100 px-2.5 py-1 text-[0.72rem] font-bold text-green-800">
+                Spara 1 000 kr
+              </span>
+            </div>
+            <p className="mt-1 text-[0.8rem] text-gray-500">
+              Läkarhjälp digitalt eller på mottagning
+            </p>
+            <Link
+              href="/mottagningar"
+              className="mt-3 inline-flex text-[0.86rem] font-bold text-[#D81B7D] underline decoration-[#E72E8A]/30 underline-offset-4 hover:decoration-[#E72E8A]"
+            >
+              Boka till lanseringspris →
+            </Link>
+          </div>
         </div>
 
         <div className="relative flex items-center justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="w-full aspect-[16/11] lg:aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
             <Image
               src="/landningspage/hero-1.png"
-              alt="Hemläkare.se erbjuder privat vård online och på mottagning."
+              alt="Hemläkare.se erbjuder privat vård hemma, digitalt och på mottagning i Stockholm."
               fill
               preload
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -106,7 +126,7 @@ export default function Hero() {
                 autoComplete="street-address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="Skriv en adress, tex. Klittergatan 3, 123 45 Stockholm"
+                placeholder="Skriv en adress eller ett postnummer i Stockholm"
                 className="flex-1 px-4 py-3.5 rounded-2xl border-2 border-[#E72E8A] bg-white text-[0.95rem] text-gray-800 placeholder:text-gray-400 outline-none focus:ring-4 focus:ring-pink-100 transition-all"
               />
               <button
@@ -123,7 +143,7 @@ export default function Hero() {
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
                 <span>
-                  Ja, vi finns i ditt område!{" "}
+                  Ja, vi finns i Stockholmsområdet!{" "}
                   <Link href="/mottagningar" className="font-semibold underline underline-offset-2">
                     Boka en tid →
                   </Link>
@@ -133,29 +153,29 @@ export default function Hero() {
 
             {result === "no" && (
               <div role="status" aria-live="polite" className="rounded-2xl bg-white border border-gray-200 px-4 py-3 text-[0.92rem] text-gray-600">
-                Vi har ingen fysisk mottagning där ännu — men du kan få{" "}
+                Vi finns just nu enbart i Stockholm. Läs mer om vårt{" "}
                 <Link
                   href="/mottagningar"
                   className="font-semibold underline underline-offset-2"
                   style={{ color: "#E72E8A" }}
                 >
-                  digital vård i hela Sverige
+                  område och våra tjänster
                 </Link>
-                .
+                {"."}
               </div>
             )}
           </div>
 
           <p className="text-[0.9rem] text-gray-600">
-            Vi har också en{" "}
+            Vi erbjuder mottagningsbesök, hembesök och vaccination hemma i{" "}
             <Link
               href="/mottagningar"
               className="font-semibold underline decoration-[#E72E8A]/40 underline-offset-2 hover:decoration-[#E72E8A] transition-colors"
               style={{ color: "#E72E8A" }}
             >
-              fysisk mottagning i Stockholm
-            </Link>{" "}
-            om du hellre vill träffa oss på plats.
+              Stockholm
+            </Link>
+            {"."}
           </p>
         </div>
       </div>

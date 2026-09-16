@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Patientavgifter", href: "/patientavgifter" },
+  { label: "Priser & paket", href: "/patientavgifter" },
   { label: "Om oss", href: "/om" },
   { label: "Mottagningar", href: "/mottagningar" },
   { label: "Frågor & svar", href: "/faq" },

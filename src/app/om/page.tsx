@@ -101,11 +101,9 @@ const team = [
 const milestones = [
   { year: "2019", text: "Hemläkare.se grundas i Stockholm med idén om vård utan väntrum." },
   { year: "2020", text: "Första digitala konsultationen genomförd. Onlinebokning lanseras." },
-  { year: "2021", text: "Utökar till Göteborg. 5 000 listade patienter." },
   { year: "2022", text: "Prickmottagningen lanseras – digital hudvård med läkarbedömning samma dag." },
   { year: "2023", text: "Mottagningen för Ungas Psykiska Hälsa öppnar. 20 000 patienter." },
   { year: "2024", text: "Blodtrycksmätare kopplad till din läkare – proaktiv hälsoövervakning i hemmet." },
-  { year: "2025", text: "Expansion till fler städer. Nominerade till Årets Healthtech-bolag." },
   { year: "2026", text: "Idag. Vi fortsätter att växa – med patienten i centrum, alltid." },
 ];
 
@@ -272,7 +270,7 @@ export default function OmOssPage() {
               ))}
             </div>
             <p className="text-center text-[0.85rem] text-gray-400">
-              + ett team av läkare, sköterskor, psykologer och hälsopedagoger runt om i Sverige
+              + ett team av läkare, sköterskor, psykologer och hälsopedagoger i Stockholm
             </p>
           </div>
         </section>

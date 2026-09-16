@@ -2,15 +2,16 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Link from "next/link";
+import { healthPackages } from "@/data/healthPackages";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
-  title: "Patientavgifter",
-  description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
+  title: "Priser och hälsokontroller",
+  description: "Se Hemläkare.se:s lanseringspris, patientavgifter och tre paket för hälsokontroll i Stockholm.",
   alternates: { canonical: "/patientavgifter" },
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
-    description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
+    description: "Se Hemläkare.se:s lanseringspris, patientavgifter och tre paket för hälsokontroll i Stockholm.",
     url: `${SITE_URL}/patientavgifter`,
   },
 };
@@ -32,6 +33,10 @@ const faqs = [
     q: "Varför kostar det mer än en vanlig vårdcentral?",
     a: "Vi finansieras inte av skattemedel eller region. Det innebär att vi kan erbjuda kortare väntetider, en fast läkarkontakt, hembesök och digital tillgänglighet – utan de begränsningar som offentlig vård ofta innebär.",
   },
+  {
+    q: "Vilka hälsokontroller erbjuder ni?",
+    a: "Vi erbjuder tre paket: Hälsokontroll Light, Medium och Premium. Kontakta oss för aktuellt innehåll och pris för respektive nivå.",
+  },
 ];
 
 const included = [
@@ -41,6 +46,19 @@ const included = [
   "Digitala konsultationer via text, bild och video",
   "Proaktiv uppföljning av din hälsa",
   "Ingen lång telefonkö eller väntrum",
+];
+
+const fees = [
+  {
+    type: "Läkarhjälp – digitalt eller på mottagning",
+    price: "995 kr",
+    originalPrice: "1 995 kr",
+    desc: "Lanseringspris under begränsad tid",
+  },
+  { type: "Hembesök", price: "Från 1 995 kr", desc: "Läkaren kommer hem till dig i Stockholm" },
+  { type: "Vaccination hemma", price: "På förfrågan", desc: "Priset beror på vaccin och område" },
+  { type: "Recept och remiss", price: "Ingår", desc: "Vid konsultation – ingen extra avgift" },
+  { type: "Provtagning", price: "Från 195 kr", desc: "Beroende på typ av prov" },
 ];
 
 export default function PatientavgifterPage() {
@@ -71,6 +89,31 @@ export default function PatientavgifterPage() {
               Det innebär att vi inte begränsas av offentliga kösystem, scheman eller besparingar –
               men att du betalar för vården direkt ur egen ficka eller via privat sjukvårdsförsäkring.
             </p>
+          </div>
+        </section>
+
+        <section className="bg-white px-6 py-12">
+          <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border-2 border-[#E72E8A]/25 bg-[#fdf5f9] shadow-[0_22px_55px_-32px_rgba(216,27,125,0.7)]">
+            <div className="grid items-center gap-7 p-7 sm:p-10 md:grid-cols-[1fr_auto]">
+              <div>
+                <span className="inline-flex rounded-full bg-[#E72E8A] px-3.5 py-1.5 text-[0.72rem] font-extrabold uppercase tracking-[0.12em] text-white">
+                  Lanseringspris · begränsad tid
+                </span>
+                <h2 className="mt-4 text-[1.7rem] font-bold text-gray-900">
+                  Läkarhjälp för mindre än halva ordinarie priset
+                </h2>
+                <p className="mt-2 max-w-xl text-[0.92rem] leading-relaxed text-gray-600">
+                  Boka digitalt eller på vår mottagning i Stockholm till vårt introduktionspris.
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white px-6 py-5 text-center shadow-sm">
+                <p className="text-[0.82rem] text-gray-500">
+                  Ordinarie pris <del className="font-semibold decoration-2">1 995 kr</del>
+                </p>
+                <p className="mt-1 text-[2.5rem] font-black tracking-tight text-[#D81B7D]">995 kr</p>
+                <p className="mt-1 text-[0.78rem] font-bold text-green-700">Du sparar 1 000 kr</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -145,12 +188,7 @@ export default function PatientavgifterPage() {
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              {[
-                { type: "Läkarhjälp – digitalt eller på mottagning", price: "995 kr", desc: "Fast pris, samma dag – text, bild, video eller fysiskt besök" },
-                { type: "Hembesök", price: "Från 1 995 kr", desc: "Läkaren kommer hem till dig" },
-                { type: "Recept och remiss", price: "Ingår", desc: "Vid konsultation – ingen extra avgift" },
-                { type: "Provtagning", price: "Från 195 kr", desc: "Beroende på typ av prov" },
-              ].map((item) => (
+              {fees.map((item) => (
                 <div
                   key={item.type}
                   className="flex items-start justify-between gap-4 p-5 rounded-2xl border border-gray-100 bg-[#fdf5f9]"
@@ -160,18 +198,57 @@ export default function PatientavgifterPage() {
                     <span className="text-[0.82rem] text-gray-500">{item.desc}</span>
                   </div>
                   <span
-                    className="text-[1rem] font-bold shrink-0"
+                    className="flex shrink-0 flex-col items-end text-[1rem] font-bold"
                     style={{ color: "#E72E8A" }}
                   >
                     {item.price}
+                    {item.originalPrice && (
+                      <del className="text-[0.78rem] font-medium text-gray-400 decoration-2">
+                        {item.originalPrice}
+                      </del>
+                    )}
                   </span>
                 </div>
               ))}
             </div>
 
             <p className="text-[0.82rem] text-gray-400 text-center">
-              * Läkarhjälp har fast pris (995 kr). Övriga tjänster kan variera beroende på omfattning. Kontakta oss för exakt prissättning.
+              * Lanseringspriset 995 kr gäller läkarhjälp under en begränsad introduktionsperiod. Ordinarie pris är 1 995 kr. Övriga tjänster kan variera beroende på omfattning.
             </p>
+          </div>
+        </section>
+
+        <section id="halsokontroller" className="scroll-mt-24 bg-[#fdf5f9] px-6 py-16">
+          <div className="mx-auto flex max-w-6xl flex-col gap-10">
+            <div className="mx-auto flex max-w-2xl flex-col gap-3 text-center">
+              <span className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-[#D81B7D]">
+                Tre nivåer
+              </span>
+              <h2 className="text-[1.9rem] font-bold text-gray-900">Hälsokontroller</h2>
+              <p className="text-[0.95rem] leading-relaxed text-gray-600">
+                Välj Light, Medium eller Premium beroende på hur omfattande genomgång du önskar. Kontakta oss för aktuellt innehåll och pris.
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {healthPackages.map((healthPackage) => (
+                <article key={healthPackage.name} className="flex flex-col rounded-3xl border border-gray-100 bg-white p-7 shadow-sm">
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#D81B7D]">
+                    {healthPackage.level}
+                  </p>
+                  <h3 className="mt-3 text-[1.2rem] font-bold text-gray-900">{healthPackage.name}</h3>
+                  <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-gray-600">
+                    {healthPackage.description}
+                  </p>
+                  <a
+                    href={`mailto:info@hemlakare.se?subject=${encodeURIComponent(healthPackage.name)}`}
+                    className="btn-outline mt-6 inline-flex items-center justify-center rounded-full px-5 py-3 text-[0.88rem] font-bold"
+                  >
+                    Fråga om paketet
+                  </a>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 

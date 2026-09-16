@@ -6,6 +6,7 @@ import Lunchforelasning from "@/components/Lunchforelasning";
 import Omdomen from "@/components/Omdomen";
 import Aktuellt from "@/components/Aktuellt";
 import HurFungerar from "@/components/HurFungerar";
+import HealthPackages from "@/components/HealthPackages";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import type { Metadata } from "next";
@@ -28,10 +29,14 @@ const structuredData = {
   availableService: [
     { "@type": "MedicalTherapy", name: "Digital konsultation" },
     { "@type": "MedicalTherapy", name: "Hembesök" },
+    { "@type": "MedicalTherapy", name: "Vaccination hemma" },
+    { "@type": "MedicalTherapy", name: "Hälsokontroll Light" },
+    { "@type": "MedicalTherapy", name: "Hälsokontroll Medium" },
+    { "@type": "MedicalTherapy", name: "Hälsokontroll Premium" },
     { "@type": "MedicalTherapy", name: "Prickmottagning" },
     { "@type": "MedicalTherapy", name: "Lunchföreläsningar om ungas psykiska hälsa" },
   ],
-  areaServed: { "@type": "Country", name: "Sverige" },
+  areaServed: { "@type": "City", name: "Stockholm" },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer support",
@@ -65,6 +70,7 @@ export default function Home() {
         <Hero />
         <VarforHemlakare />
         <HurFungerar />
+        <HealthPackages />
         <Prickmottagning />
         <Lunchforelasning />
         <Omdomen />

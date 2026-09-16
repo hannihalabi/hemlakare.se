@@ -7,11 +7,11 @@ import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Mottagningar",
-  description: "Hemläkare.se har fysiska mottagningar i Stockholm och Göteborg samt digitala mottagningar tillgängliga över hela Sverige.",
+  description: "Hemläkare.se erbjuder mottagningsbesök, hembesök, vaccination hemma och digital vård i Stockholm.",
   alternates: { canonical: "/mottagningar" },
   openGraph: {
     title: "Mottagningar — Hemläkare.se",
-    description: "Hemläkare.se har fysiska mottagningar i Stockholm och Göteborg samt digitala mottagningar tillgängliga över hela Sverige.",
+    description: "Hemläkare.se erbjuder mottagningsbesök, hembesök, vaccination hemma och digital vård i Stockholm.",
     url: `${SITE_URL}/mottagningar`,
   },
 };
@@ -29,32 +29,6 @@ const locations = [
     color: "#e8d4e8",
     textColor: "#6e2e7a",
     initials: "STH",
-  },
-  {
-    city: "Göteborg",
-    address: "Avenyn 12, 411 36 Göteborg",
-    phone: "031-123 456 78",
-    hours: [
-      { day: "Måndag–fredag", time: "08:00–17:00" },
-      { day: "Lördag", time: "09:00–13:00" },
-      { day: "Söndag", time: "Stängt" },
-    ],
-    color: "#d4dde8",
-    textColor: "#2e4a7a",
-    initials: "GBG",
-  },
-  {
-    city: "Solna",
-    address: "Råsundavägen 10, 169 57 Solna",
-    phone: "08-987 654 32",
-    hours: [
-      { day: "Måndag–torsdag", time: "08:00–16:00" },
-      { day: "Fredag", time: "08:00–15:00" },
-      { day: "Lördag–söndag", time: "Stängt" },
-    ],
-    color: "#d4e8d8",
-    textColor: "#2e7a3e",
-    initials: "SOL",
   },
 ];
 
@@ -82,11 +56,25 @@ const specialties = [
   },
   {
     title: "Hembesök",
-    desc: "För sjuk för att ta dig till oss? Vi kommer till dig. Hemma, på jobbet eller var du än befinner dig.",
+    desc: "För sjuk för att ta dig till oss? Vi kommer hem till dig eller till din arbetsplats i Stockholmsområdet.",
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
         <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    ),
+  },
+  {
+    id: "vaccination-hemma",
+    title: "Vaccination hemma",
+    desc: "Boka vaccination i hemmet i Stockholm. Tillgänglighet och pris beror på vaccin, område och antal personer.",
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m14.5 4.5 5 5" />
+        <path d="m12 7 5 5" />
+        <path d="m4 15 5 5" />
+        <path d="m6.5 17.5 10-10 2 2-10 10" />
+        <path d="m3 21 3-3" />
       </svg>
     ),
   },
@@ -110,7 +98,7 @@ const specialties = [
   },
   {
     title: "Digital mottagning",
-    desc: "Tillgänglig i hela Sverige. Konsultation via text, bild och video – ofta svar inom timmar.",
+    desc: "Digital konsultation för våra patienter i Stockholm via text, bild och video – ofta svar inom timmar.",
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
@@ -131,7 +119,7 @@ export default function MottagningarPage() {
               className="px-4 py-1.5 rounded-full text-[0.75rem] font-bold text-white"
               style={{ background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)" }}
             >
-              FYSISKT OCH DIGITALT
+              FYSISKT, HEMMA OCH DIGITALT
             </span>
             <h1 className="text-[2.6rem] sm:text-[3.2rem] font-bold tracking-tight text-gray-900 leading-tight">
               Vi möter dig{" "}
@@ -143,8 +131,8 @@ export default function MottagningarPage() {
               </span>
             </h1>
             <p className="text-[1.05rem] text-gray-600 leading-relaxed max-w-2xl">
-              Hemläkare.se har fysiska mottagningar i Stockholm, Göteborg och Solna –
-              samt en digital mottagning som nås från hela Sverige, dygnet runt online.
+              Just nu finns Hemläkare.se enbart i Stockholm. Träffa oss på mottagningen,
+              digitalt eller hemma hos dig.
             </p>
           </div>
         </section>
@@ -152,11 +140,10 @@ export default function MottagningarPage() {
         <section className="py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
             <div className="flex flex-col gap-6">
-              <h2 className="text-[2rem] font-bold text-gray-900">Fysiska mottagningar</h2>
+              <h2 className="text-[2rem] font-bold text-gray-900">Mottagning i Stockholm</h2>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
-                Föredrar du ett fysiskt möte? Vi välkomnar dig till våra mottagningar i
-                Stockholm, Göteborg och Solna. Alla mottagningar är utrustade med modern
-                diagnostik och bemannade av erfarna läkare och sköterskor.
+                Föredrar du ett fysiskt möte? Vi välkomnar dig till vår mottagning i Stockholm,
+                med erfarna läkare och sköterskor.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
                 Boka tid online och välj om du vill komma in på mottagningen, ha ett
@@ -176,7 +163,7 @@ export default function MottagningarPage() {
         <section className="py-16 px-6 bg-[#f4f4f8]">
           <div className="max-w-6xl mx-auto flex flex-col gap-8">
             <h2 className="text-[1.8rem] font-bold text-gray-900 text-center">Hitta oss</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mx-auto grid w-full max-w-xl gap-6">
               {locations.map((loc) => (
                 <div key={loc.city} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
                   <div
@@ -229,7 +216,7 @@ export default function MottagningarPage() {
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {specialties.map((specialty) => (
-                <div key={specialty.title} className="bg-[#fdf5f9] rounded-2xl p-6 border border-gray-100 flex flex-col gap-4">
+                <div id={specialty.id} key={specialty.title} className="scroll-mt-24 bg-[#fdf5f9] rounded-2xl p-6 border border-gray-100 flex flex-col gap-4">
                   <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                     style={{ background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)" }}
@@ -254,12 +241,12 @@ export default function MottagningarPage() {
                 className="w-fit px-4 py-1.5 rounded-full text-[0.75rem] font-bold text-white"
                 style={{ background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)" }}
               >
-                HELA SVERIGE
+                STOCKHOLM
               </span>
-              <h2 className="text-[2rem] font-bold text-gray-900">Digital mottagning – tillgänglig var du än är</h2>
+              <h2 className="text-[2rem] font-bold text-gray-900">Digital vård för dig i Stockholm</h2>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
-                Bor du utanför Stockholm eller Göteborg? Vår digitala mottagning är öppen
-                för alla i Sverige. Du når din läkare digitalt via video eller telefon.
+                Du som finns i Stockholm kan träffa läkaren digitalt via video eller telefon,
+                när ett besök på mottagningen eller i hemmet inte behövs.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
                 Ingen lång väntelista. Ingen telefonkö. Svaret kommer ofta inom några timmar –
@@ -287,9 +274,9 @@ export default function MottagningarPage() {
 
         <section className="py-20 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
-            <h2 className="text-[1.8rem] font-bold text-gray-900">Hittar vi dig i ditt område?</h2>
+            <h2 className="text-[1.8rem] font-bold text-gray-900">Finns du i Stockholmsområdet?</h2>
             <p className="text-[0.95rem] text-gray-600">
-              Skriv in din adress på startsidan och se om vi kan erbjuda vård nära dig – fysiskt eller digitalt.
+              Skriv in din adress på startsidan och se om vi kan erbjuda mottagningsbesök, hembesök eller vaccination hemma nära dig.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link

@@ -43,7 +43,7 @@ const categories = [
     faqs: [
       {
         q: "Vad kostar det?",
-        a: "Hos Hemläkare.se gäller fast pris: läkarhjälp kostar 995 kr, oavsett om den sker digitalt eller på mottagning. Hembesök kostar mer. Se vår avgiftssida för fullständig prislista.",
+        a: "Just nu kostar läkarhjälp 995 kr i lanseringspris, jämfört med ordinarie pris 1 995 kr. Erbjudandet gäller under en begränsad introduktionsperiod. Hembesök och andra tjänster prissätts separat.",
       },
       {
         q: "Gäller mitt frikort?",
@@ -57,6 +57,10 @@ const categories = [
         q: "Kostar det något att lista sig?",
         a: "Nej, det är kostnadsfritt att lista sig hos oss. Du betalar bara när du nyttjar vård.",
       },
+      {
+        q: "Vilka hälsokontroller erbjuder ni?",
+        a: "Vi erbjuder Hälsokontroll Light, Medium och Premium. Paketen har olika omfattning. Kontakta oss eller se prissidan för aktuellt innehåll och pris.",
+      },
     ],
   },
   {
@@ -69,7 +73,11 @@ const categories = [
     faqs: [
       {
         q: "Hur fungerar ett hembesök?",
-        a: "Du bokar hembesök online och väljer en tid som passar. Läkaren eller sköterskan kommer till dig – hemma, på jobbet eller annan önskad plats – med utrustning för de vanligaste undersökningarna.",
+        a: "Du bokar hembesök online och väljer en tid som passar. Läkaren eller sköterskan kommer till dig i Stockholmsområdet – hemma eller på jobbet – med utrustning för de vanligaste undersökningarna.",
+      },
+      {
+        q: "Kan jag få vaccination hemma?",
+        a: "Ja, vi erbjuder vaccination hemma i Stockholm. Tillgänglighet och pris beror på vilket vaccin du behöver, var i området du bor och hur många som ska vaccineras.",
       },
       {
         q: "Kan jag få recept digitalt?",
@@ -95,15 +103,15 @@ const categories = [
     faqs: [
       {
         q: "Var finns ni fysiskt?",
-        a: "Vi har fysiska mottagningar i Stockholm, Göteborg och Solna. Se vår mottagningssida för adresser och öppettider.",
+        a: "Vi finns just nu enbart i Stockholm. Se vår mottagningssida för adress, öppettider och information om vårt område.",
       },
       {
-        q: "Kan jag använda er om jag bor utanför era städer?",
-        a: "Absolut. Vår digitala mottagning är tillgänglig i hela Sverige. Du når din läkare digitalt oavsett var du befinner dig.",
+        q: "Kan jag använda er om jag bor utanför Stockholm?",
+        a: "Inte ännu. Vår verksamhet är just nu begränsad till Stockholm. Vi berättar på webbplatsen när vi öppnar i fler områden.",
       },
       {
-        q: "Erbjuder ni hembesök utanför städerna?",
-        a: "Hembesök erbjuds i nuläget inom Stockholm, Göteborg och Solna. Vi utökar kontinuerligt. Kontakta oss för mer information om ditt område.",
+        q: "Var erbjuder ni hembesök?",
+        a: "Hembesök erbjuds i Stockholmsområdet. Kontakta oss för att kontrollera om din adress omfattas.",
       },
     ],
   },
