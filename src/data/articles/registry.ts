@@ -1,6 +1,7 @@
 import type { Article } from "./types";
 import allergi from "./allergi-symtom-behandling";
 import baltros from "./baltros-symtom-behandling-vaccin";
+import bihaleinflammation from "./bihaleinflammation-symtom-behandling";
 import hostblasor from "./hostblasor-barn-symtom-smitta";
 import hudcancer from "./hudcancer-kolla-leverflackar";
 import tarmhalsa from "./kost-for-bra-tarmsundhet";
@@ -13,6 +14,7 @@ import somnloshet from "./somnloshet-kronisk";
 const publishedArticles: Article[] = [
   allergi,
   baltros,
+  bihaleinflammation,
   hostblasor,
   hudcancer,
   tarmhalsa,
