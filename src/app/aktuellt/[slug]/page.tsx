@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { articles, articlesBySlug } from "@/data/articles";
+import { resolveArticleImage } from "@/data/article-images";
 import type { Article } from "@/data/articles";
 import { getPublishedContentBySlugSafe, getPublishedContentSlugsSafe } from "@/lib/content-server";
 
@@ -19,6 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cmsArticle = article ? null : await getPublishedContentBySlugSafe(slug);
   const title = article?.seoTitle ?? article?.title ?? cmsArticle?.title ?? "Aktuellt";
   const description = article?.metaDescription ?? article?.excerpt ?? cmsArticle?.metaDescription ?? cmsArticle?.excerpt ?? "Nyheter och hälsoråd från Hemläkare.se.";
+  const cmsImage = cmsArticle ? resolveArticleImage(cmsArticle.slug, cmsArticle.ogImage) : null;
   return {
     title,
     description,
@@ -30,13 +32,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${title} — Hemläkare.se`,
       description,
       url: `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
-      images: article?.image ? [{ url: article.image, alt: article.imageAlt ?? article.title }] : cmsArticle?.ogImage ? [{ url: cmsArticle.ogImage }] : undefined,
+      images: article?.image ? [{ url: article.image, alt: article.imageAlt ?? article.title }] : cmsImage ? [{ url: cmsImage.src, alt: cmsImage.alt ?? cmsArticle?.title }] : undefined,
     },
-    twitter: article?.image ? {
+    twitter: article?.image || cmsImage ? {
       card: "summary_large_image",
       title: `${title} — Hemläkare.se`,
       description,
-      images: [article.image],
+      images: [article?.image ?? cmsImage!.src],
     } : undefined,
   };
 }
