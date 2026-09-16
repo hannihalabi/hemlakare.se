@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/site";
 
 const articles: Record<string, { title: string; body: string }> = {
   "vad-kostar-det": {
@@ -39,12 +40,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const article = articles[slug];
   return {
-    title: article ? `${article.title} — Hemläkare.se` : "FAQ — Hemläkare.se",
+    title: article ? `${article.title} — Hemläkare.se` : "Frågor & svar — Hemläkare.se",
     alternates: {
       canonical: `/faq/${slug}`,
     },
     openGraph: {
-      url: `https://xn--hemlkare-3za.se/faq/${slug}`,
+      url: `${SITE_URL}/faq/${slug}`,
     },
   };
 }

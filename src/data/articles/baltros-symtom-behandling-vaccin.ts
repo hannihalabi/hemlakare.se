@@ -143,7 +143,7 @@ const article: Article = {
     title: "Osäker på dina symtom?",
     body: "Generell information ersätter inte en individuell medicinsk bedömning. Vid bältros kan tidig vårdkontakt vara viktig för vissa grupper.",
     label: "Läs mer om när du ska söka vård",
-    href: "/aktuellt/nar-ga-till-akuten"
+    href: "/vardguiden/akut-vard"
   }
 };
 

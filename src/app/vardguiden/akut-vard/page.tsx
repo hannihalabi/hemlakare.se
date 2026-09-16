@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Akut vård — Vårdguiden",
@@ -13,7 +14,7 @@ export const metadata = {
     title: "Akut vård — Vårdguiden | Hemläkare.se",
     description:
       "Akut vård innefattar tidig identifiering, riskvärdering, diagnostik och åtgärder utifrån symtom, tillstånd och skador som är tidskänsliga och potentiellt farliga för liv och hälsa.",
-    url: "https://xn--hemlkare-3za.se/vardguiden/akut-vard",
+    url: `${SITE_URL}/vardguiden/akut-vard`,
   },
 };
 
@@ -852,7 +853,6 @@ export default function AkutVardPage() {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-14 px-6">
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center gap-8">
             <div
@@ -891,7 +891,6 @@ export default function AkutVardPage() {
           </div>
         </section>
 
-        {/* Quick-nav */}
         <section className="border-b border-gray-100 bg-white px-6 py-4 sticky top-16 z-40">
           <div className="max-w-5xl mx-auto overflow-x-auto">
             <div className="flex gap-2 min-w-max">
@@ -908,12 +907,10 @@ export default function AkutVardPage() {
           </div>
         </section>
 
-        {/* Sections */}
         <section className="py-14 px-6 bg-white">
           <div className="max-w-5xl mx-auto flex flex-col gap-14">
             {sections.map((sec) => (
               <div key={sec.id} id={sec.id} className="scroll-mt-28">
-                {/* Section header */}
                 <div className="flex items-start gap-4 mb-6">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
@@ -937,10 +934,8 @@ export default function AkutVardPage() {
                   </div>
                 </div>
 
-                {/* Intro */}
                 <p className="text-[0.95rem] text-gray-600 leading-relaxed mb-6 pl-14">{sec.intro}</p>
 
-                {/* Sub-sections */}
                 <div className="pl-14 flex flex-col gap-6">
                   {sec.subsections.map((sub) => (
                     <div key={sub.title} className="flex flex-col gap-3">
@@ -960,7 +955,6 @@ export default function AkutVardPage() {
           </div>
         </section>
 
-        {/* Source notice */}
         <section className="py-10 px-6 bg-[#fdf5f9]">
           <div className="max-w-5xl mx-auto rounded-2xl border border-[#E72E8A]/15 bg-white p-6 flex gap-4 items-start">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5" style={{ color: "#E72E8A" }} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -975,7 +969,6 @@ export default function AkutVardPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-14 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-5">
             <h2 className="text-[1.5rem] font-bold text-gray-900">Har du frågor om akut vård?</h2>

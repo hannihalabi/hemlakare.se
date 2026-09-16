@@ -5,42 +5,42 @@ const quickLinks = [
   ["Frågor & svar", "/faq"],
   ["Recensioner", "/recensioner"],
   ["Patientavgifter", "/patientavgifter"],
-  ["Här finns vi", "/har-finns-vi"],
+  ["Här finns vi", "/mottagningar"],
   ["Vårdguiden", "/vardguiden"],
   ["Om företaget", "/om"],
-  ["Sjukdomar & besvär", "/sjukdomar"],
-  ["Lediga jobb", "/jobb"],
+  ["Sjukdomar & besvär", "/vardguiden"],
+  ["Lediga jobb", "mailto:info@hemlakare.se?subject=Lediga%20jobb"],
 ];
 
 const kontakt = [
-  ["Kontakta oss", "/kontakt"],
-  ["Klagomål", "/klagomål"],
-  ["Adresser", "/adresser"],
-  ["Remisser & journaler", "/remisser"],
-  ["Öppettider", "/oppettider"],
-  ["Telefon för vårdgivare", "/vardgivare"],
-  ["Telefonnummer", "/telefon"],
+  ["Kontakta oss", "mailto:info@hemlakare.se"],
+  ["Klagomål", "mailto:info@hemlakare.se?subject=Klagom%C3%A5l"],
+  ["Adresser", "/mottagningar"],
+  ["Remisser & journaler", "mailto:info@hemlakare.se?subject=Remisser%20och%20journaler"],
+  ["Öppettider", "/mottagningar"],
+  ["Telefon för vårdgivare", "mailto:info@hemlakare.se?subject=Kontakt%20f%C3%B6r%20v%C3%A5rdgivare"],
+  ["Telefonnummer", "/mottagningar"],
 ];
 
 const mottagningar = [
-  ["Göteborg", "/mottagningar/goteborg"],
-  ["Äldremottagning", "/mottagningar/aldremottagning"],
-  ["Stockholm", "/mottagningar/stockholm"],
-  ["Prickmottagning", "/mottagningar/prickmottagning"],
-  ["BVC", "/mottagningar/bvc"],
-  ["Hembesök", "/mottagningar/hembesok"],
-  ["Ungas Psykiska Hälsa", "/mottagningar/uph"],
+  ["Göteborg", "/mottagningar"],
+  ["Äldremottagning", "/mottagningar#specialmottagningar"],
+  ["Stockholm", "/mottagningar"],
+  ["Prickmottagning", "/mottagningar#specialmottagningar"],
+  ["BVC", "/mottagningar#specialmottagningar"],
+  ["Hembesök", "/mottagningar#specialmottagningar"],
+  ["Ungas Psykiska Hälsa", "/mottagningar#specialmottagningar"],
 ];
 
 const merInfo = [
-  ["Nyhetsbrev", "/nyhetsbrev"],
-  ["Blodtrycksmätare kopplad till läkaren", "/blodtryck"],
+  ["Nyhetsbrev", "mailto:info@hemlakare.se?subject=Nyhetsbrev"],
+  ["Blodtrycksmätare kopplad till läkaren", "mailto:info@hemlakare.se?subject=Blodtrycksm%C3%A4tare"],
   ["Aktuellt", "/aktuellt"],
 ];
 
 function StarsFilled() {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-0.5" aria-hidden="true">
       {Array.from({ length: 5 }).map((_, i) => (
         <svg key={i} width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path
@@ -58,9 +58,7 @@ export default function Footer() {
     <footer className="bg-[#2b2d3b] text-white px-6 pt-16 pb-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
-        {/* Col 1 — Brand */}
         <div className="flex flex-col gap-5">
-          {/* Logo */}
           <div className="flex items-center gap-2">
             <Image
               src="/bilder/logo/hemlakare-icon-stethoscope.svg"
@@ -76,18 +74,17 @@ export default function Footer() {
           <StarsFilled />
 
           <Link
-            href="/finns-i-ditt-omrade"
+            href="/#omradeskontroll"
             className="inline-flex items-center justify-center px-5 py-3 rounded-full text-[0.88rem] font-bold text-white border-2 transition-all hover:opacity-80"
             style={{ borderColor: "#E72E8A", color: "#E72E8A" }}
           >
             Se om vi finns i ditt område
           </Link>
 
-          {/* Quick links grid */}
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2">
             {quickLinks.map(([label, href]) => (
               <Link
-                key={href}
+                key={label}
                 href={href}
                 className="text-[0.82rem] text-white/70 hover:text-white transition-colors"
               >
@@ -97,13 +94,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Col 2 — Kontakta oss */}
         <div className="flex flex-col gap-4">
           <h3 className="text-[1rem] font-bold">Kontakta oss</h3>
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             {kontakt.map(([label, href]) => (
               <Link
-                key={href}
+                key={label}
                 href={href}
                 className="text-[0.82rem] text-white/70 hover:text-white transition-colors leading-snug"
               >
@@ -116,7 +112,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             {mottagningar.map(([label, href]) => (
               <Link
-                key={href}
+                key={label}
                 href={href}
                 className="text-[0.82rem] text-white/70 hover:text-white transition-colors leading-snug"
               >
@@ -126,15 +122,13 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Col 3 — spacer on large, merged on small */}
         <div className="hidden lg:block" />
 
-        {/* Col 4 — Få mer information */}
         <div className="flex flex-col gap-5">
           <h3 className="text-[1rem] font-bold">Få mer information</h3>
 
           <a
-            href="#"
+            href="mailto:info@hemlakare.se"
             className="inline-flex items-center justify-center w-fit px-6 py-2.5 rounded-full text-[0.88rem] font-bold border-2 transition-all hover:opacity-80"
             style={{ borderColor: "#E72E8A", color: "#E72E8A" }}
           >
@@ -144,7 +138,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             {merInfo.map(([label, href]) => (
               <Link
-                key={href}
+                key={label}
                 href={href}
                 className="text-[0.82rem] font-semibold text-white/80 hover:text-white transition-colors"
               >
@@ -153,29 +147,24 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Social icons */}
           <div className="flex gap-4 mt-2">
-            {/* Facebook */}
-            <a href="#" aria-label="Facebook" className="text-white/60 hover:text-white transition-colors">
+            <span aria-hidden="true" className="text-white/60">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
               </svg>
-            </a>
-            {/* YouTube */}
-            <a href="#" aria-label="YouTube" className="text-white/60 hover:text-white transition-colors">
+            </span>
+            <span aria-hidden="true" className="text-white/60">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
               </svg>
-            </a>
-            {/* Instagram */}
-            <a href="#" aria-label="Instagram" className="text-white/60 hover:text-white transition-colors">
+            </span>
+            <span aria-hidden="true" className="text-white/60">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
               </svg>
-            </a>
-            {/* Email */}
+            </span>
             <a href="mailto:info@hemlakare.se" aria-label="E-post" className="text-white/60 hover:text-white transition-colors">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -184,7 +173,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* 1177 badge */}
           <a
             href="https://www.1177.se"
             target="_blank"
@@ -199,12 +187,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-wrap gap-4 justify-between text-[0.75rem] text-white/40">
         <span>© {new Date().getFullYear()} Hemläkare.se — Privat vård utan kö</span>
         <div className="flex gap-6">
-          <Link href="/integritetspolicy" className="hover:text-white/70 transition-colors">Integritetspolicy</Link>
-          <Link href="/cookies" className="hover:text-white/70 transition-colors">Cookies</Link>
+          <span>Integritetspolicy</span>
+          <span>Cookies</span>
         </div>
       </div>
     </footer>

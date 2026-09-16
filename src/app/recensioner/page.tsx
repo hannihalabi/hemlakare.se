@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Recensioner",
@@ -9,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: "Recensioner — Hemläkare.se",
     description: "Vad våra patienter säger om Hemläkare.se. Läs recensioner från Google, Vården.se och Trustpilot.",
-    url: "https://xn--hemlkare-3za.se/recensioner",
+    url: `${SITE_URL}/recensioner`,
   },
 };
 
@@ -106,13 +107,11 @@ export default function RecensionerPage() {
       <Header />
       <main className="bg-[#fdf5f9] min-h-screen py-20 px-6">
         <div className="max-w-7xl mx-auto flex flex-col gap-12">
-          {/* Heading */}
           <div className="flex flex-col gap-2">
             <h1 className="text-[2.4rem] font-bold text-gray-900">Recensioner</h1>
             <p className="text-[1rem] text-gray-500">Det här säger våra patienter</p>
           </div>
 
-          {/* Rating summary */}
           <div className="flex flex-wrap gap-8">
             <div className="flex flex-col items-center gap-1 bg-white rounded-2xl px-8 py-6 shadow-sm border border-gray-100">
               <span className="text-[2.5rem] font-bold" style={{ color: "#E72E8A" }}>4,8</span>
@@ -131,7 +130,6 @@ export default function RecensionerPage() {
             </div>
           </div>
 
-          {/* Reviews grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {reviews.map((r) => (
               <div

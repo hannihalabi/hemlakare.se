@@ -60,12 +60,11 @@ export default function HurFungerar() {
   return (
     <section className="bg-[#f4f4f8] py-20 px-6">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-14">
-        {/* Steps */}
+        <h2 className="sr-only">Så fungerar Hemläkare</h2>
         <div className="w-full grid lg:grid-cols-5 gap-6 items-start">
           {steps.map((step, i) => (
             <Fragment key={step.title}>
               <div className="flex flex-col items-center text-center gap-4">
-                {/* Icon circle */}
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center shrink-0"
                   style={{
@@ -89,7 +88,6 @@ export default function HurFungerar() {
           ))}
         </div>
 
-        {/* CTA */}
         <Link
           href="/mottagningar"
           className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"

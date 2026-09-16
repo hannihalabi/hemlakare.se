@@ -49,7 +49,7 @@ const article: Article = {
     title: "Besvär som inte går över?",
     body: "Återkommande eller långvarig nästäppa kan behöva bedömas för att hitta rätt orsak och behandling.",
     label: "Läs om våra tjänster",
-    href: "/tjanster"
+    href: "/mottagningar"
   }
 };
 

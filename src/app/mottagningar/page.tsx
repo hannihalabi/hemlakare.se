@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Mottagningar",
@@ -11,7 +12,7 @@ export const metadata = {
   openGraph: {
     title: "Mottagningar — Hemläkare.se",
     description: "Hemläkare.se har fysiska mottagningar i Stockholm och Göteborg samt digitala mottagningar tillgängliga över hela Sverige.",
-    url: "https://xn--hemlkare-3za.se/mottagningar",
+    url: `${SITE_URL}/mottagningar`,
   },
 };
 
@@ -59,7 +60,6 @@ const locations = [
 
 const specialties = [
   {
-    slug: "aldremottagning",
     title: "Äldremottagning",
     desc: "Specialiserad vård för dig över 65. Vi kommer hem till dig, bedömer läkemedel och hjälper med kroniska tillstånd.",
     icon: (
@@ -71,7 +71,6 @@ const specialties = [
     ),
   },
   {
-    slug: "prickmottagning",
     title: "Prickmottagning",
     desc: "Orolig för en hudförändring? Skicka bild online och få bedömning av läkare med hudkompetens – snabbt och smidigt.",
     icon: (
@@ -82,7 +81,6 @@ const specialties = [
     ),
   },
   {
-    slug: "hembesok",
     title: "Hembesök",
     desc: "För sjuk för att ta dig till oss? Vi kommer till dig. Hemma, på jobbet eller var du än befinner dig.",
     icon: (
@@ -93,7 +91,6 @@ const specialties = [
     ),
   },
   {
-    slug: "bvc",
     title: "BVC",
     desc: "Barnhälsovård för dig med barn 0–6 år. Vaccinationer, tillväxtkontroller och råd i barnets tidiga år.",
     icon: (
@@ -103,7 +100,6 @@ const specialties = [
     ),
   },
   {
-    slug: "uph",
     title: "Ungas Psykiska Hälsa",
     desc: "Digitala lunchföreläsningar och stöd för barn och unga 6–17 år. Gratis för listade familjer.",
     icon: (
@@ -113,7 +109,6 @@ const specialties = [
     ),
   },
   {
-    slug: "aldremottagning",
     title: "Digital mottagning",
     desc: "Tillgänglig i hela Sverige. Konsultation via text, bild och video – ofta svar inom timmar.",
     icon: (
@@ -124,15 +119,12 @@ const specialties = [
     ),
   },
 ];
-
-
 export default function MottagningarPage() {
   return (
     <>
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-24 px-6">
           <div className="max-w-4xl mx-auto flex flex-col items-center text-center gap-6">
             <span
@@ -157,7 +149,6 @@ export default function MottagningarPage() {
           </div>
         </section>
 
-        {/* Map placeholder + intro */}
         <section className="py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
             <div className="flex flex-col gap-6">
@@ -182,19 +173,16 @@ export default function MottagningarPage() {
           </div>
         </section>
 
-        {/* Location cards */}
         <section className="py-16 px-6 bg-[#f4f4f8]">
           <div className="max-w-6xl mx-auto flex flex-col gap-8">
             <h2 className="text-[1.8rem] font-bold text-gray-900 text-center">Hitta oss</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {locations.map((loc) => (
                 <div key={loc.city} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-                  {/* Image placeholder per location */}
                   <div
                     className="w-full aspect-[3/2] flex items-center justify-center text-[2rem] font-bold"
                     style={{ background: loc.color, color: loc.textColor }}
                   >
-                    {/* Replace with: <Image src={`/bilder/${loc.city.toLowerCase()}.jpg`} alt={loc.city} fill className="object-cover" /> */}
                     {loc.initials}
                     <span className="ml-2 text-[0.7rem] font-normal opacity-60">Bild placeras här</span>
                   </div>
@@ -231,8 +219,7 @@ export default function MottagningarPage() {
           </div>
         </section>
 
-        {/* Specialties */}
-        <section className="py-20 px-6 bg-white">
+        <section id="specialmottagningar" className="scroll-mt-24 py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto flex flex-col gap-12">
             <div className="text-center flex flex-col gap-2">
               <h2 className="text-[2rem] font-bold text-gray-900">Våra specialmottagningar</h2>
@@ -241,30 +228,25 @@ export default function MottagningarPage() {
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {specialties.map((s, i) => (
-                <div key={`${s.slug}-${i}`} className="bg-[#fdf5f9] rounded-2xl p-6 border border-gray-100 flex flex-col gap-4">
+              {specialties.map((specialty) => (
+                <div key={specialty.title} className="bg-[#fdf5f9] rounded-2xl p-6 border border-gray-100 flex flex-col gap-4">
                   <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                     style={{ background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)" }}
                   >
-                    {s.icon}
+                    {specialty.icon}
                   </div>
-                  <h3 className="text-[1rem] font-bold text-gray-900">{s.title}</h3>
-                  <p className="text-[0.88rem] text-gray-600 leading-relaxed flex-1">{s.desc}</p>
-                  <Link
-                    href={`/mottagningar/${s.slug}`}
-                    className="text-[0.85rem] font-semibold"
-                    style={{ color: "#E72E8A" }}
-                  >
-                    Läs mer →
-                  </Link>
+                  <h3 className="text-[1rem] font-bold text-gray-900">{specialty.title}</h3>
+                  <p className="text-[0.88rem] text-gray-600 leading-relaxed flex-1">{specialty.desc}</p>
+                  <span className="text-[0.85rem] font-semibold" style={{ color: "#E72E8A" }}>
+                    Tillgänglig via våra mottagningar
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Digital section */}
         <section className="py-20 px-6 bg-[#f4f4f8]">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
             <div className="flex flex-col gap-6">
@@ -303,7 +285,6 @@ export default function MottagningarPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-20 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
             <h2 className="text-[1.8rem] font-bold text-gray-900">Hittar vi dig i ditt område?</h2>

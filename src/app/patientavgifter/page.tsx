@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Patientavgifter",
@@ -10,7 +11,7 @@ export const metadata = {
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
     description: "Hemläkare.se är privatfinansierad vård. Läs om vad vården kostar och vad du får för pengarna.",
-    url: "https://xn--hemlkare-3za.se/patientavgifter",
+    url: `${SITE_URL}/patientavgifter`,
   },
 };
 
@@ -48,7 +49,6 @@ export default function PatientavgifterPage() {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-20 px-6">
           <div className="max-w-4xl mx-auto flex flex-col gap-6 items-center text-center">
             <span
@@ -74,7 +74,6 @@ export default function PatientavgifterPage() {
           </div>
         </section>
 
-        {/* Important notice */}
         <section className="py-14 px-6 bg-white">
           <div className="max-w-4xl mx-auto">
             <div className="rounded-2xl border-2 border-[#E72E8A]/20 bg-[#fdf5f9] p-8 flex flex-col gap-4">
@@ -96,13 +95,9 @@ export default function PatientavgifterPage() {
           </div>
         </section>
 
-        {/* Image + what you get */}
         <section className="py-14 px-6 bg-[#f4f4f8]">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
-            {/* Image placeholder */}
             <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center shadow-md">
-              {/* Replace src with real image when ready */}
-              {/* <Image src="/bilder/patientavgifter.jpg" alt="Läkare och patient" fill className="object-cover" /> */}
               <div className="flex flex-col items-center gap-2 text-gray-400">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -113,7 +108,6 @@ export default function PatientavgifterPage() {
               </div>
             </div>
 
-            {/* What's included */}
             <div className="flex flex-col gap-6">
               <h2 className="text-[1.8rem] font-bold text-gray-900 leading-snug">
                 Vad ingår i din vård?
@@ -141,7 +135,6 @@ export default function PatientavgifterPage() {
           </div>
         </section>
 
-        {/* Pricing */}
         <section className="py-16 px-6 bg-white">
           <div className="max-w-4xl mx-auto flex flex-col gap-10">
             <div className="text-center flex flex-col gap-2">
@@ -182,7 +175,6 @@ export default function PatientavgifterPage() {
           </div>
         </section>
 
-        {/* FAQ */}
         <section className="py-16 px-6 bg-[#f4f4f8]">
           <div className="max-w-3xl mx-auto flex flex-col gap-8">
             <h2 className="text-[1.8rem] font-bold text-gray-900">Vanliga frågor om avgifter</h2>
@@ -197,7 +189,6 @@ export default function PatientavgifterPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-16 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
             <h2 className="text-[1.6rem] font-bold text-gray-900">Utforska Vårdguiden</h2>

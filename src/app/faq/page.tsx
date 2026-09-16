@@ -171,7 +171,6 @@ export default function FaqPage() {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-20 px-6">
           <div className="max-w-3xl mx-auto flex flex-col items-center text-center gap-5">
             <span
@@ -196,11 +195,9 @@ export default function FaqPage() {
           </div>
         </section>
 
-        {/* FAQ body */}
         <section className="py-16 px-6">
           <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-10">
 
-            {/* Category sidebar */}
             <div className="lg:w-56 shrink-0 flex flex-row lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0">
               {categories.map((cat, i) => (
                 <button
@@ -225,7 +222,6 @@ export default function FaqPage() {
               ))}
             </div>
 
-            {/* FAQ accordion */}
             <div className="flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 lg:p-8">
               <h2 className="text-[1.2rem] font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <span style={{ color: "#E72E8A" }}>{categories[activeCategory].icon}</span>
@@ -240,7 +236,6 @@ export default function FaqPage() {
           </div>
         </section>
 
-        {/* Still need help */}
         <section className="py-16 px-6 bg-[#fdf5f9]">
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-8 bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
             <div

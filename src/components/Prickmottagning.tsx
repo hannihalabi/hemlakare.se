@@ -16,13 +16,9 @@ const steps = [
       <>
         En läkare med kompetens inom hudåkommor tittar på bilderna och vid svårare fall kopplas en
         hudläkare eller{" "}
-        <a
-          href="#"
-          className="font-semibold"
-          style={{ color: "#E72E8A" }}
-        >
+        <span className="font-semibold" style={{ color: "#E72E8A" }}>
           hudspecialist
-        </a>{" "}
+        </span>{" "}
         in för ytterligare bedömning.
       </>
     ),
@@ -39,7 +35,6 @@ export default function Prickmottagning() {
   return (
     <section className="bg-[#f4f4f8] py-20 px-6">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-12">
-        {/* Heading */}
         <div className="text-center flex flex-col gap-2">
           <h2 className="text-[2rem] sm:text-[2.4rem] font-bold tracking-tight text-gray-900">
             Prickmottagning – kolla dina prickar
@@ -47,22 +42,19 @@ export default function Prickmottagning() {
           <p className="text-[1rem] text-gray-500">Orolig över hudförändringar?</p>
         </div>
 
-        {/* Body */}
         <div className="w-full grid lg:grid-cols-2 gap-12 items-center">
-          {/* Illustration */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px]">
               <Image
                 src="/bilder/hud-bild.png"
                 alt="Illustration av prickmottagning"
                 fill
+                sizes="(max-width: 640px) 340px, 400px"
                 className="object-contain drop-shadow-md"
-                priority
               />
             </div>
           </div>
 
-          {/* Steps */}
           <div className="flex flex-col gap-8">
             <p className="text-[1rem] font-semibold text-gray-900">
               Så fungerar prickmottagningen:
@@ -84,10 +76,9 @@ export default function Prickmottagning() {
               ))}
             </ol>
 
-            {/* Links */}
             <div className="flex flex-col gap-5 mt-2">
               <Link
-                href="/prickmottagning"
+                href="/mottagningar#specialmottagningar"
                 className="text-[0.95rem] font-semibold"
                 style={{ color: "#E72E8A" }}
               >

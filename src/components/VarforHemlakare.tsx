@@ -43,7 +43,6 @@ export default function VarforHemlakare() {
   return (
     <section className="bg-white py-20 px-6">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-12">
-        {/* Heading */}
         <div className="text-center flex flex-col gap-3 max-w-2xl">
           <span
             className="w-fit mx-auto px-4 py-1.5 rounded-full text-[0.75rem] font-bold text-white"
@@ -61,9 +60,7 @@ export default function VarforHemlakare() {
           </p>
         </div>
 
-        {/* Comparison */}
         <div className="w-full grid md:grid-cols-2 gap-6 max-w-4xl">
-          {/* Vanlig vårdcentral */}
           <div className="bg-[#f4f4f8] rounded-3xl border border-gray-100 p-8 flex flex-col gap-5">
             <h3 className="text-[1.15rem] font-bold text-gray-500">Vanlig vårdcentral</h3>
             <ul className="flex flex-col gap-3.5">
@@ -76,7 +73,6 @@ export default function VarforHemlakare() {
             </ul>
           </div>
 
-          {/* Hemläkare.se */}
           <div
             className="bg-white rounded-3xl p-8 flex flex-col gap-5 border-2"
             style={{
@@ -98,7 +94,6 @@ export default function VarforHemlakare() {
           </div>
         </div>
 
-        {/* Closing + CTA */}
         <div className="flex flex-col items-center gap-5 text-center">
           <p className="text-[0.98rem] text-gray-600 max-w-xl leading-relaxed">
             Vården i Sverige håller hög medicinsk klass – men systemet är överbelastat. Det vill vi

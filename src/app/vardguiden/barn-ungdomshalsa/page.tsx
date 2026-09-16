@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Barn- och ungdomars hälsa — Vårdguiden",
@@ -13,7 +14,7 @@ export const metadata = {
     title: "Barn- och ungdomars hälsa — Vårdguiden | Hemläkare.se",
     description:
       "Barn och ungdomars hälsa berör allt från det nyfödda barnet till tonåringen påväg in i vuxenlivet, och från barnhälsovården med förebyggande hälsoinsatser till högspecialiserad vård.",
-    url: "https://xn--hemlkare-3za.se/vardguiden/barn-ungdomshalsa",
+    url: `${SITE_URL}/vardguiden/barn-ungdomshalsa`,
   },
 };
 
@@ -853,7 +854,6 @@ export default function BarnUngdomsHalsaPage() {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-14 px-6">
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center gap-8">
             <div
@@ -901,7 +901,6 @@ export default function BarnUngdomsHalsaPage() {
           </div>
         </section>
 
-        {/* Quick-nav */}
         <section className="border-b border-gray-100 bg-white px-6 py-4 sticky top-16 z-40">
           <div className="max-w-5xl mx-auto overflow-x-auto">
             <div className="flex gap-2 min-w-max">
@@ -918,7 +917,6 @@ export default function BarnUngdomsHalsaPage() {
           </div>
         </section>
 
-        {/* Sections */}
         <section className="py-14 px-6 bg-white">
           <div className="max-w-5xl mx-auto flex flex-col gap-14">
             {sections.map((sec) => (
@@ -967,7 +965,6 @@ export default function BarnUngdomsHalsaPage() {
           </div>
         </section>
 
-        {/* Source notice */}
         <section className="py-10 px-6 bg-[#fdf5f9]">
           <div className="max-w-5xl mx-auto rounded-2xl border border-[#E72E8A]/15 bg-white p-6 flex gap-4 items-start">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5" style={{ color: "#E72E8A" }} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -991,7 +988,6 @@ export default function BarnUngdomsHalsaPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-14 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-5">
             <h2 className="text-[1.5rem] font-bold text-gray-900">Frågor om ditt barns hälsa?</h2>

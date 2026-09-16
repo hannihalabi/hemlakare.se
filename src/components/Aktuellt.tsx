@@ -19,7 +19,13 @@ export default function Aktuellt() {
               className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col"
             >
               <div className="relative w-full aspect-[4/3] bg-gray-100">
-                <Image src={a.image} alt={a.title} fill className="object-cover" />
+                <Image
+                  src={a.image}
+                  alt={a.imageAlt ?? a.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover"
+                />
                 <span
                   className="absolute top-4 right-4 px-3 py-1 rounded-full text-[0.7rem] font-bold text-white tracking-wide"
                   style={{ background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)" }}

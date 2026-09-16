@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Vårdguiden",
@@ -11,7 +12,7 @@ export const metadata = {
   openGraph: {
     title: "Vårdguiden — Hemläkare.se",
     description: "Hitta information om olika sjukdomar, organ och åkommor. Din guide till bättre hälsa med Hemläkare.se.",
-    url: "https://xn--hemlkare-3za.se/vardguiden",
+    url: `${SITE_URL}/vardguiden`,
   },
 };
 
@@ -186,13 +187,11 @@ export default function VardguidenPage() {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section
           className="relative overflow-hidden py-0 px-0"
           style={{ background: "linear-gradient(135deg, #D81B7D 0%, #E72E8A 60%, #f06fac 100%)" }}
         >
           <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-end gap-0 min-h-[340px]">
-            {/* Text */}
             <div className="flex flex-col gap-5 py-16 lg:py-20 flex-1 z-10">
               <span className="inline-flex w-fit px-4 py-1.5 rounded-full text-[0.72rem] font-bold text-white/80 border border-white/30 uppercase tracking-widest">
                 Kunskapsstöd &amp; hälsoinformation
@@ -221,19 +220,18 @@ export default function VardguidenPage() {
               </div>
             </div>
 
-            {/* Hero image */}
             <div className="relative shrink-0 self-end lg:self-end" style={{ width: 420, height: 300 }}>
               <Image
                 src="/bilder/vardpersonal.svg"
                 alt="Vårdpersonal"
                 fill
+                sizes="(max-width: 1024px) 100vw, 420px"
                 className="object-contain object-bottom"
-                priority
+                preload
               />
             </div>
           </div>
 
-          {/* Wave */}
           <div className="w-full overflow-hidden leading-none" style={{ marginTop: -2 }}>
             <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block">
               <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48 Z" fill="white" />
@@ -241,7 +239,6 @@ export default function VardguidenPage() {
           </div>
         </section>
 
-        {/* Category grid */}
         <section id="omraden" className="py-16 px-6 bg-white">
           <div className="max-w-6xl mx-auto flex flex-col gap-10">
             <div className="flex flex-col gap-2">
@@ -287,7 +284,6 @@ export default function VardguidenPage() {
           </div>
         </section>
 
-        {/* Info strip */}
         <section className="py-14 px-6 bg-[#fdf5f9]">
           <div className="max-w-6xl mx-auto grid sm:grid-cols-3 gap-8">
             {[
@@ -328,7 +324,6 @@ export default function VardguidenPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-16 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
             <h2 className="text-[1.6rem] font-bold text-gray-900">Behöver du träffa en läkare?</h2>

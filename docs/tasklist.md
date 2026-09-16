@@ -7,8 +7,6 @@ Syfte: ge en konkret väg från nuvarande kodbas till högre organisk trafik med
 ## Källor som styr rekommendationerna
 
 - Google Search Central: helpful, reliable, people-first content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
-- Google Search Central: generativ AI i Search och varför vanlig SEO fortfarande gäller: https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
-- Google Search Central: vägledning om AI-genererat innehåll: https://developers.google.com/search/docs/fundamentals/using-gen-ai-content
 - Google Search Central: spam policies, särskilt scaled content abuse: https://developers.google.com/search/docs/essentials/spam-policies
 - Google Business Profile: lokal ranking bygger på relevans, avstånd och prominens: https://support.google.com/business/answer/7091?hl=sv
 - Google Search Central: canonical URLs: https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls
@@ -40,19 +38,13 @@ Den nuvarande sajten har bra grundform och många sidor, men den beter sig mer s
 - Hero-sökningen säger ja för Stockholm eller postnummer i 1xx-serien, medan sajten samtidigt påstår Stockholm, Göteborg och Solna. Se `src/components/Hero.tsx:33`.
 - Vid positivt områdessvar länkas användaren åter till `/mottagningar`. Se `src/components/Hero.tsx:100`.
 - På `/mottagningar` går "Boka tid" till `/mottagningar`, alltså samma sida. Se `src/app/mottagningar/page.tsx:173`.
-- Mottagningskort länkar till `/mottagningar/${slug}`, men det finns ingen `src/app/mottagningar/[slug]/page.tsx`. Se `src/app/mottagningar/page.tsx:253`.
-- Specialiteten "Digital mottagning" använder sluggen `aldremottagning`, vilket gör att två kort pekar mot samma framtida URL. Se `src/app/mottagningar/page.tsx:115`.
-- Footer länkar till flera sidor som inte finns: `/cookies`, `/integritetspolicy`, `/finns-i-ditt-omrade`, `/lunchforelasning`, `/prickmottagning`, plus flera andra kontakt-/mottagningslänkar. Se `src/components/Footer.tsx:3`, `src/components/Footer.tsx:24`, `src/components/Footer.tsx:34`.
-- Prickmottagningen har en intern länk med `href="#"` och en länk till saknade `/prickmottagning`. Se `src/components/Prickmottagning.tsx:19` och `src/components/Prickmottagning.tsx:89`.
-- Lunchföreläsningen har `href="#"` och saknade `/lunchforelasning`. Se `src/components/Lunchforelasning.tsx:34` och `src/components/Lunchforelasning.tsx:44`.
 
 ### Innehåll
 
-- `src/data/articles.ts` innehåller 143 artiklar. Brödtexten är 39-72 ord, median 56 ord. Artiklarna saknar fält för författare, medicinsk granskare, källor, review-datum och evidensnivå.
-- Artikelvyn renderar brödtexten som ett enda stycke och saknar innehållsstruktur, källor, FAQ, relaterade sidor, tjänste-CTA och internlänkar. Se `src/app/aktuellt/[slug]/page.tsx:50`.
-- De tre artikelbilderna `/bilder/aktuellt-1.jpg`, `/bilder/aktuellt-2.jpg`, `/bilder/aktuellt-3.jpg` refereras återkommande men finns inte i `public/bilder`. Se exempel `src/data/articles.ts:17`.
+- `src/data/articles` innehåller ett äldre artikelarkiv. Endast de tio kvalitetsgranskade artiklarna registreras och publiceras; övriga filer är bevarade men inte publikt routbara.
+- Artikelvyn stödjer strukturerade avsnitt, källor, FAQ, CTA och granskningsmetadata för de publicerade artiklarna och CMS-innehållet.
+- Flera opublicerade legacyartiklar refererar fortfarande till äldre bildnamn. De behöver få verifierade bilder innan de eventuellt återpubliceras.
 - Vårdguidekategorierna under `/vardguiden/[slug]` är i praktiken introtext + sex ämnesetiketter. Ämnena är inte länkade till djupare guider. Se `src/app/vardguiden/[slug]/page.tsx:444` och `src/app/vardguiden/[slug]/page.tsx:456`.
-- Sidan har två mer omfattande guider för akut vård och barn/ungdomars hälsa, men de dupliceras också via generiska `/vardguiden/[slug]` i sitemap och routing. Se `src/app/sitemap.ts:15` och `src/app/sitemap.ts:55`.
 - Vissa vårdguidekategorier ligger långt utanför nuvarande erbjudande, t.ex. transplantation, kirurgi/plastikkirurgi, cancer och tandvård. Om bolaget inte faktiskt erbjuder detta bör sidorna konsolideras, noindexas eller vinklas till "när ska du söka vård och vart ska du vända dig".
 
 ### Förtroende och regelefterlevnad
@@ -60,19 +52,14 @@ Den nuvarande sajten har bra grundform och många sidor, men den beter sig mer s
 - `Om oss` innehåller namngivna läkare, grundare, milestones, patientantal och ratingvärden. De måste verifieras eller ersättas med tydligt prototypinnehåll före skarp lansering. Se `src/app/om/page.tsx:59`, `src/app/om/page.tsx:98` och `src/app/om/page.tsx:281`.
 - `Recensioner` innehåller starka patientcitat och externa ratingtal utan verifierbar koppling till faktiska käll-URL:er. Se `src/app/recensioner/page.tsx:15` och `src/app/recensioner/page.tsx:115`.
 - Sajten påstår att uppgifter är säkra och att Patientdatalagen följs. Det kräver faktisk teknisk, juridisk och processmässig uppfyllelse, inte bara text. Se `src/app/faq/page.tsx:123`.
-- Integritetspolicy och cookies länkas i footer men sidorna saknas. Se `src/components/Footer.tsx:209`.
 - Chatten har bra textmässig avgränsning till administrativ kundservice, men den ligger nära vårdkontexten och måste skyddas mot att hälsodata matas in.
 
 ### Teknisk SEO
 
 - Root metadata sätter `metadataBase`, title, description, Open Graph och Twitter. Bra start. Se `src/app/layout.tsx:4`.
-- Det finns inga explicita `alternates.canonical`-fält. För en växande sajt med många liknande sidor bör varje indexerbar sida få self-referential canonical.
-- OG-bilden `/og-image.jpg` används men saknas i `public`. Se `src/app/layout.tsx:21`.
-- Root schema är `MedicalOrganization`, men logo pekar på saknad OG-bild och saknar verkliga adresser, telefon, läkare, öppettider, `sameAs` och per-mottagning schema. Se `src/app/page.tsx:12`.
-- Sitemap använder `new Date()` för alla routes varje gång den byggs/servas. Se `src/app/sitemap.ts:47`. Det gör `lastmod` mindre trovärdigt.
-- Sitemap innehåller duplicerade vårdguide-URL:er för akut vård och barn/ungdomars hälsa. Se `src/app/sitemap.ts:55` samt `src/app/sitemap.ts:15`.
+- Root schema är `MedicalOrganization`, men saknar fortfarande verifierade adresser, telefon, läkare, öppettider, `sameAs` och per-mottagning schema. Se `src/app/page.tsx`.
 - Admin och chattdemo har `robots: { index: false, follow: false }`, vilket är rätt start. Se `src/app/admin/page.tsx:8` och `src/app/chatt-demo/page.tsx`.
-- Lint gick igenom. `npm run build` gick igenom med Next.js 16.2.4 och genererade 199 statiska/dynamiska routes.
+- Lint, strikt typkontroll och Webpack-produktionsbygge går igenom med Next.js 16.3.5. Bygget genererar 72 sidor.
 
 ### Backend och admin
 
@@ -236,12 +223,12 @@ Varje guide bör ha:
 - [P0-009] Skapa riktig boknings-/konverteringssida, t.ex. `/boka`, eller koppla till extern bokning. Klart när header, hero och servicesidor leder dit.
 - [P0-010] Ändra alla "Boka" CTA:er till rätt destination och eventnamn. Klart när ingen CTA går till samma sida utan syfte.
 - [P0-011] Skapa eller omdirigera saknade sidor: `/integritetspolicy`, `/cookies`, `/finns-i-ditt-omrade`, `/prickmottagning`, `/lunchforelasning`.
-- [P0-012] Skapa `src/app/mottagningar/[slug]/page.tsx` eller ta bort länkarna. Klart när alla mottagningskort har giltig destination.
-- [P0-013] Fixera digital mottagningssluggen så den inte pekar på `aldremottagning`.
-- [P0-014] Ta bort `href="#"` och ersätt med riktiga länkar eller knappar.
-- [P0-015] Skapa verklig `/og-image.jpg` eller dynamisk OG-route. Klart när Open Graph/Twitter-bild fungerar.
-- [P0-016] Lägg till self-referential canonical på indexerbara sidor via Next metadata `alternates`.
-- [P0-017] Rätta sitemap: ta bort dubbletter, ta bort sidor som inte ska indexeras, använd stabila `lastModified` baserat på faktiskt content-datum.
+- [x] [P0-012] Ogiltiga länkar från mottagningskorten är borttagna.
+- [x] [P0-013] Den duplicerade specialmottagningssluggen används inte längre som länk.
+- [x] [P0-014] `href="#"` är borttagna.
+- [x] [P0-015] Open Graph/Twitter använder en befintlig bild.
+- [x] [P0-016] Indexerbara sidor har self-referential canonical via Next metadata `alternates`.
+- [x] [P0-017] Sitemap använder stabila innehållsdatum och deduplicerar artikel-URL:er.
 - [P0-018] Ta bort prototyptext i admin som säger att backend saknas, eller visa korrekt miljöstatus.
 - [P0-019] Lägg till produktionens 404/not-found med sökvägar tillbaka till viktiga sidor.
 - [P0-020] Ersätt hero- och sektionsplaceholders med verkliga bilder där de behövs för förtroende.
@@ -263,7 +250,7 @@ Varje guide bör ha:
 
 - [P0-031] Inventera alla 143 artiklar med status: behåll, slå ihop, uppgradera, noindex, redirect, ta bort.
 - [P0-032] Stoppa tunna artiklar från sitemap tills de är uppgraderade.
-- [P0-033] Definiera medicinsk editorial policy: källkrav, granskare, akutvarningar, språk, AI-användning, revision.
+- [P0-033] Definiera medicinsk editorial policy: källkrav, granskare, akutvarningar, språk och revision.
 - [P0-034] Skapa content-modell med author, reviewer, specialty, reviewedAt, sources, targetQuery, intent, CTA och schemaType.
 - [P0-035] Uppgradera 10 viktigaste artiklarna till fulla guider innan fler publiceras.
 - [P0-036] Konsolidera vårdguidekategorier som inte matchar verkligt erbjudande.
@@ -322,7 +309,7 @@ Varje guide bör ha:
 - [P1-077] Lägg till `cron_runs`-tabell med run id, schedule time, status, startedAt, finishedAt, error, counts.
 - [P1-078] Lägg till distribuerat lås eller Postgres advisory lock så två körningar inte skapar dubbletter.
 - [P1-079] Gör cron idempotent: varje ämne/brief får stabil hash och kan köras om utan dublett.
-- [P1-080] Låt AI skapa research brief, outline, källförslag och utkast, men sätt status `draft` eller `medical_review`, aldrig autopublish.
+- [P1-080] Låt redaktionen skapa researchbrief, disposition, källförslag och utkast med status `draft` eller `medical_review`, aldrig autopublicering.
 - [P1-081] Lägg till kvalitetsgrind: stoppa utkast om källor saknas, medicinska påståenden är okällade eller topic redan täcks.
 - [P1-082] Lägg till dagligt jobb för trasiga länkar, saknade bilder och 404-loggar.
 - [P1-083] Lägg till veckojobb för stale content: guider äldre än 6-12 månader eller källa ändrad.
@@ -447,8 +434,8 @@ Föreslagen pipeline:
 3. Jobbet tar Postgres-lås och skapar `cron_runs`.
 4. Jobbet hämtar topic-kandidater från Search Console, site search, chattämnen och admin-backlog.
 5. Jobbet filtrerar bort ämnen som redan täcks eller saknar tydlig koppling till erbjudandet.
-6. AI skapar content brief: intent, målgrupp, disposition, källor att kontrollera, CTA och risknivå.
-7. AI skapar eventuellt utkast i status `draft`.
+6. Redaktionen skapar content brief: intent, målgrupp, disposition, källor att kontrollera, CTA och risknivå.
+7. Redaktionen skapar eventuellt utkast i status `draft`.
 8. Admin får uppgift i granskningskö.
 9. Medicinsk granskare godkänner eller skickar tillbaka.
 10. Editor publicerar eller schemalägger.
@@ -534,40 +521,3 @@ Målet är nått när:
 4. Bygg CMS/admin-workflow för kvalitetssäkrad publicering.
 5. Automatisera research, briefs, QA och rapporter.
 6. Skala innehåll först när mätningen visar att sidorna rankar och konverterar.
-
-## Vidareutvecklingsprompt
-
-Använd gärna denna prompt när du fortsätter med GPT-6 Astra eller motsvarande stark modell:
-
-```text
-Du är senior Next.js 16 App Router-utvecklare, teknisk SEO-arkitekt, CRO-strateg och healthcare/YMYL-redaktör för Hemläkare.se.
-
-Mål:
-Bygg Hemläkare.se från prototyp till en trovärdig, mätbar och konverterande vårdsajt med hög organisk trafik. Prioritera verkliga bokningar/leads, teknisk SEO, lokal SEO, E-E-A-T/förtroende, adminpanel/CMS och säkra automationer.
-
-Arbetsregler:
-- Läs AGENTS.md och relevanta Next.js 16-dokument i node_modules/next/dist/docs innan kodändringar.
-- Läs befintlig kod innan du ändrar.
-- Ändra inte orelaterade filer.
-- Behandla allt vårdinnehåll som YMYL: inga medicinska påståenden utan källa, granskare och tydlig risktext.
-- Publicera inte AI-genererat vårdinnehåll automatiskt. AI får skapa brief/utkast, men människa och medicinsk granskare måste godkänna.
-- Fejka aldrig mottagningar, läkare, recensioner, patientantal, rating, priser eller öppettider.
-- Alla CTA:er ska leda till ett fungerande konverteringsmål.
-- Alla indexerbara sidor ska ha canonical, korrekt metadata, internlänkar, källor där relevant och en tydlig roll i keyword map.
-- Admin, chatt och analytics ska respektera känsliga personuppgifter, retention, audit log och rollstyrning.
-
-Starta med:
-1. Kör lint/build och inventera brutna länkar/rutter.
-2. Implementera /boka eller koppla extern bokning.
-3. Skapa saknade juridiska och konverteringskritiska sidor.
-4. Rätta sitemap/canonical/OG.
-5. Bygg CMS-datamodell och adminflöde för content review.
-6. Bygg cron-pipeline för content briefs med CRON_SECRET, locks, idempotens och draft-only-output.
-7. Uppgradera de första 10 money pages innan bred bloggskalning.
-
-Leverera alltid:
-- kort riskbedömning,
-- filer ändrade,
-- verifiering,
-- nästa mest värdefulla steg.
-```

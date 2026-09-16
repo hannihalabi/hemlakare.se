@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { articles } from "@/data/articles";
 import { getAdminSession } from "@/lib/admin-auth";
 import { getSql } from "@/lib/db";
+import { SITE_URL } from "@/lib/site";
 
 function errorResponse(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
@@ -22,7 +23,7 @@ export async function POST() {
       tag: article.tag,
       metaTitle: article.title,
       metaDescription: article.excerpt,
-      canonicalUrl: `https://xn--hemlkare-3za.se/aktuellt/${article.slug}`,
+      canonicalUrl: `${SITE_URL}/aktuellt/${article.slug}`,
       ogImage: article.image,
     }));
     const rows = await sql.query(

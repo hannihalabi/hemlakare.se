@@ -11,6 +11,7 @@ import {
   type ContentSource,
   type ContentStatus,
 } from "@/lib/content-types";
+import { SOCIAL_IMAGE } from "@/lib/site";
 
 type Suggestion = { slug: string; title: string; tag: string };
 type Version = { id: string; version: number; created_at: string; created_by_name: string | null };
@@ -55,7 +56,7 @@ const blankForm: FormState = {
   metaTitle: "",
   metaDescription: "",
   canonicalUrl: "",
-  ogImage: "/og-image.jpg",
+  ogImage: SOCIAL_IMAGE,
   schemaType: "Article",
   robots: "index,follow",
   reviewerId: "",

@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { articles, articlesBySlug } from "@/data/articles";
 import type { Article } from "@/data/articles";
 import { getPublishedContentBySlugSafe, getPublishedContentSlugsSafe } from "@/lib/content-server";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   const cmsSlugs = await getPublishedContentSlugsSafe();
@@ -15,21 +16,21 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = articlesBySlug[slug];
-  const cmsArticle = article ? null : await getPublishedContentBySlugSafe(slug);
+  const cmsArticle = await getPublishedContentBySlugSafe(slug);
+  const article = cmsArticle ? undefined : articlesBySlug[slug];
   const title = article?.seoTitle ?? article?.title ?? cmsArticle?.title ?? "Aktuellt";
   const description = article?.metaDescription ?? article?.excerpt ?? cmsArticle?.metaDescription ?? cmsArticle?.excerpt ?? "Nyheter och hälsoråd från Hemläkare.se.";
   return {
     title,
     description,
     alternates: {
-      canonical: cmsArticle?.canonicalUrl?.replace("https://hemlakare.se", "https://xn--hemlkare-3za.se") ?? `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
+      canonical: cmsArticle?.canonicalUrl?.replace("https://hemlakare.se", SITE_URL) ?? `${SITE_URL}/aktuellt/${slug}`,
     },
     robots: cmsArticle?.robots.includes("noindex") ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
       title: `${title} — Hemläkare.se`,
       description,
-      url: `https://xn--hemlkare-3za.se/aktuellt/${slug}`,
+      url: `${SITE_URL}/aktuellt/${slug}`,
       images: article?.image ? [{ url: article.image, alt: article.imageAlt ?? article.title }] : cmsArticle?.ogImage ? [{ url: cmsArticle.ogImage }] : undefined,
     },
     twitter: article?.image ? {
@@ -43,9 +44,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function AktuelltSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const legacyArticle = articlesBySlug[slug];
-  const cmsArticle = legacyArticle ? null : await getPublishedContentBySlugSafe(slug);
-  const article = legacyArticle ?? cmsArticle;
+  const cmsArticle = await getPublishedContentBySlugSafe(slug);
+  const legacyArticle = cmsArticle ? undefined : articlesBySlug[slug];
+  const article = cmsArticle ?? legacyArticle;
 
   if (!article) notFound();
 
@@ -56,7 +57,7 @@ export default async function AktuelltSlugPage({ params }: { params: Promise<{ s
     description: cmsArticle.metaDescription ?? cmsArticle.excerpt,
     datePublished: cmsArticle.publishedAt,
     dateModified: cmsArticle.updatedAt,
-    mainEntityOfPage: `https://xn--hemlkare-3za.se/aktuellt/${cmsArticle.slug}`,
+    mainEntityOfPage: `${SITE_URL}/aktuellt/${cmsArticle.slug}`,
     author: cmsArticle.authorName ? { "@type": "Person", name: cmsArticle.authorName } : undefined,
     reviewedBy: cmsArticle.reviewerName ? { "@type": "Person", name: cmsArticle.reviewerName } : undefined,
   } : getLegacyArticleSchema(legacyArticle);
@@ -141,7 +142,7 @@ function RichLegacyArticle({ article }: { article: Article }) {
                   src={article.image}
                   alt={article.imageAlt ?? article.title}
                   fill
-                  priority
+                  preload
                   sizes="(max-width: 768px) 100vw, 300px"
                   className="object-cover"
                 />
@@ -298,11 +299,11 @@ function getLegacyArticleSchema(article?: Article) {
     description: article.metaDescription ?? article.excerpt,
     datePublished: article.publishedAtIso ?? article.date,
     dateModified: article.updatedAtIso ?? article.publishedAtIso ?? article.date,
-    mainEntityOfPage: `https://xn--hemlkare-3za.se/aktuellt/${article.slug}`,
-    image: `https://xn--hemlkare-3za.se${article.image}`,
+    mainEntityOfPage: `${SITE_URL}/aktuellt/${article.slug}`,
+    image: `${SITE_URL}${article.image}`,
     author: article.authorName ? { "@type": "Organization", name: article.authorName } : undefined,
     reviewedBy: article.reviewerName ? { "@type": "Organization", name: article.reviewerName } : undefined,
-    publisher: { "@type": "Organization", name: "Hemläkare.se" },
+    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     about: article.targetQuery,
   };
 

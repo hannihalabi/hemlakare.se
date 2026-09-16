@@ -4,6 +4,7 @@ import ChatWidget from "@/components/ChatWidget";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/site";
 
 const categories = [
   {
@@ -406,7 +407,7 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       title: `${title} | Hemläkare.se`,
       description,
-      url: `https://xn--hemlkare-3za.se/vardguiden/${slug}`,
+      url: `${SITE_URL}/vardguiden/${slug}`,
     },
   };
 }
@@ -421,7 +422,6 @@ export default async function VardguidenSlugPage({ params }: Props) {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-14 px-6">
           <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-8">
             <div
@@ -451,7 +451,6 @@ export default async function VardguidenSlugPage({ params }: Props) {
           </div>
         </section>
 
-        {/* Topics */}
         <section className="py-14 px-6 bg-white">
           <div className="max-w-4xl mx-auto flex flex-col gap-8">
             <h2 className="text-[1.4rem] font-bold text-gray-900">Vanliga ämnen inom {cat.label.toLowerCase()}</h2>
@@ -476,7 +475,6 @@ export default async function VardguidenSlugPage({ params }: Props) {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-14 px-6 bg-[#fdf5f9]">
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-8 bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
             <div

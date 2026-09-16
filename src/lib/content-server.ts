@@ -144,12 +144,29 @@ export async function querySourcesForContent(contentId: string) {
   `, [contentId]);
 }
 
-export async function queryPublishedContentBySlug(slug: string) {
-  const row = await queryContentBySlug(slug);
-  return row;
+export async function querySourcesForContentIds(contentIds: string[]) {
+  if (contentIds.length === 0) return new Map<string, ContentSource[]>();
+
+  const sql = getSql();
+  const rows = await sql.query(`
+    select l.content_id, s.id, s.title, s.url, s.publisher, s.source_type, s.last_checked_at
+    from content_sources s
+    join content_source_links l on l.source_id = s.id
+    where l.content_id = any($1::uuid[])
+    order by s.title asc
+  `, [contentIds]);
+
+  const sourcesByContentId = new Map<string, ContentSource[]>();
+  for (const row of rows as Row[]) {
+    const contentId = String(row.content_id);
+    const sources = sourcesByContentId.get(contentId) ?? [];
+    sources.push(mapSource(row));
+    sourcesByContentId.set(contentId, sources);
+  }
+  return sourcesByContentId;
 }
 
-async function queryContentBySlug(slug: string) {
+export async function queryPublishedContentBySlug(slug: string) {
   const sql = getSql();
   const rows = await sql.query(`
     select ${itemColumns}
@@ -168,16 +185,26 @@ async function queryContentBySlug(slug: string) {
 }
 
 export async function queryPublishedContent() {
-  const rows = (await queryContentItems("published")).filter((row) => {
-    const publishedAt = (row as Row).published_at;
-    return publishedAt && new Date(String(publishedAt)) >= new Date(`${MIN_PUBLISHED_AT}T00:00:00Z`);
-  });
-  const mapped = await Promise.all(rows.map(async (row) => {
-    const item = row as Row;
-    const sources = await querySourcesForContent(String(item.id));
-    return mapContent(item, sources.map((source) => mapSource(source as Row)));
-  }));
-  return mapped;
+  const sql = getSql();
+  const rows = await sql.query(`
+    select ${itemColumns}
+    from content_items c
+    left join admin_users author on author.id = c.author_id
+    left join admin_users reviewer on reviewer.id = c.reviewer_id
+    left join lateral (
+      select * from content_metrics m where m.content_id = c.id order by m.metric_date desc limit 1
+    ) metrics on true
+    where c.status = 'published' and c.published_at >= $1::date
+    order by c.published_at desc, c.updated_at desc
+    limit 500
+  `, [MIN_PUBLISHED_AT]);
+  const contentRows = rows as Row[];
+  const sourcesByContentId = await querySourcesForContentIds(
+    contentRows.map((row) => String(row.id)),
+  );
+  return contentRows.map((row) =>
+    mapContent(row, sourcesByContentId.get(String(row.id)) ?? []),
+  );
 }
 
 export async function getPublishedContentSafe() {
@@ -196,12 +223,25 @@ export async function getPublishedContentBySlugSafe(slug: string) {
   }
 }
 
-export async function getPublishedContentSlugsSafe() {
+export async function getPublishedContentSitemapEntriesSafe() {
   try {
     const sql = getSql();
-    const rows = await sql`select slug from content_items where status = 'published' and published_at >= ${MIN_PUBLISHED_AT}::date order by published_at desc`;
-    return rows.map((row) => String(row.slug));
+    const rows = await sql`
+      select slug, greatest(updated_at, published_at) as last_modified
+      from content_items
+      where status = 'published' and published_at >= ${MIN_PUBLISHED_AT}::date
+      order by published_at desc
+    `;
+    return rows.map((row) => ({
+      slug: String(row.slug),
+      lastModified: nullableDate(row.last_modified),
+    }));
   } catch {
     return [];
   }
+}
+
+export async function getPublishedContentSlugsSafe() {
+  const entries = await getPublishedContentSitemapEntriesSafe();
+  return entries.map((entry) => entry.slug);
 }

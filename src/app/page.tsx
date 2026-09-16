@@ -9,6 +9,7 @@ import HurFungerar from "@/components/HurFungerar";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import type { Metadata } from "next";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -17,11 +18,12 @@ export const metadata: Metadata = {
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "MedicalOrganization",
-  name: "Hemläkare.se",
-  url: "https://xn--hemlkare-3za.se",
-  logo: "https://xn--hemlkare-3za.se/og-image.jpg",
-  description:
-    "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
+  "@id": `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  alternateName: "Hemläkare.se",
+  url: SITE_URL,
+  logo: `${SITE_URL}/icon.svg`,
+  description: SITE_DESCRIPTION,
   medicalSpecialty: "General Practice",
   availableService: [
     { "@type": "MedicalTherapy", name: "Digital konsultation" },
@@ -40,9 +42,11 @@ const structuredData = {
 const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Hemläkare",
+  "@id": `${SITE_URL}/#website`,
+  name: SITE_NAME,
   alternateName: "Hemläkare.se",
-  url: "https://xn--hemlkare-3za.se/",
+  url: `${SITE_URL}/`,
+  publisher: { "@id": `${SITE_URL}/#organization` },
 };
 
 export default function Home() {

@@ -1,33 +1,40 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+  SOCIAL_IMAGE,
+} from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://xn--hemlkare-3za.se"),
-  applicationName: "Hemläkare",
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   icons: {
     icon: "/icon.svg",
   },
   title: {
-    default: "Hemläkare.se — Din läkare, på dina villkor",
+    default: SITE_TITLE,
     template: "%s — Hemläkare.se",
   },
-  description: "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
+  description: SITE_DESCRIPTION,
   openGraph: {
-    siteName: "Hemläkare",
+    siteName: SITE_NAME,
     locale: "sv_SE",
     type: "website",
-    title: "Hemläkare.se — Din läkare, på dina villkor",
-    description: "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
-    url: "https://xn--hemlkare-3za.se",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Hemläkare.se" }],
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    images: [{ url: SOCIAL_IMAGE, width: 1672, height: 941, alt: "Hemläkare.se" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hemläkare.se — Din läkare, på dina villkor",
-    description: "Snabb digital kontakt med din egen läkare och sköterska. Fysiska möten i hemmet, på arbetet eller på mottagningen.",
-    images: ["/og-image.jpg"],
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [SOCIAL_IMAGE],
   },
 };
 

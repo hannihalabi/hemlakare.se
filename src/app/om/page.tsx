@@ -4,6 +4,7 @@ import ChatWidget from "@/components/ChatWidget";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Om oss",
@@ -12,7 +13,7 @@ export const metadata = {
   openGraph: {
     title: "Om oss — Hemläkare.se",
     description: "Vi är privatfinansierad vård som sätter patienten först. Lär känna teamet och idén bakom Hemläkare.se.",
-    url: "https://xn--hemlkare-3za.se/om",
+    url: `${SITE_URL}/om`,
   },
 };
 
@@ -115,7 +116,6 @@ export default function OmOssPage() {
       <Header />
       <main className="bg-white">
 
-        {/* Hero */}
         <section className="bg-[#fdf5f9] py-24 px-6">
           <div className="max-w-4xl mx-auto flex flex-col items-center text-center gap-6">
             <span
@@ -141,7 +141,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* Story + image */}
         <section className="py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
             <div className="flex flex-col gap-6">
@@ -173,7 +172,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* Values */}
         <section className="py-20 px-6 bg-[#f4f4f8]">
           <div className="max-w-6xl mx-auto flex flex-col gap-12">
             <div className="text-center flex flex-col gap-2">
@@ -197,7 +195,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* How we work + image */}
         <section className="py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
             <ImagePlaceholder label="Bild på läkare i hembesök eller digital konsultation" />
@@ -221,7 +218,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* Timeline */}
         <section className="py-20 px-6 bg-[#fdf5f9]">
           <div className="max-w-3xl mx-auto flex flex-col gap-10">
             <div className="text-center flex flex-col gap-2">
@@ -231,7 +227,6 @@ export default function OmOssPage() {
             <div className="flex flex-col gap-0">
               {milestones.map((m, i) => (
                 <div key={m.year} className="flex gap-6 relative">
-                  {/* Line */}
                   <div className="flex flex-col items-center">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[0.7rem] font-bold shrink-0 z-10"
@@ -253,7 +248,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* Team */}
         <section className="py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto flex flex-col gap-12">
             <div className="text-center flex flex-col gap-2">
@@ -263,13 +257,11 @@ export default function OmOssPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {team.map((member) => (
                 <div key={member.name} className="bg-[#fdf5f9] rounded-2xl p-6 flex flex-col gap-4 border border-gray-100">
-                  {/* Avatar / photo placeholder */}
                   <div
                     className="w-16 h-16 rounded-2xl flex items-center justify-center text-[1.3rem] font-bold"
                     style={{ background: member.bg, color: member.color }}
                   >
                     {member.initials}
-                    {/* Replace with: <Image src={member.image} alt={member.name} fill className="object-cover rounded-2xl" /> */}
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-[0.95rem] font-bold text-gray-900">{member.name}</span>
@@ -285,7 +277,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* Stats */}
         <section className="py-16 px-6 bg-[#f4f4f8]">
           <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {[
@@ -307,7 +298,6 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-20 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
             <h2 className="text-[1.8rem] font-bold text-gray-900">Redo att testa en bättre vård?</h2>

@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAdminSession } from "@/lib/admin-auth";
 import { canManageContent, contentStatusLabels, contentWriteSchema, isContentStatus, type ContentStatus } from "@/lib/content-types";
-import { mapContent, mapSource, queryContentItems, querySourcesForContent } from "@/lib/content-server";
+import {
+  mapContent,
+  mapSource,
+  queryContentItems,
+  querySourcesForContent,
+  querySourcesForContentIds,
+} from "@/lib/content-server";
 import { getSql } from "@/lib/db";
 
 function errorResponse(message: string, status = 400) {
@@ -39,11 +45,13 @@ export async function GET(request: Request) {
 
   try {
     const rows = await queryContentItems(statusValue as ContentStatus | undefined);
-    const content = await Promise.all(rows.map(async (row) => {
-      const item = row as Record<string, unknown>;
-      const sources = await querySourcesForContent(String(item.id));
-      return mapContent(item, sources.map((source) => mapSource(source as Record<string, unknown>)));
-    }));
+    const items = rows as Record<string, unknown>[];
+    const sourcesByContentId = await querySourcesForContentIds(
+      items.map((item) => String(item.id)),
+    );
+    const content = items.map((item) =>
+      mapContent(item, sourcesByContentId.get(String(item.id)) ?? []),
+    );
     const sql = getSql();
     const suggestions = await sql`
       select slug, title, tag from content_items

@@ -86,7 +86,7 @@ const reviews = [
 
 function Stars() {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-0.5" aria-hidden="true">
       {Array.from({ length: 5 }).map((_, i) => (
         <svg key={i} width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path
@@ -131,14 +131,11 @@ export default function Omdomen() {
   return (
     <section className="overflow-hidden bg-[#fdf5f9] py-20">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6">
-        {/* Heading */}
         <h2 className="text-[2rem] sm:text-[2.4rem] font-bold tracking-tight text-gray-900 text-center">
           Det här säger våra patienter
         </h2>
 
-        {/* Rating badges */}
         <div className="flex flex-wrap items-center justify-center gap-10">
-          {/* Google */}
           <div className="flex flex-col items-center gap-1">
             <span
               className="text-[3rem] font-bold leading-none"
@@ -152,9 +149,8 @@ export default function Omdomen() {
             </span>
           </div>
 
-          {/* Vården.se */}
           <div className="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-4 shadow-sm">
-            <div className="flex gap-0.5">
+            <div className="flex gap-0.5" aria-hidden="true">
               {Array.from({ length: 5 }).map((_, i) => (
                 <svg key={i} width="22" height="22" viewBox="0 0 18 18" fill="none">
                   <path
@@ -173,7 +169,6 @@ export default function Omdomen() {
           </div>
         </div>
 
-        {/* Review carousel */}
         <div className="relative w-screen overflow-hidden">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[#fdf5f9] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[#fdf5f9] to-transparent" />
@@ -190,7 +185,6 @@ export default function Omdomen() {
           </div>
         </div>
 
-        {/* CTA */}
         <Link
           href="/recensioner"
           className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"

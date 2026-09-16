@@ -19,8 +19,7 @@ export default function Header() {
   return (
     <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
+        <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="Hemläkare – startsidan">
           <Image
             src="/bilder/logo/hemlakare-icon-stethoscope.svg"
             alt=""
@@ -32,8 +31,7 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1" aria-label="Huvudmeny">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -45,7 +43,6 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/mottagningar"
@@ -55,21 +52,26 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
         <button
+          type="button"
           className="md:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-50"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((isOpen) => !isOpen)}
           aria-label="Meny"
+          aria-controls="mobile-menu"
+          aria-expanded={menuOpen}
         >
-          <span className="block w-5 h-0.5 bg-current mb-1.5 transition-all" />
-          <span className="block w-5 h-0.5 bg-current mb-1.5 transition-all" />
-          <span className="block w-5 h-0.5 bg-current transition-all" />
+          <span aria-hidden="true" className="block w-5 h-0.5 bg-current mb-1.5 transition-all" />
+          <span aria-hidden="true" className="block w-5 h-0.5 bg-current mb-1.5 transition-all" />
+          <span aria-hidden="true" className="block w-5 h-0.5 bg-current transition-all" />
         </button>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white px-6 py-4 flex flex-col gap-1">
+        <nav
+          id="mobile-menu"
+          className="md:hidden border-t border-gray-100 bg-white px-6 py-4 flex flex-col gap-1"
+          aria-label="Mobilmeny"
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -86,7 +88,7 @@ export default function Header() {
           >
             Boka direkt
           </Link>
-        </div>
+        </nav>
       )}
     </header>
   );

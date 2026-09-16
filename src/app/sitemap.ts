@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 import { articles as aktuelltArticles } from "@/data/articles";
-import { getPublishedContentSlugsSafe } from "@/lib/content-server";
-
-const BASE = "https://xn--hemlkare-3za.se";
+import { getPublishedContentSitemapEntriesSafe } from "@/lib/content-server";
+import { SITE_URL } from "@/lib/site";
 
 const faqSlugs = [
   "vad-kostar-det",
@@ -43,37 +42,43 @@ const vardguidenSlugs = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE}/patientavgifter`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/mottagningar`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/om`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/recensioner`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${BASE}/aktuellt`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${BASE}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/vardguiden`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/vardguiden/akut-vard`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/vardguiden/barn-ungdomshalsa`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: SITE_URL, changeFrequency: "weekly", priority: 1 },
+    { url: `${SITE_URL}/patientavgifter`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/mottagningar`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/om`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/recensioner`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE_URL}/aktuellt`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${SITE_URL}/faq`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/vardguiden`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/vardguiden/akut-vard`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/vardguiden/barn-ungdomshalsa`, changeFrequency: "monthly", priority: 0.7 },
   ];
 
-  const cmsSlugs = await getPublishedContentSlugsSafe();
-  const articleSlugs = [...new Set([...aktuelltArticles.map((article) => article.slug), ...cmsSlugs])];
-  const aktuelltRoutes: MetadataRoute.Sitemap = articleSlugs.map((slug) => ({
-    url: `${BASE}/aktuellt/${slug}`,
-    lastModified: new Date(),
+  const cmsEntries = await getPublishedContentSitemapEntriesSafe();
+  const articleEntries = new Map(
+    aktuelltArticles.map((article) => [
+      article.slug,
+      article.updatedAtIso ?? article.publishedAtIso ?? null,
+    ]),
+  );
+  for (const entry of cmsEntries) {
+    articleEntries.set(entry.slug, entry.lastModified);
+  }
+  const aktuelltRoutes: MetadataRoute.Sitemap = [...articleEntries].map(([slug, lastModified]) => ({
+    url: `${SITE_URL}/aktuellt/${slug}`,
+    ...(lastModified ? { lastModified } : {}),
     changeFrequency: "monthly",
     priority: 0.6,
   }));
 
   const faqRoutes: MetadataRoute.Sitemap = faqSlugs.map((slug) => ({
-    url: `${BASE}/faq/${slug}`,
-    lastModified: new Date(),
+    url: `${SITE_URL}/faq/${slug}`,
     changeFrequency: "monthly",
     priority: 0.5,
   }));
 
   const vardguidenRoutes: MetadataRoute.Sitemap = vardguidenSlugs.map((slug) => ({
-    url: `${BASE}/vardguiden/${slug}`,
-    lastModified: new Date(),
+    url: `${SITE_URL}/vardguiden/${slug}`,
     changeFrequency: "monthly",
     priority: 0.6,
   }));

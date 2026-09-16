@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { articles } from "@/data/articles";
 import { getPublishedContentSafe } from "@/lib/content-server";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -15,7 +16,7 @@ export const metadata = {
   openGraph: {
     title: "Aktuellt — Hemläkare.se",
     description: "Nyheter, hälsoråd och information från Hemläkare.se.",
-    url: "https://xn--hemlkare-3za.se/aktuellt",
+    url: `${SITE_URL}/aktuellt`,
   },
 };
 
