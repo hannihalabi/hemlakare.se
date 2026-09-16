@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import { articles, articlesBySlug } from "@/data/articles";
 import type { Article } from "@/data/articles";
 import { getPublishedContentBySlugSafe, getPublishedContentSlugsSafe } from "@/lib/content-server";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { normalizeCanonicalUrl, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   const cmsSlugs = await getPublishedContentSlugsSafe();
@@ -24,7 +24,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description,
     alternates: {
-      canonical: cmsArticle?.canonicalUrl?.replace("https://hemlakare.se", SITE_URL) ?? `${SITE_URL}/aktuellt/${slug}`,
+      canonical: cmsArticle?.canonicalUrl
+        ? normalizeCanonicalUrl(cmsArticle.canonicalUrl)
+        : `${SITE_URL}/aktuellt/${slug}`,
     },
     robots: cmsArticle?.robots.includes("noindex") ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {

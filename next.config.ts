@@ -6,8 +6,14 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "hemlakare.se" }],
-        destination: "https://xn--hemlkare-3za.se/:path*",
+        has: [{ type: "host", value: "www.hemlakare.se" }],
+        destination: "https://hemlakare.se/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "xn--hemlkare-3za.se" }],
+        destination: "https://hemlakare.se/:path*",
         permanent: true,
       },
       { source: "/aktuellt/migr%C3%A4n-behandling", destination: "/aktuellt/migran-behandling", permanent: true },
