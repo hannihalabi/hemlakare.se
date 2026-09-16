@@ -4,7 +4,6 @@ import ChatWidget from "@/components/ChatWidget";
 import Image from "next/image";
 import Link from "next/link";
 import { articles } from "@/data/articles";
-import { resolveArticleImage } from "@/data/article-images";
 import { getPublishedContentSafe } from "@/lib/content-server";
 
 export const revalidate = 300;
@@ -24,17 +23,13 @@ export default async function AktuelltPage() {
   const cmsContent = await getPublishedContentSafe();
   const cmsSlugs = new Set(cmsContent.map((item) => item.slug));
   const allContent = [
-    ...cmsContent.map((item) => {
-      const resolvedImage = resolveArticleImage(item.slug, item.ogImage);
-      return {
-        ...item,
-        date: item.publishedAt ? new Intl.DateTimeFormat("sv-SE", { dateStyle: "long" }).format(new Date(item.publishedAt)) : "Publicerad",
-        image: resolvedImage?.src ?? "",
-        imageAlt: resolvedImage?.alt ?? item.title,
-      };
-    }),
+    ...cmsContent.map((item) => ({ ...item, date: item.publishedAt ? new Intl.DateTimeFormat("sv-SE", { dateStyle: "long" }).format(new Date(item.publishedAt)) : "Publicerad", image: item.ogImage ?? "" })),
     ...articles.filter((article) => !cmsSlugs.has(article.slug)),
   ];
+
+  function hasArticleImage(image: string | null | undefined) {
+    return Boolean(image?.trim()) && !image?.startsWith("/bilder/aktuellt-");
+  }
 
   return (
     <>
@@ -49,7 +44,7 @@ export default async function AktuelltPage() {
                 key={a.slug}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col"
               >
-                {a.image && (
+                {hasArticleImage(a.image) && (
                   <Link
                     href={`/aktuellt/${a.slug}`}
                     className="relative block aspect-[16/9] w-full overflow-hidden bg-pink-50"
@@ -57,7 +52,7 @@ export default async function AktuelltPage() {
                   >
                     <Image
                       src={a.image}
-                      alt={a.imageAlt ?? a.title}
+                      alt={"imageAlt" in a && a.imageAlt ? a.imageAlt : a.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-300 hover:scale-[1.03]"
