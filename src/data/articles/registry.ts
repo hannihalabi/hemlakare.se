@@ -146,6 +146,7 @@ import article144 from "./folsyra-neural-ror";
 import article145 from "./neuropati-domningar-ben";
 import article146 from "./depression-kost";
 import article147 from "./baltros-symtom-behandling-vaccin";
+import article148 from "./nastappa-snuva-orsaker-behandling";
 
 const allArticles: Article[] = [
   article001,
@@ -295,6 +296,7 @@ const allArticles: Article[] = [
   article145,
   article146,
   article147,
+  article148,
 ];
 
 const monthMap: Record<string, number> = {
