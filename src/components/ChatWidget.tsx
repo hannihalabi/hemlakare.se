@@ -165,7 +165,7 @@ export default function ChatWidget() {
             <TeamAvatar size="md" />
             <div>
               <p className="text-[0.9rem] font-bold text-slate-900">
-                Hemläkare kundservice
+                Helena från Hemläkare
               </p>
               <p className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-emerald-700">
                 <span className="size-2 rounded-full bg-emerald-500" />
@@ -215,18 +215,14 @@ export default function ChatWidget() {
                     <ArrowLeftIcon className="size-5" />
                   </button>
                 )}
-                <TeamAvatar size="sm" />
+                <TeamAvatar size="sm" online />
                 <div className="min-w-0">
                   <h2
                     id="chat-widget-title"
                     className="truncate text-sm font-bold text-slate-950"
                   >
-                    {assignedName ?? "Hemläkare kundservice"}
+                    {assignedName ?? "Helena från Hemläkare"}
                   </h2>
-                  <p className="mt-0.5 flex items-center gap-1.5 text-[0.72rem] font-medium text-emerald-700">
-                    <span className="size-1.5 rounded-full bg-emerald-500" />
-                    {assignedName ? "Ansluten till ärendet" : "Online"}
-                  </p>
                 </div>
               </div>
               <button
@@ -245,10 +241,6 @@ export default function ChatWidget() {
                 <h3 className="text-[1.55rem] font-bold leading-tight tracking-[-0.025em] text-slate-950">
                   Hej! Hur kan vi hjälpa dig?
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Vi svarar på administrativa frågor om bokning, priser och hur
-                  Hemläkare fungerar.
-                </p>
                 <div className="relative mt-4 h-48 overflow-hidden rounded-2xl border border-white/70 bg-pink-50 shadow-sm">
                   <Image
                     src="/landningspage/hemlakare-grupp.png"
@@ -258,16 +250,25 @@ export default function ChatWidget() {
                     className="object-cover object-[center_28%]"
                   />
                 </div>
-                <button
-                  onClick={() => setView("topic")}
+                <a
+                  href="tel:0108086084"
                   className="btn-cta mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-5 text-sm font-bold"
                 >
-                  <ChatIcon className="size-5" />
-                  Starta chatt
-                </button>
+                  <PhoneIcon className="size-5" />
+                  Ring 010-808 60 84
+                </a>
                 <p className="mt-2 text-center text-[0.72rem] font-medium text-slate-500">
-                  Svarar vanligtvis inom 2 minuter
+                  Vi har öppet dygnet runt
                 </p>
+                <a
+                  href="https://wa.me/46108086084"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25d366] bg-white px-5 text-sm font-bold text-[#128c4a] transition hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100"
+                >
+                  <ChatIcon className="size-5" />
+                  WhatsApp 010-808 60 84
+                </a>
               </div>
 
               <div className="mx-4 mb-5 mt-4 rounded-2xl border border-slate-200 bg-white p-4">
@@ -510,7 +511,7 @@ export default function ChatWidget() {
                 >
                   <div className="flex items-end gap-2 rounded-2xl border border-slate-300 bg-white p-1.5 pl-3 focus-within:border-[#e72e8a] focus-within:ring-4 focus-within:ring-pink-100">
                     <label htmlFor="visitor-message" className="sr-only">
-                      Meddelande till Hemläkare kundservice
+                      Meddelande till Helena från Hemläkare
                     </label>
                     <textarea
                       id="visitor-message"
@@ -546,14 +547,14 @@ export default function ChatWidget() {
           ref={launcherRef}
           onClick={openWidget}
           className="chat-launcher-attention group flex min-h-14 items-center rounded-full bg-[#e72e8a] text-white shadow-[0_8px_28px_rgba(231,46,138,0.38)] transition hover:-translate-y-0.5 hover:bg-[#d81b7d] hover:shadow-[0_12px_34px_rgba(231,46,138,0.44)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink-200 active:translate-y-0"
-          aria-label="Öppna chatten"
+          aria-label="Öppna chatten – kundservice är online"
           aria-haspopup="dialog"
         >
           <span className="hidden pl-5 pr-2 text-sm font-bold sm:inline">
             Chatta med oss
           </span>
           <span className="grid size-14 place-items-center">
-            <ChatIcon className="size-6" />
+            <TeamAvatar size="lg" online />
           </span>
         </button>
       )}
@@ -561,20 +562,31 @@ export default function ChatWidget() {
   );
 }
 
-function TeamAvatar({ size }: { size: "sm" | "md" }) {
-  const dimensions = size === "md" ? "size-11" : "size-10";
+function TeamAvatar({
+  size,
+  online = false,
+}: {
+  size: "sm" | "md" | "lg";
+  online?: boolean;
+}) {
+  const dimensions =
+    size === "lg" ? "size-12" : size === "md" ? "size-11" : "size-10";
+  const imageSize = size === "lg" ? "48px" : size === "md" ? "44px" : "40px";
+
   return (
-    <div
-      className={`relative ${dimensions} shrink-0 overflow-hidden rounded-full bg-pink-50 ring-2 ring-white`}
-      aria-hidden="true"
-    >
-      <Image
-        src="/bilder/chatt och admin/kundservice.jpg"
-        alt=""
-        fill
-        sizes={size === "md" ? "44px" : "40px"}
-        className="object-cover"
-      />
+    <div className={`relative ${dimensions} shrink-0`} aria-hidden="true">
+      <div className="relative size-full overflow-hidden rounded-full bg-pink-50 ring-2 ring-white">
+        <Image
+          src="/bilder/chatt och admin/kundservice.jpg"
+          alt=""
+          fill
+          sizes={imageSize}
+          className="object-cover"
+        />
+      </div>
+      {online && (
+        <span className="absolute bottom-0.5 right-0.5 size-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+      )}
     </div>
   );
 }
@@ -594,6 +606,23 @@ function ChatIcon({ className }: IconProps) {
       aria-hidden="true"
     >
       <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" />
+    </svg>
+  );
+}
+
+function PhoneIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z" />
     </svg>
   );
 }

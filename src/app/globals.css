@@ -162,6 +162,46 @@ body {
   }
 }
 
+/* Diskreta riktningspilar för den svepbara jämförelsen. */
+@keyframes swipeHintLeft {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes swipeHintRight {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(-1px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+}
+
+.swipe-hint-left {
+  animation: swipeHintLeft 2.2s ease-in-out infinite;
+}
+
+.swipe-hint-right {
+  animation: swipeHintRight 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipe-hint-left,
+  .swipe-hint-right {
+    animation: none;
+  }
+}
+
 /* Lugn, kontinuerlig bläddring för recensionskort på startsidan. */
 @keyframes reviewMarquee {
   from {

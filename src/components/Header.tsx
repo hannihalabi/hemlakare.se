@@ -19,14 +19,15 @@ export default function Header() {
   return (
     <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="Hemläkare – startsidan">
+        <Link href="/" className="flex items-center gap-2.5 md:gap-2 shrink-0" aria-label="Hemläkare – startsidan">
           <Image
             src="/bilder/logo/hemlakare-icon-stethoscope.svg"
             alt=""
-            width={32}
-            height={32}
+            width={38}
+            height={38}
+            className="md:w-8 md:h-8"
           />
-          <span className="text-[1.05rem] font-semibold tracking-tight text-gray-900">
+          <span className="text-xl md:text-[1.05rem] font-semibold tracking-tight text-gray-900">
             hemläkare<span className="text-[#E72E8A]">.se</span>
           </span>
         </Link>

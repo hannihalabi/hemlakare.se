@@ -5,9 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const bullets = [
-  { id: "doctors", text: "Endast svenskutbildade läkare" },
-  { id: "same-day", text: "Vård samma dag - ingen väntan" },
-  { id: "price", text: "Fast pris" },
+  { id: "care-for-all", text: "Privatvård - nu tillgänglig för alla" },
+  {
+    id: "your-health",
+    text: "Vi tar din hälsa på allvar och står alltid på din sida",
+  },
+  { id: "price", text: "Full hälsokontroll just nu för" },
 ];
 
 const rotatingWords = ["utan kö", "snabb hjälp", "mindre krångel"];
@@ -63,9 +66,11 @@ export default function Hero() {
                   {bullet.id === "price" && (
                     <>
                       {" "}
-                      <strong className="font-bold text-gray-900">995 kr</strong>{" "}
-                      <span className="text-gray-500">
-                        (ord. pris <del className="decoration-2">1 995 kr</del>)
+                      <strong className="whitespace-nowrap font-bold text-gray-900">
+                        995 kr
+                      </strong>
+                      <span className="mt-0.5 block text-[0.875rem] text-gray-500">
+                        Ord. pris <del className="decoration-2">1995 kr</del>
                       </span>
                     </>
                   )}
@@ -76,24 +81,23 @@ export default function Hero() {
         </div>
 
         <div className="relative mb-8 flex items-center justify-center sm:mb-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <div className="w-full aspect-[16/11] lg:aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
-            <Image
-              src="/landningspage/hero-1.png"
-              alt="Hemläkare.se erbjuder privat vård hemma, digitalt och på mottagning i Stockholm."
-              fill
-              preload
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
+          <Image
+            src="/landningspage/hemlakare-team-bilar-transparent.png"
+            alt="Hemläkares team framför två bilar som används vid hembesök."
+            width={1497}
+            height={1051}
+            preload
+            sizes="(max-width: 1024px) calc(100vw - 48px), 50vw"
+            className="h-auto w-full drop-shadow-[0_24px_34px_rgba(15,23,42,0.16)]"
+          />
           <Image
             src="/landningspage/hero-mobil-1.png"
             alt="Mobilvy för att chatta med läkare hos Hemläkare.se."
             width={190}
             height={254}
             loading="eager"
-            sizes="(max-width: 640px) 42vw, (max-width: 1024px) 33vw, 17vw"
-            className="absolute -bottom-8 -right-5 h-auto w-[42%] min-w-[136px] max-w-[180px] rotate-[10deg] drop-shadow-[0_20px_32px_rgba(15,23,42,0.28)] sm:w-[33%] sm:min-w-[140px] sm:max-w-[220px] sm:drop-shadow-[0_24px_38px_rgba(15,23,42,0.24)] lg:-bottom-10 lg:-right-7 lg:w-[34%] lg:max-w-[235px]"
+            sizes="(max-width: 640px) 34vw, (max-width: 1024px) 28vw, 14vw"
+            className="absolute -bottom-6 -right-3 h-auto w-[34%] min-w-[108px] max-w-[150px] rotate-[8deg] drop-shadow-[0_20px_32px_rgba(15,23,42,0.28)] sm:-bottom-8 sm:-right-4 sm:w-[28%] sm:max-w-[175px] lg:-bottom-10 lg:-right-5 lg:w-[28%] lg:max-w-[185px]"
           />
         </div>
 
