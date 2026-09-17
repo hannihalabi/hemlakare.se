@@ -51,6 +51,43 @@ body {
   box-shadow: 0 0 0 3px rgba(231, 46, 138, 0.3);
 }
 
+/* Diskret uppmärksamhetsring för viktiga CTA:er. */
+@keyframes ctaAttention {
+  0%,
+  62%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  72% {
+    opacity: 0.55;
+  }
+  92% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+.cta-attention {
+  position: relative;
+}
+
+.cta-attention::after {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid rgba(231, 46, 138, 0.55);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+  animation: ctaAttention 3s ease-out infinite;
+}
+
+.cta-attention:hover::after,
+.cta-attention:focus-visible::after {
+  animation-play-state: paused;
+  opacity: 0;
+}
+
 /* Secondary CTA — light, modern outline that lifts on hover. */
 .btn-outline {
   background-color: #fff;
@@ -91,6 +128,10 @@ body {
   .btn-outline:hover,
   .btn-outline:active {
     transform: none;
+  }
+  .cta-attention::after {
+    animation: none;
+    opacity: 0;
   }
 }
 

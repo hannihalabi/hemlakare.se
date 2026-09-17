@@ -136,11 +136,26 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
 export default function VarforHemlakare() {
   const [activeComparison, setActiveComparison] =
     useState<ComparisonKey>("hemlakare");
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const swipeStartX = useRef<number | null>(null);
 
   function handleSwipeStart(event: ReactPointerEvent<HTMLDivElement>) {
     swipeStartX.current = event.clientX;
+    setDragOffset(0);
+    setIsDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function handleSwipeMove(event: ReactPointerEvent<HTMLDivElement>) {
+    if (swipeStartX.current === null) return;
+
+    const distance = event.clientX - swipeStartX.current;
+    const isTowardOtherCard =
+      activeComparison === "hemlakare" ? distance > 0 : distance < 0;
+    const offset = isTowardOtherCard ? distance : distance * 0.18;
+
+    setDragOffset(Math.max(-240, Math.min(240, offset)));
   }
 
   function handleSwipeEnd(event: ReactPointerEvent<HTMLDivElement>) {
@@ -149,11 +164,24 @@ export default function VarforHemlakare() {
     const distance = event.clientX - swipeStartX.current;
     swipeStartX.current = null;
 
-    if (distance > 40) setActiveComparison("vardcentral");
-    if (distance < -40) setActiveComparison("hemlakare");
+    if (activeComparison === "hemlakare" && distance > 48) {
+      setActiveComparison("vardcentral");
+    }
+    if (activeComparison === "vardcentral" && distance < -48) {
+      setActiveComparison("hemlakare");
+    }
+
+    setDragOffset(0);
+    setIsDragging(false);
   }
 
-  const vardcentralStyle: CSSProperties = {
+  function cancelSwipe() {
+    swipeStartX.current = null;
+    setDragOffset(0);
+    setIsDragging(false);
+  }
+
+  const baseVardcentralStyle: CSSProperties = {
     zIndex: activeComparison === "vardcentral" ? 20 : 10,
     opacity: activeComparison === "vardcentral" ? 1 : 0.72,
     transform:
@@ -162,7 +190,7 @@ export default function VarforHemlakare() {
         : "translateX(-58%) translateY(18px) rotate(-5deg) scale(0.94)",
   };
 
-  const hemlakareStyle: CSSProperties = {
+  const baseHemlakareStyle: CSSProperties = {
     zIndex: activeComparison === "hemlakare" ? 20 : 10,
     opacity: activeComparison === "hemlakare" ? 1 : 0.72,
     transform:
@@ -170,6 +198,48 @@ export default function VarforHemlakare() {
         ? "translateX(-49%) rotate(1.5deg) scale(1)"
         : "translateX(-42%) translateY(18px) rotate(5deg) scale(0.94)",
   };
+
+  let vardcentralStyle = baseVardcentralStyle;
+  let hemlakareStyle = baseHemlakareStyle;
+
+  if (isDragging && activeComparison === "hemlakare" && dragOffset > 0) {
+    const progress = Math.min(dragOffset / 140, 1);
+    vardcentralStyle = {
+      zIndex: 10,
+      opacity: 0.72 + progress * 0.28,
+      transform: `translateX(${-58 + progress * 7}%) translateY(${18 * (1 - progress)}px) rotate(${-5 + progress * 3.5}deg) scale(${0.94 + progress * 0.06})`,
+    };
+    hemlakareStyle = {
+      zIndex: 20,
+      opacity: 1 - progress * 0.24,
+      transform: `translateX(calc(-49% + ${dragOffset}px)) rotate(${1.5 + progress * 3.5}deg) scale(${1 - progress * 0.04})`,
+    };
+  } else if (isDragging && activeComparison === "vardcentral" && dragOffset < 0) {
+    const progress = Math.min(Math.abs(dragOffset) / 140, 1);
+    vardcentralStyle = {
+      zIndex: 20,
+      opacity: 1 - progress * 0.24,
+      transform: `translateX(calc(-51% + ${dragOffset}px)) rotate(${-1.5 - progress * 3.5}deg) scale(${1 - progress * 0.04})`,
+    };
+    hemlakareStyle = {
+      zIndex: 10,
+      opacity: 0.72 + progress * 0.28,
+      transform: `translateX(${-42 - progress * 7}%) translateY(${18 * (1 - progress)}px) rotate(${5 - progress * 3.5}deg) scale(${0.94 + progress * 0.06})`,
+    };
+  } else if (isDragging) {
+    const resistedOffset = dragOffset * 0.25;
+    if (activeComparison === "hemlakare") {
+      hemlakareStyle = {
+        ...baseHemlakareStyle,
+        transform: `translateX(calc(-49% + ${resistedOffset}px)) rotate(1.5deg) scale(1)`,
+      };
+    } else {
+      vardcentralStyle = {
+        ...baseVardcentralStyle,
+        transform: `translateX(calc(-51% + ${resistedOffset}px)) rotate(-1.5deg) scale(1)`,
+      };
+    }
+  }
 
   return (
     <>
@@ -211,20 +281,27 @@ export default function VarforHemlakare() {
             aria-roledescription="karusell"
             aria-label="Jämförelse mellan vanlig vårdcentral och Hemläkare.se"
             onPointerDown={handleSwipeStart}
+            onPointerMove={handleSwipeMove}
             onPointerUp={handleSwipeEnd}
-            onPointerCancel={() => {
-              swipeStartX.current = null;
-            }}
+            onPointerCancel={cancelSwipe}
           >
             <ComparisonCard
               type="vardcentral"
-              className="absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] origin-bottom transition-[transform,opacity,filter] duration-500 ease-out will-change-transform"
+              className={`absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] origin-bottom will-change-transform ${
+                isDragging
+                  ? ""
+                  : "transition-[transform,opacity,filter] duration-200 ease-out"
+              }`}
               style={vardcentralStyle}
               hidden={activeComparison !== "vardcentral"}
             />
             <ComparisonCard
               type="hemlakare"
-              className="absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] origin-bottom transition-[transform,opacity,filter] duration-500 ease-out will-change-transform"
+              className={`absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] origin-bottom will-change-transform ${
+                isDragging
+                  ? ""
+                  : "transition-[transform,opacity,filter] duration-200 ease-out"
+              }`}
               style={hemlakareStyle}
               hidden={activeComparison !== "hemlakare"}
             />
@@ -276,11 +353,11 @@ export default function VarforHemlakare() {
       </section>
 
       <section
-        className="relative overflow-hidden bg-[linear-gradient(180deg,#fff8fb_0%,#fdf1f7_100%)] px-6 pb-20 pt-14 sm:py-24"
+        className="relative overflow-x-clip bg-[linear-gradient(180deg,#fff8fb_0%,#fdf1f7_100%)] px-6 pb-20 pt-14 sm:py-24"
         aria-labelledby="hanni-statement-title"
       >
         <div className="mx-auto grid max-w-6xl items-end md:grid-cols-[0.9fr_1.2fr]">
-          <div className="relative z-10 mx-auto aspect-[1208/1302] w-full max-w-[410px] md:mx-0">
+          <div className="relative z-10 -mt-32 mx-auto aspect-[1208/1302] w-full max-w-[410px] sm:-mt-36 md:mt-0 md:mx-0">
             <div
               className="absolute bottom-1 left-[7%] right-[7%] top-[18%] rounded-t-[999px] bg-white/60"
               aria-hidden="true"
@@ -323,18 +400,20 @@ export default function VarforHemlakare() {
                 blir tillgänglig för alla, utan att vi kompromissar med tid, omtanke eller
                 kvalitet.
               </p>
-              <footer className="mt-6 border-t border-pink-100 pt-4">
-                <p className="font-bold text-gray-950">Hanni</p>
-                <p className="mt-0.5 text-sm text-gray-500">Hemläkare.se</p>
+              <footer className="mt-6 flex items-center justify-between gap-2 border-t border-pink-100 pt-4">
+                <div>
+                  <p className="font-bold text-gray-950">Hanni</p>
+                  <p className="mt-0.5 text-sm text-gray-500">Hemläkare.se</p>
+                </div>
+                <Link
+                  href="/mottagningar"
+                  className="btn-cta cta-attention inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-full px-4 text-[0.875rem] font-bold text-white"
+                >
+                  Boka tid
+                  <ArrowIcon direction="right" />
+                </Link>
               </footer>
             </blockquote>
-
-            <Link
-              href="/mottagningar"
-              className="btn-cta mt-6 inline-flex min-h-12 items-center justify-center rounded-full px-8 text-[0.95rem] font-bold text-white transition-all"
-            >
-              Boka tid
-            </Link>
           </div>
         </div>
       </section>

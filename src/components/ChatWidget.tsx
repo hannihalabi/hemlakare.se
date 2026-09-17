@@ -255,7 +255,7 @@ export default function ChatWidget() {
                   className="btn-cta mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-5 text-sm font-bold"
                 >
                   <PhoneIcon className="size-5" />
-                  Ring 010-808 60 84
+                  010 808 60 84
                 </a>
                 <p className="mt-2 text-center text-[0.72rem] font-medium text-slate-500">
                   Vi har öppet dygnet runt
@@ -267,7 +267,7 @@ export default function ChatWidget() {
                   className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25d366] bg-white px-5 text-sm font-bold text-[#128c4a] transition hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-100"
                 >
                   <ChatIcon className="size-5" />
-                  WhatsApp 010-808 60 84
+                  WhatsApp
                 </a>
               </div>
 
