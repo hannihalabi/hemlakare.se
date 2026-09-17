@@ -5,9 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const bullets = [
-  "Endast svenskutbildade läkare",
-  "Vård samma dag - ingen väntan",
-  "Mottagning och hembesök i Stockholm",
+  { id: "doctors", text: "Endast svenskutbildade läkare" },
+  { id: "same-day", text: "Vård samma dag - ingen väntan" },
+  { id: "price", text: "Fast pris" },
 ];
 
 const rotatingWords = ["utan kö", "snabb hjälp", "mindre krångel"];
@@ -38,7 +38,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="bg-[#fdf5f9] min-h-[calc(100svh-4rem)] flex items-start lg:items-center">
+    <section className="overflow-x-clip bg-[#fdf5f9] min-h-[calc(100svh-4rem)] flex items-start lg:items-center">
       <div className="max-w-7xl mx-auto px-6 py-8 sm:py-12 lg:py-20 w-full grid gap-5 sm:gap-8 lg:grid-cols-2 lg:gap-x-14 lg:gap-y-8 lg:items-center">
         <div className="flex flex-col gap-3 sm:gap-4 lg:col-start-1">
           <h1 className="text-[2.45rem] sm:text-[3.25rem] lg:text-[3.75rem] font-bold leading-[1.06] sm:leading-[1.1] tracking-tight text-gray-900">
@@ -55,40 +55,27 @@ export default function Hero() {
           </h1>
 
           <ul className="flex flex-col gap-2.5 sm:gap-3 mt-2">
-            {bullets.map((b) => (
-              <li key={b} className="flex items-start gap-3">
+            {bullets.map((bullet) => (
+              <li key={bullet.id} className="flex items-start gap-3">
                 <HeartIcon />
-                <span className="text-[1rem] text-gray-700 leading-snug">{b}</span>
+                <span className="text-[1rem] text-gray-700 leading-snug">
+                  {bullet.text}
+                  {bullet.id === "price" && (
+                    <>
+                      {" "}
+                      <strong className="font-bold text-gray-900">995 kr</strong>{" "}
+                      <span className="text-gray-500">
+                        (ord. pris <del className="decoration-2">1 995 kr</del>)
+                      </span>
+                    </>
+                  )}
+                </span>
               </li>
             ))}
           </ul>
-
-          <div className="mt-2 w-fit rounded-2xl border-2 border-[#E72E8A]/25 bg-white px-5 py-4 shadow-[0_12px_30px_-18px_rgba(216,27,125,0.65)]">
-            <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.12em] text-[#D81B7D]">
-              Lanseringspris · begränsad tid
-            </p>
-            <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-[2rem] font-black tracking-tight text-gray-900">995 kr</span>
-              <span className="text-[0.88rem] text-gray-500">
-                ord. <del className="decoration-2">1 995 kr</del>
-              </span>
-              <span className="rounded-full bg-green-100 px-2.5 py-1 text-[0.72rem] font-bold text-green-800">
-                Spara 1 000 kr
-              </span>
-            </div>
-            <p className="mt-1 text-[0.8rem] text-gray-500">
-              Läkarhjälp digitalt eller på mottagning
-            </p>
-            <Link
-              href="/mottagningar"
-              className="mt-3 inline-flex text-[0.86rem] font-bold text-[#D81B7D] underline decoration-[#E72E8A]/30 underline-offset-4 hover:decoration-[#E72E8A]"
-            >
-              Boka till lanseringspris →
-            </Link>
-          </div>
         </div>
 
-        <div className="relative flex items-center justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div className="relative mb-8 flex items-center justify-center sm:mb-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="w-full aspect-[16/11] lg:aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-xl relative">
             <Image
               src="/landningspage/hero-1.png"
@@ -105,8 +92,8 @@ export default function Hero() {
             width={190}
             height={254}
             loading="eager"
-            sizes="(max-width: 640px) 27vw, (max-width: 1024px) 33vw, 17vw"
-            className="absolute bottom-2 right-2 h-auto w-[27%] min-w-[92px] max-w-[150px] rotate-[10deg] drop-shadow-[0_18px_28px_rgba(15,23,42,0.24)] sm:-bottom-8 sm:-right-5 sm:w-[33%] sm:min-w-[140px] sm:max-w-[220px] sm:drop-shadow-[0_24px_38px_rgba(15,23,42,0.24)] lg:-bottom-10 lg:-right-7 lg:w-[34%] lg:max-w-[235px]"
+            sizes="(max-width: 640px) 42vw, (max-width: 1024px) 33vw, 17vw"
+            className="absolute -bottom-8 -right-5 h-auto w-[42%] min-w-[136px] max-w-[180px] rotate-[10deg] drop-shadow-[0_20px_32px_rgba(15,23,42,0.28)] sm:w-[33%] sm:min-w-[140px] sm:max-w-[220px] sm:drop-shadow-[0_24px_38px_rgba(15,23,42,0.24)] lg:-bottom-10 lg:-right-7 lg:w-[34%] lg:max-w-[235px]"
           />
         </div>
 
