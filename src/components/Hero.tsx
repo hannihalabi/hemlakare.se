@@ -60,7 +60,7 @@ export default function Hero() {
           <ul className="flex flex-col gap-2.5 sm:gap-3 mt-2">
             {bullets.map((bullet) => (
               <li key={bullet.id} className="flex items-start gap-3">
-                <HeartIcon />
+                <CheckIcon />
                 <span className="text-[1rem] text-gray-700 leading-snug">
                   {bullet.text}
                   {bullet.id === "price" && (
@@ -80,7 +80,7 @@ export default function Hero() {
           </ul>
         </div>
 
-        <div className="relative mb-8 flex items-center justify-center sm:mb-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div className="relative -mt-8 mb-8 flex items-center justify-center sm:-mt-6 sm:mb-0 lg:mt-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <Image
             src="/landningspage/hemlakare-team-bilar-transparent.png"
             alt="Hemläkares team framför två bilar som används vid hembesök."
@@ -88,7 +88,7 @@ export default function Hero() {
             height={1051}
             preload
             sizes="(max-width: 1024px) calc(100vw - 48px), 50vw"
-            className="h-auto w-full drop-shadow-[0_24px_34px_rgba(15,23,42,0.16)]"
+            className="h-auto w-[124%] max-w-none sm:w-[116%] lg:w-full drop-shadow-[0_24px_34px_rgba(15,23,42,0.16)]"
           />
           <Image
             src="/landningspage/hero-mobil-1.png"
@@ -174,7 +174,7 @@ export default function Hero() {
   );
 }
 
-function HeartIcon() {
+function CheckIcon() {
   const gradientId = useId();
 
   return (
@@ -189,8 +189,11 @@ function HeartIcon() {
     >
       <circle cx="10" cy="10" r="10" fill={`url(#${gradientId})`} />
       <path
-        d="M10 14.5S5.5 11.7 5.5 8.75A2.75 2.75 0 0 1 10 7a2.75 2.75 0 0 1 4.5 1.75C14.5 11.7 10 14.5 10 14.5Z"
-        fill="white"
+        d="m5.75 10.25 2.65 2.65 5.85-5.85"
+        stroke="white"
+        strokeWidth="2.1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <defs>
         <linearGradient id={gradientId} x1="10" y1="0" x2="10" y2="20" gradientUnits="userSpaceOnUse">
