@@ -36,7 +36,7 @@ export default function Hero() {
       return;
     }
     const inStockholm =
-      q.includes("stockholm") || /(^|\D)1(?:0|1|2|6)\d\s?\d{2}(\D|$)/.test(q);
+      q.includes("stockholm") || /(^|\D)1\d{2}\s?\d{2}(\D|$)/.test(q);
     setResult(inStockholm ? "yes" : "no");
   }
 
