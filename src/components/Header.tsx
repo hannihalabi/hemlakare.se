@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,9 +15,63 @@ const navLinks = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+
+  useEffect(() => {
+    let lastScrollY = Math.max(window.scrollY, 0);
+    let accumulatedDistance = 0;
+    let lastDirection = 0;
+    let frameId: number | null = null;
+
+    function updateHeader() {
+      const currentScrollY = Math.max(window.scrollY, 0);
+
+      if (!window.matchMedia("(max-width: 767px)").matches) {
+        setHeaderVisible(true);
+        lastScrollY = currentScrollY;
+        frameId = null;
+        return;
+      }
+
+      const distance = currentScrollY - lastScrollY;
+      const direction = Math.sign(distance);
+
+      if (direction !== 0) {
+        if (direction !== lastDirection) accumulatedDistance = 0;
+        accumulatedDistance += Math.abs(distance);
+        lastDirection = direction;
+      }
+
+      if (menuOpen || currentScrollY < 72) {
+        setHeaderVisible(true);
+      } else if (accumulatedDistance >= 12) {
+        setHeaderVisible(direction < 0);
+        accumulatedDistance = 0;
+      }
+
+      lastScrollY = currentScrollY;
+      frameId = null;
+    }
+
+    function handleScroll() {
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(updateHeader);
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+    };
+  }, [menuOpen]);
 
   return (
-    <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+    <header
+      className={`sticky top-0 z-50 w-full border-b border-gray-100 bg-white transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none md:translate-y-0 ${
+        headerVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 md:gap-2 shrink-0" aria-label="Hemläkare – startsidan">
           <Image

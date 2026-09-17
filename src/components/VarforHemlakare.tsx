@@ -149,8 +149,8 @@ export default function VarforHemlakare() {
     const distance = event.clientX - swipeStartX.current;
     swipeStartX.current = null;
 
-    if (distance > 40) setActiveComparison("hemlakare");
-    if (distance < -40) setActiveComparison("vardcentral");
+    if (distance > 40) setActiveComparison("vardcentral");
+    if (distance < -40) setActiveComparison("hemlakare");
   }
 
   const vardcentralStyle: CSSProperties = {
@@ -172,8 +172,9 @@ export default function VarforHemlakare() {
   };
 
   return (
-    <section className="bg-white py-20 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col items-center gap-12">
+    <>
+      <section className="bg-white px-6 py-20">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-12">
         <div className="text-center flex flex-col gap-3 max-w-2xl">
           <span
             className="w-fit mx-auto px-4 py-1.5 rounded-full text-[0.75rem] font-bold text-white"
@@ -271,19 +272,72 @@ export default function VarforHemlakare() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-5 text-center">
-          <p className="text-[0.98rem] text-gray-600 max-w-xl leading-relaxed">
-            Vården i Sverige håller hög medicinsk klass – men systemet är överbelastat. Det vill vi
-            ändra på. Hos oss är du aldrig ett ärende i mängden.
-          </p>
-          <Link
-            href="/mottagningar"
-            className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
-          >
-            Boka tid
-          </Link>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section
+        className="relative overflow-hidden bg-[linear-gradient(180deg,#fff8fb_0%,#fdf1f7_100%)] px-6 pb-20 pt-14 sm:py-24"
+        aria-labelledby="hanni-statement-title"
+      >
+        <div className="mx-auto grid max-w-6xl items-end md:grid-cols-[0.9fr_1.2fr]">
+          <div className="relative z-10 mx-auto aspect-[1208/1302] w-full max-w-[410px] md:mx-0">
+            <div
+              className="absolute bottom-1 left-[7%] right-[7%] top-[18%] rounded-t-[999px] bg-white/60"
+              aria-hidden="true"
+            />
+            <Image
+              src="/landningspage/hanni-portrait-transparent.png"
+              alt="Porträtt av Hanni från Hemläkare.se."
+              fill
+              sizes="(max-width: 768px) calc(100vw - 48px), 410px"
+              className="object-contain object-bottom drop-shadow-[0_18px_26px_rgba(15,23,42,0.15)]"
+            />
+            <div
+              className="absolute bottom-0 left-[7%] right-[7%] h-3 rounded-full bg-gradient-to-r from-[#d81b7d] via-[#e72e8a] to-[#f06aaa] shadow-[0_7px_18px_rgba(231,46,138,0.32)]"
+              aria-hidden="true"
+            />
+          </div>
+
+          <div className="relative z-20 -mt-6 rounded-[2rem] border border-pink-100 bg-white p-6 shadow-[0_24px_60px_rgba(65,32,50,0.14)] sm:p-8 md:-ml-12 md:mb-12 md:mt-0 md:p-9">
+            <span
+              className="absolute -top-3 right-16 size-7 rotate-45 border-l border-t border-pink-100 bg-white md:hidden"
+              aria-hidden="true"
+            />
+            <span
+              className="absolute -left-3 top-16 hidden size-7 rotate-45 border-b border-l border-pink-100 bg-white md:block"
+              aria-hidden="true"
+            />
+
+            <p
+              id="hanni-statement-title"
+              className="flex items-center gap-2 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[#d81b7d]"
+            >
+              <span className="size-2 rounded-full bg-[#e72e8a]" aria-hidden="true" />
+              Ett ord från Hanni
+            </p>
+
+            <blockquote>
+              <p className="mt-4 text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
+                Privat vård ska inte vara förbehållen några få. Vår innovation gör det
+                möjligt att erbjuda personlig vård för 995 kronor – så att privat vård
+                blir tillgänglig för alla, utan att vi kompromissar med tid, omtanke eller
+                kvalitet.
+              </p>
+              <footer className="mt-6 border-t border-pink-100 pt-4">
+                <p className="font-bold text-gray-950">Hanni</p>
+                <p className="mt-0.5 text-sm text-gray-500">Hemläkare.se</p>
+              </footer>
+            </blockquote>
+
+            <Link
+              href="/mottagningar"
+              className="btn-cta mt-6 inline-flex min-h-12 items-center justify-center rounded-full px-8 text-[0.95rem] font-bold text-white transition-all"
+            >
+              Boka tid
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
