@@ -1,64 +1,182 @@
+"use client";
+
 import Link from "next/link";
-import { healthPackages } from "@/data/healthPackages";
+import { useState } from "react";
+
+const services = [
+  {
+    name: "Digitalt läkarbesök",
+    price: "995 kr",
+    href: "/mottagningar",
+    description:
+      "Träffa en läkare via videosamtal för medicinsk bedömning, rådgivning och behandling – tryggt och smidigt där du befinner dig.",
+  },
+  {
+    name: "Receptförnyelse",
+    price: "495 kr",
+    href: "/mottagningar",
+    description:
+      "Förnya ett befintligt recept efter en medicinsk bedömning. Vi kontrollerar att behandlingen fortfarande är lämplig och säker för dig.",
+  },
+  {
+    name: "Kolla upp hudförändringar",
+    price: "995 kr",
+    href: "/mottagningar",
+    description:
+      "Få en medicinsk bedömning av en hudförändring via ett digitalt läkarbesök och tydlig vägledning om nästa steg.",
+  },
+  {
+    name: "Hembesök med läkare",
+    price: "Från 1 995 kr",
+    href: "/mottagningar",
+    description:
+      "En läkare kommer hem till dig i Stockholm när du behöver en fysisk undersökning utan att resa till en mottagning.",
+  },
+  {
+    name: "Hälsokontroll",
+    price: "Från 995 kr",
+    href: "/patientavgifter#halsokontroller",
+    description:
+      "Få en personlig genomgång av din hälsa med relevanta kontroller, medicinsk bedömning och tydlig återkoppling från läkare.",
+  },
+  {
+    name: "Vaccination hemma",
+    price: "På förfrågan",
+    href: "/mottagningar#vaccination-hemma",
+    description:
+      "Vi hjälper dig med vaccination i hemmet. Tillgänglighet och pris anpassas efter vaccin, adress och dina behov.",
+  },
+];
+
+function CalendarIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="size-5"
+    >
+      <path d="M8 2v4M16 2v4M3 9h18" />
+      <rect x="3" y="4" width="18" height="18" rx="3" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="size-5"
+    >
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  );
+}
+
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`size-5 shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
 
 export default function HealthPackages() {
+  const [openService, setOpenService] = useState<string | null>(null);
+
   return (
-    <section id="halsokontroller" className="scroll-mt-24 bg-white px-6 py-20">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-12">
-        <div className="flex max-w-2xl flex-col items-center gap-3 text-center">
-          <span className="rounded-full bg-[#E72E8A] px-4 py-1.5 text-[0.75rem] font-bold text-white">
-            HÄLSOKONTROLLER I STOCKHOLM
-          </span>
-          <h2 className="text-[2rem] font-bold tracking-tight text-gray-900 sm:text-[2.4rem]">
-            Välj den nivå som passar dig
-          </h2>
-          <p className="text-[1rem] leading-relaxed text-gray-600">
-            Tre paket gör det enkelt att välja hur omfattande hälsokontroll du vill ha.
-          </p>
-        </div>
-
-        <div className="grid w-full gap-5 md:grid-cols-3">
-          {healthPackages.map((healthPackage) => (
-            <article
-              key={healthPackage.name}
-              className="flex min-h-64 flex-col rounded-3xl border border-gray-100 bg-[#fdf5f9] p-7"
-            >
-              <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-[#D81B7D]">
-                {healthPackage.level}
-              </p>
-              <h3 className="mt-3 text-[1.25rem] font-bold text-gray-900">
-                {healthPackage.name}
-              </h3>
-              <p className="mt-3 flex-1 text-[0.92rem] leading-relaxed text-gray-600">
-                {healthPackage.description}
-              </p>
-              <Link
-                href="/patientavgifter#halsokontroller"
-                className="mt-6 font-semibold text-[#D81B7D] underline decoration-[#E72E8A]/30 underline-offset-4 hover:decoration-[#E72E8A]"
-              >
-                Läs mer om paketet
-              </Link>
-            </article>
-          ))}
-        </div>
-
-        <div className="flex w-full flex-col items-start justify-between gap-5 rounded-3xl bg-[#2b2d3b] p-7 text-white sm:flex-row sm:items-center sm:p-9">
-          <div>
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-pink-300">
-              Vi kommer till dig
-            </p>
-            <h3 className="mt-2 text-[1.35rem] font-bold">Vaccination hemma i Stockholm</h3>
-            <p className="mt-2 max-w-2xl text-[0.92rem] leading-relaxed text-white/70">
-              Boka vaccination i hemmet och slipp resan till mottagningen. Tillgänglighet och pris beror på vaccin och område.
-            </p>
+    <section id="halsokontroller" className="scroll-mt-24 bg-white px-5 py-16 sm:px-6 sm:py-20">
+      <div className="mx-auto max-w-4xl">
+        <div className="overflow-hidden rounded-[2rem] border border-gray-200 bg-[#f7f7f8] shadow-[0_12px_35px_rgba(15,23,42,0.05)]">
+          <div className="border-b border-gray-200 px-6 py-6 sm:px-8">
+            <h2 className="text-[1.45rem] font-bold tracking-tight text-gray-900 sm:text-[1.65rem]">
+              Våra vanligaste tjänster
+            </h2>
           </div>
-          <Link
-            href="/mottagningar#vaccination-hemma"
-            className="btn-cta inline-flex shrink-0 items-center justify-center rounded-full px-7 py-3.5 text-[0.92rem] font-bold"
-          >
-            Läs om vaccination hemma
-          </Link>
+
+          <div>
+            {services.map((service) => {
+              const isOpen = openService === service.name;
+              const panelId = `service-${service.name.toLowerCase().replaceAll(" ", "-")}`;
+
+              return (
+                <article
+                  key={service.name}
+                  className="border-b border-gray-200 last:border-b-0"
+                >
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5 sm:px-8 sm:py-6">
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onClick={() => setOpenService(isOpen ? null : service.name)}
+                      className="group min-w-0 text-left sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6"
+                    >
+                      <span className="flex items-center gap-2 font-medium leading-snug text-gray-900 transition-colors group-hover:text-[#D81B7D] sm:text-[1.08rem]">
+                        {service.name}
+                        <span className="text-[#D81B7D]">
+                          <ChevronIcon open={isOpen} />
+                        </span>
+                      </span>
+                      <span className="mt-1 block text-[0.9rem] font-semibold text-[#D81B7D] sm:mt-0 sm:min-w-32 sm:text-right sm:text-[1rem]">
+                        {service.price}
+                      </span>
+                    </button>
+
+                    <Link
+                      href={service.href}
+                      aria-label={`Boka ${service.name}`}
+                      className="btn-cta inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[0.9rem] font-bold sm:px-6"
+                    >
+                      <CalendarIcon />
+                      Boka
+                    </Link>
+                  </div>
+
+                  <div
+                    id={panelId}
+                    className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="mx-6 border-t border-[#E72E8A]/15 pb-5 pt-4 text-[0.95rem] leading-relaxed text-gray-600 sm:mx-8 sm:max-w-2xl sm:pb-6">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
+
+        <Link
+          href="/mottagningar"
+          className="btn-cta mt-5 flex min-h-14 w-full items-center justify-between rounded-2xl px-6 py-4 text-[1rem] font-bold sm:px-8 sm:text-[1.08rem]"
+        >
+          <span>Se alla tjänster</span>
+          <ArrowIcon />
+        </Link>
       </div>
     </section>
   );
