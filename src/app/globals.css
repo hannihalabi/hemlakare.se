@@ -243,6 +243,151 @@ body {
   }
 }
 
+/* Viewportstyrd vårdresa i "Så fungerar det". */
+.journey-cta {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.65s ease,
+    transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.journey-card {
+  opacity: 0;
+  transform: translate3d(var(--journey-x), 28px, 0) scale(0.96);
+  transition:
+    opacity 0.55s ease,
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.journey-line-progress {
+  transform: scaleY(0);
+  transition: transform 1.55s cubic-bezier(0.4, 0, 0.2, 1) 0.28s;
+}
+
+.journey-icon {
+  opacity: 0;
+  transform: scale(0.55) rotate(-10deg);
+}
+
+.journey-icon::before {
+  position: absolute;
+  inset: -8px;
+  border: 2px solid rgba(240, 82, 158, 0.5);
+  border-radius: inherit;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+}
+
+.journey-section[data-visible="true"] .journey-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.journey-section[data-visible="true"] .journey-cta {
+  transition-delay: 1.15s;
+}
+
+.journey-section[data-visible="true"] .journey-card {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: var(--journey-delay);
+}
+
+.journey-section[data-visible="true"] .journey-line-progress {
+  transform: scaleY(1);
+}
+
+.journey-section[data-visible="true"] .journey-icon {
+  animation: journeyIconReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) var(--journey-icon-delay) both;
+}
+
+.journey-section[data-visible="true"] .journey-icon::before {
+  animation: journeyIconRing 1.05s ease-out calc(var(--journey-icon-delay) + 100ms) both;
+}
+
+.journey-section[data-visible="true"] .journey-orb-one {
+  animation: journeyOrbOne 7s ease-in-out infinite alternate;
+}
+
+.journey-section[data-visible="true"] .journey-orb-two {
+  animation: journeyOrbTwo 8s ease-in-out infinite alternate;
+}
+
+@keyframes journeyIconReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) rotate(-10deg);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes journeyIconRing {
+  0% {
+    opacity: 0.75;
+    transform: scale(0.72);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.42);
+  }
+}
+
+@keyframes journeyOrbOne {
+  to {
+    transform: translate3d(40px, 30px, 0) scale(1.08);
+  }
+}
+
+@keyframes journeyOrbTwo {
+  to {
+    transform: translate3d(-45px, -24px, 0) scale(1.12);
+  }
+}
+
+@media (min-width: 1024px) {
+  .journey-card {
+    transform: translateY(30px) scale(0.96);
+  }
+
+  .journey-line-progress {
+    transform: scaleX(0);
+  }
+
+  .journey-section[data-visible="true"] .journey-line-progress {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-card,
+  .journey-cta,
+  .journey-icon {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none !important;
+  }
+
+  .journey-line-progress {
+    transform: none;
+    transition: none;
+  }
+
+  .journey-icon::before,
+  .journey-orb {
+    animation: none !important;
+  }
+}
+
 /* Lugn, kontinuerlig bläddring för recensionskort på startsidan. */
 @keyframes reviewMarquee {
   from {

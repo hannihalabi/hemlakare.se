@@ -354,7 +354,7 @@ export default function VarforHemlakare() {
 
       <section
         className="relative overflow-x-clip bg-[linear-gradient(180deg,#fff8fb_0%,#fdf1f7_100%)] px-6 pb-20 pt-14 sm:py-24"
-        aria-labelledby="hanni-statement-title"
+        aria-label="Hanni om Hemläkare.se"
       >
         <div className="mx-auto grid max-w-6xl items-end md:grid-cols-[0.9fr_1.2fr]">
           <div className="relative z-10 -mt-32 mx-auto aspect-[1208/1302] w-full max-w-[410px] sm:-mt-36 md:mt-0 md:mx-0">
@@ -385,16 +385,8 @@ export default function VarforHemlakare() {
               aria-hidden="true"
             />
 
-            <p
-              id="hanni-statement-title"
-              className="flex items-center gap-2 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[#d81b7d]"
-            >
-              <span className="size-2 rounded-full bg-[#e72e8a]" aria-hidden="true" />
-              Ett ord från Hanni
-            </p>
-
             <blockquote>
-              <p className="mt-4 text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
+              <p className="text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
                 Privat vård ska inte vara förbehållen några få. Vår innovation gör det
                 möjligt att erbjuda personlig vård för 995 kronor – så att privat vård
                 blir tillgänglig för alla, utan att vi kompromissar med tid, omtanke eller
