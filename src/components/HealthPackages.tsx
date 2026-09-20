@@ -94,6 +94,13 @@ const services: Service[] = [
       "Få en medicinsk bedömning och en individuellt anpassad plan för en trygg och hållbar viktminskning.",
   },
   {
+    name: "Vitamininjektioner",
+    price: "1 495 kr",
+    href: "/mottagningar",
+    description:
+      "Vitamininjektioner ges efter en individuell medicinsk bedömning och anpassas efter dina behov.",
+  },
+  {
     name: "Vaccination hemma",
     price: "Se prislista",
     href: "/mottagningar#vaccination-hemma",
@@ -147,7 +154,7 @@ export default function HealthPackages() {
         <div className="overflow-hidden rounded-[2rem] border border-gray-200 bg-[#f7f7f8] shadow-[0_12px_35px_rgba(15,23,42,0.05)]">
           <div className="border-b border-gray-200 px-5 py-5 sm:px-7">
             <h2 className="text-[1.3rem] font-bold tracking-tight text-gray-900 sm:text-[1.5rem]">
-              Våra vanligaste tjänster
+              Våra populäraste tjänster
             </h2>
           </div>
 
