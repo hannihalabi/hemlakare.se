@@ -34,7 +34,7 @@ const rawVitals: { label: string; angle: number; icon: ReactNode }[] = [
     ),
   },
   {
-    label: "Andningsfrekvens",
+    label: "Andning",
     angle: 60,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -43,7 +43,7 @@ const rawVitals: { label: string; angle: number; icon: ReactNode }[] = [
     ),
   },
   {
-    label: "Hjärtrytm",
+    label: "Hjärta",
     angle: 120,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -62,7 +62,7 @@ const rawVitals: { label: string; angle: number; icon: ReactNode }[] = [
     ),
   },
   {
-    label: "Stressnivå",
+    label: "Stress",
     angle: 240,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -299,8 +299,8 @@ export default function GoHealthRadar() {
 
       {/*
         Textetiketterna ligger i ett EGET lager ovanpå den klippta
-        radarskivan (ingen overflow-hidden här), så ord som "Andningsfrekvens"
-        eller "Hjärtrytm" alltid får plats och kan sticka ut över radarns
+        radarskivan (ingen overflow-hidden här), så etiketter som "Andning"
+        eller "Hjärta" alltid får plats och kan sticka ut över radarns
         kant istället för att klippas av den rundade cirkeln.
       */}
       {vitals.map((vital) => {
