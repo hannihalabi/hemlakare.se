@@ -113,30 +113,32 @@ Arkitekturen i korthet:
   kalendern (och minus egna pågående bokningar). Blockar du tid direkt i
   kalendern (semester, ett hembesök du bokat per telefon) syns det
   automatiskt som upptaget på sajten – ingen dubbel inmatning.
-- **Betalningen** sker inbäddat med Stripes Payment Element. När en patient
-  väljer en tid skapas en tillfällig "hold" (10 minuter) och en Stripe
-  `PaymentIntent`. Bokningen bekräftas och läggs i Google Calendar först när
-  Stripes webhook rapporterar att betalningen lyckats – inte innan.
+- **Betalningen** sker via Stripe Checkout (Stripes hostade betalsida).
+  När en patient väljer en tid skapas en tillfällig "hold" (10 minuter) och
+  patienten skickas till Stripe för att betala – kort, Klarna, Apple/Google
+  Pay m.fl. hanteras helt av Stripe, utan egen redirect-hantering i koden.
+  Bokningen bekräftas och läggs i Google Calendar först när Stripes webhook
+  rapporterar att betalningen lyckats – inte innan.
 
-### 1. Kör databasmigrationen
+### 1. Kör databasmigrationerna
 
 Migrationerna i `db/migrations/` körs manuellt mot Neon-databasen i den
 ordning filerna är numrerade, t.ex. via `psql "$DATABASE_URL" -f db/migrations/0007_bookings.sql`
 eller motsvarande i Neons SQL-editor. `0007_bookings.sql` skapar
 bokningstabellerna och lägger in exempelregler (vardagar 08–17) som bör
-justeras efter vårdgivarens faktiska schema.
+justeras efter vårdgivarens faktiska schema. `0008_bookings_checkout_session.sql`
+byter bokningens Stripe-referenskolumn till Checkout Session (körs efter 0007).
 
 ### 2. Skapa Stripe-nycklar
 
 1. Skapa ett konto på [dashboard.stripe.com](https://dashboard.stripe.com) om
    det inte redan finns ett.
-2. Hämta `STRIPE_SECRET_KEY` och `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` under
-   **Developers → API keys**.
-3. Skapa en webhook (**Developers → Webhooks**) som pekar på
+2. Hämta `STRIPE_SECRET_KEY` under **Developers → API keys**.
+3. Skapa en webhook (**Developers → Webhooks**, eller **Workbench → Webhooks**
+   i den nyare Stripe Dashboard-designen) som pekar på
    `https://<din-domän>/api/booking/webhook` och lyssnar på
-   `payment_intent.succeeded`, `payment_intent.payment_failed` och
-   `payment_intent.canceled`. Kopiera signeringshemligheten till
-   `STRIPE_WEBHOOK_SECRET`.
+   `checkout.session.completed` och `checkout.session.expired`. Kopiera
+   signeringshemligheten till `STRIPE_WEBHOOK_SECRET`.
    - Lokalt kan du i stället köra `stripe listen --forward-to localhost:3000/api/booking/webhook`
      med [Stripe CLI](https://stripe.com/docs/stripe-cli) och använda
      hemligheten den skriver ut.
@@ -172,7 +174,7 @@ gång per vårdgivarkalender.
 | Rutt | Gör |
 | --- | --- |
 | `GET /api/booking/slots?service=<slug>` | Lediga tider för en tjänst |
-| `POST /api/booking/create` | Skapar en hold + `PaymentIntent` för vald tid |
+| `POST /api/booking/create` | Skapar en hold + en Stripe Checkout-session för vald tid |
 | `POST /api/booking/webhook` | Stripe-webhook som bekräftar bokningen och skapar kalenderhändelsen |
 
 ## Var innehållet finns

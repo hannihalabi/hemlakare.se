@@ -4,6 +4,7 @@ import { getSql } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 import { isSlotStillAvailable, BOOKING_HOLD_MINUTES } from "@/lib/booking";
 import { healthcareServicesBySlug } from "@/data/services";
+import { SITE_URL } from "@/lib/site";
 
 function errorResponse(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
@@ -51,39 +52,53 @@ export async function POST(request: Request) {
   const holdExpiresAt = new Date(Date.now() + BOOKING_HOLD_MINUTES * 60 * 1000);
 
   try {
-    const stripe = getStripe();
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: priceOre,
-      currency: "sek",
-      automatic_payment_methods: { enabled: true },
-      receipt_email: payload.patientEmail,
-      metadata: {
-        service_slug: payload.service,
-        start_time: payload.startIso,
-      },
-      description: `${service.name} – ${payload.startIso}`,
-    });
-
+    // Skapar bokningen (pending) FÖRE Stripe-sessionen så vi har ett booking-id
+    // att skicka med som metadata och känna igen i webhooken efteråt.
     // Unik constraint på (start_time) bland pending/confirmed bokningar i DB:n
     // stoppar en race där två patienter skulle hinna boka samma slot samtidigt.
     const rows = await sql`
       insert into bookings (
         service_slug, start_time, end_time, status,
         patient_name, patient_email, patient_phone, notes,
-        stripe_payment_intent_id, hold_expires_at
+        hold_expires_at
       ) values (
         ${payload.service}, ${payload.startIso}::timestamptz, ${availability.endIso}::timestamptz, 'pending',
         ${payload.patientName}, ${payload.patientEmail}, ${payload.patientPhone}, ${payload.notes ?? null},
-        ${paymentIntent.id}, ${holdExpiresAt.toISOString()}::timestamptz
+        ${holdExpiresAt.toISOString()}::timestamptz
       )
       returning id
     `;
+    const bookingId = rows[0].id as string;
 
-    return NextResponse.json({
-      bookingId: rows[0].id,
-      clientSecret: paymentIntent.client_secret,
-      holdExpiresAt: holdExpiresAt.toISOString(),
+    const stripe = getStripe();
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer_email: payload.patientEmail,
+      line_items: [
+        {
+          price_data: {
+            currency: "sek",
+            unit_amount: priceOre,
+            product_data: { name: service.name },
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        booking_id: bookingId,
+        service_slug: payload.service,
+        start_time: payload.startIso,
+      },
+      success_url: `${SITE_URL}/boka/${payload.service}?bokning=klar&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${SITE_URL}/boka/${payload.service}?bokning=avbruten`,
+      expires_at: Math.floor(holdExpiresAt.getTime() / 1000),
     });
+
+    await sql`
+      update bookings set stripe_checkout_session_id = ${session.id}, updated_at = now() where id = ${bookingId}
+    `;
+
+    return NextResponse.json({ checkoutUrl: session.url });
   } catch (error: unknown) {
     const isUniqueViolation = typeof error === "object" && error !== null && "code" in error && (error as { code?: string }).code === "23505";
     if (isUniqueViolation) {

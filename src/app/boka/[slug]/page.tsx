@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -35,7 +36,9 @@ export default async function BookingPage({ params }: PageProps) {
         <p className="mt-2 text-gray-600">{service.cardDescription}</p>
 
         <div className="mt-8">
-          <BookingFlow service={service} />
+          <Suspense fallback={<p className="text-sm text-gray-500">Laddar…</p>}>
+            <BookingFlow service={service} />
+          </Suspense>
         </div>
       </main>
       <Footer />

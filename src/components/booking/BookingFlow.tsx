@@ -1,20 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
+import { useSearchParams } from "next/navigation";
 import type { HealthcareService } from "@/data/services";
 
 type AvailableSlot = { start: string; end: string };
-
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : null;
 
 function formatDayLabel(iso: string) {
   return new Date(iso).toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
@@ -34,9 +24,12 @@ function groupSlotsByDay(slots: AvailableSlot[]): { day: string; slots: Availabl
   return [...groups.entries()].map(([day, daySlots]) => ({ day, slots: daySlots }));
 }
 
-type Step = "pick-time" | "patient-details" | "payment" | "confirmed";
+type Step = "pick-time" | "patient-details";
 
 export default function BookingFlow({ service }: { service: HealthcareService }) {
+  const searchParams = useSearchParams();
+  const bokningStatus = searchParams.get("bokning");
+
   const [step, setStep] = useState<Step>("pick-time");
   const [slots, setSlots] = useState<AvailableSlot[] | null>(null);
   const [slotsError, setSlotsError] = useState<string | null>(null);
@@ -47,11 +40,14 @@ export default function BookingFlow({ service }: { service: HealthcareService })
   const [patientPhone, setPatientPhone] = useState("");
   const [notes, setNotes] = useState("");
 
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    // Efter en betalning (klar eller avbruten) är slotten som valdes inte
+    // längre bokningsbar via denna vy – hämta inte lediga tider i onödan.
+    if (bokningStatus) return;
+
     let cancelled = false;
     fetch(`/api/booking/slots?service=${encodeURIComponent(service.slug)}`)
       .then((res) => {
@@ -67,7 +63,7 @@ export default function BookingFlow({ service }: { service: HealthcareService })
     return () => {
       cancelled = true;
     };
-  }, [service.slug]);
+  }, [service.slug, bokningStatus]);
 
   const dayGroups = useMemo(() => (slots ? groupSlotsByDay(slots) : []), [slots]);
 
@@ -91,31 +87,35 @@ export default function BookingFlow({ service }: { service: HealthcareService })
       const data = await response.json();
       if (!response.ok) {
         setSubmitError(data.error ?? "Något gick fel. Försök igen.");
+        setIsSubmitting(false);
         return;
       }
-      setClientSecret(data.clientSecret);
-      setStep("payment");
+      // Stripe Checkout tar över hela sidan härifrån (kort, Klarna, Apple/Google
+      // Pay m.m.) och skickar patienten tillbaka till success_url/cancel_url.
+      window.location.href = data.checkoutUrl;
     } catch {
       setSubmitError("Något gick fel. Kontrollera din internetanslutning och försök igen.");
-    } finally {
       setIsSubmitting(false);
     }
   }
 
-  if (step === "confirmed") {
+  if (bokningStatus === "klar") {
     return (
       <div className="rounded-2xl border border-pink-100 bg-white p-6 text-center shadow-sm sm:p-8">
         <h2 className="text-xl font-bold text-gray-900">Din bokning är bekräftad</h2>
-        <p className="mt-2 text-gray-600">
-          {selectedSlot ? `${formatDayLabel(selectedSlot.start)} kl. ${formatTimeLabel(selectedSlot.start)}` : ""}
-        </p>
-        <p className="mt-4 text-sm text-gray-500">En bekräftelse skickas till {patientEmail}.</p>
+        <p className="mt-4 text-sm text-gray-500">En bekräftelse skickas till din e-post.</p>
       </div>
     );
   }
 
   return (
     <div className="grid gap-6">
+      {bokningStatus === "avbruten" && (
+        <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Betalningen genomfördes inte och bokningen slutfördes inte. Välj en tid nedan för att försöka igen.
+        </p>
+      )}
+
       {step === "pick-time" && (
         <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
           <h2 className="text-lg font-bold text-gray-900">Välj en tid</h2>
@@ -212,71 +212,11 @@ export default function BookingFlow({ service }: { service: HealthcareService })
               disabled={isSubmitting}
               className="btn-cta mt-2 inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2 text-sm font-bold disabled:opacity-60"
             >
-              {isSubmitting ? "Hämtar betalning…" : "Fortsätt till betalning"}
+              {isSubmitting ? "Skickar vidare till betalning…" : "Fortsätt till betalning"}
             </button>
           </form>
         </section>
       )}
-
-      {step === "payment" && clientSecret && stripePromise && (
-        <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-          <h2 className="text-lg font-bold text-gray-900">Betalning</h2>
-          <p className="mt-1 text-sm text-gray-500">{service.name} · {service.price}</p>
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <PaymentForm onConfirmed={() => setStep("confirmed")} />
-          </Elements>
-        </section>
-      )}
-
-      {step === "payment" && !stripePromise && (
-        <p className="text-sm text-red-600">Betalning kan inte laddas just nu. Kontakta oss för att slutföra bokningen.</p>
-      )}
     </div>
-  );
-}
-
-function PaymentForm({ onConfirmed }: { onConfirmed: () => void }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isPaying, setIsPaying] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handlePay(event: React.FormEvent) {
-    event.preventDefault();
-    if (!stripe || !elements) return;
-    setIsPaying(true);
-    setError(null);
-
-    const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
-
-    if (confirmError) {
-      setError(confirmError.message ?? "Betalningen kunde inte genomföras.");
-      setIsPaying(false);
-      return;
-    }
-
-    if (paymentIntent?.status === "succeeded" || paymentIntent?.status === "processing") {
-      onConfirmed();
-    } else {
-      setError("Betalningen kunde inte bekräftas. Försök igen.");
-      setIsPaying(false);
-    }
-  }
-
-  return (
-    <form onSubmit={handlePay} className="mt-4 grid gap-4">
-      <PaymentElement />
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={!stripe || isPaying}
-        className="btn-cta inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2 text-sm font-bold disabled:opacity-60"
-      >
-        {isPaying ? "Behandlar betalning…" : "Betala och bekräfta bokning"}
-      </button>
-    </form>
   );
 }

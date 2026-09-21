@@ -8,16 +8,22 @@ import { healthcareServicesBySlug } from "@/data/services";
 // Stripe kräver den råa request-bodyn för signaturverifiering.
 export const runtime = "nodejs";
 
-async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
+async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const bookingId = session.metadata?.booking_id;
+  if (!bookingId) {
+    console.error("Webhook: checkout-session saknar booking_id i metadata", session.id);
+    return;
+  }
+
   const sql = getSql();
   const rows = await sql`
     select id, service_slug, start_time, end_time, status, patient_name, patient_email
     from bookings
-    where stripe_payment_intent_id = ${paymentIntent.id}
+    where id = ${bookingId}
   `;
   const booking = rows[0];
   if (!booking) {
-    console.error("Webhook: ingen bokning matchar payment intent", paymentIntent.id);
+    console.error("Webhook: ingen bokning matchar booking_id", bookingId);
     return;
   }
   if (booking.status === "confirmed") return; // redan hanterad (Stripe kan skicka samma event flera gånger)
@@ -47,12 +53,14 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   `;
 }
 
-async function handlePaymentFailedOrCanceled(paymentIntent: Stripe.PaymentIntent) {
+async function handleCheckoutExpired(session: Stripe.Checkout.Session) {
+  const bookingId = session.metadata?.booking_id;
+  if (!bookingId) return;
   const sql = getSql();
   await sql`
     update bookings
-    set status = 'cancelled', updated_at = now()
-    where stripe_payment_intent_id = ${paymentIntent.id} and status = 'pending'
+    set status = 'expired', updated_at = now()
+    where id = ${bookingId} and status = 'pending'
   `;
 }
 
@@ -79,12 +87,11 @@ export async function POST(request: Request) {
 
   try {
     switch (event.type) {
-      case "payment_intent.succeeded":
-        await handlePaymentSucceeded(event.data.object as Stripe.PaymentIntent);
+      case "checkout.session.completed":
+        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
         break;
-      case "payment_intent.payment_failed":
-      case "payment_intent.canceled":
-        await handlePaymentFailedOrCanceled(event.data.object as Stripe.PaymentIntent);
+      case "checkout.session.expired":
+        await handleCheckoutExpired(event.data.object as Stripe.Checkout.Session);
         break;
       default:
         break;
