@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { HealthcareService } from "@/data/services";
 import type { BookingVariant } from "@/data/booking-variants";
 import CalendarTimePicker, { type AvailableSlot } from "@/components/booking/CalendarTimePicker";
@@ -24,6 +24,7 @@ type Props = {
 };
 
 export default function BookingFlow({ service, variants }: Props) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const bokningStatus = searchParams.get("bokning");
 
@@ -177,10 +178,21 @@ export default function BookingFlow({ service, variants }: Props) {
             ) : (
               <span />
             )}
-            <p className="text-sm font-semibold text-gray-500">
+            <p className="hidden text-sm font-semibold text-gray-500 sm:block">
               {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
             </p>
+            <button
+              type="button"
+              aria-label="Avbryt bokning och stäng"
+              onClick={() => router.push(`/${service.slug}`)}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-xl text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+            >
+              ×
+            </button>
           </div>
+          <p className="px-4 pt-2 text-sm font-semibold text-gray-500 sm:hidden">
+            {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
+          </p>
 
           <div className="mx-auto w-full max-w-md flex-1 overflow-y-auto px-4 py-6 sm:px-6">
             <h2 className="mb-4 text-lg font-bold text-gray-900">Välj en tid</h2>
