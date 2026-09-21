@@ -128,6 +128,10 @@ export async function POST(request: Request) {
       // kortare och är det som faktiskt släpper slotten igen om patienten
       // inte betalar – det här är bara Stripes yttre säkerhetsmarginal.
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+      // Visar ett kodfält på Stripes betalsida (t.ex. för HALSA26). Koden
+      // och rabatten (20 %) skapas och förvaltas helt i Stripe Dashboard –
+      // ingen egen valideringslogik behövs här.
+      allow_promotion_codes: true,
     });
 
     await sql`
