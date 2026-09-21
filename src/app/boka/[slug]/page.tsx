@@ -4,17 +4,21 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BookingFlow from "@/components/booking/BookingFlow";
-import { healthcareServices, healthcareServicesBySlug } from "@/data/services";
+import { healthcareServices } from "@/data/services";
+import { bookableServicesBySlug } from "@/data/bookable-services";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
+  // Genererar statiskt bara de publika tjänsterna. Interna testtjänster
+  // (t.ex. /boka/testtjanst) renderas ändå dynamiskt vid anrop eftersom
+  // dynamicParams inte är satt till false.
   return healthcareServices.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = healthcareServicesBySlug.get(slug);
+  const service = bookableServicesBySlug.get(slug);
   if (!service) return {};
   return {
     title: `Boka ${service.name}`,
@@ -24,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BookingPage({ params }: PageProps) {
   const { slug } = await params;
-  const service = healthcareServicesBySlug.get(slug);
+  const service = bookableServicesBySlug.get(slug);
   if (!service) notFound();
 
   return (

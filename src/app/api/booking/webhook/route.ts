@@ -3,7 +3,7 @@ import type Stripe from "stripe";
 import { getSql } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 import { createBookingEvent } from "@/lib/google-calendar";
-import { healthcareServicesBySlug } from "@/data/services";
+import { bookableServicesBySlug } from "@/data/bookable-services";
 
 // Stripe kräver den råa request-bodyn för signaturverifiering.
 export const runtime = "nodejs";
@@ -28,7 +28,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
   if (booking.status === "confirmed") return; // redan hanterad (Stripe kan skicka samma event flera gånger)
 
-  const service = healthcareServicesBySlug.get(booking.service_slug as string);
+  const service = bookableServicesBySlug.get(booking.service_slug as string);
   const summary = `${service?.name ?? booking.service_slug} – ${booking.patient_name}`;
 
   let googleEventId: string | null = null;

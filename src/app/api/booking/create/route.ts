@@ -3,7 +3,7 @@ import { z } from "zod";
 import { getSql } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 import { isSlotStillAvailable, BOOKING_HOLD_MINUTES } from "@/lib/booking";
-import { healthcareServicesBySlug } from "@/data/services";
+import { bookableServicesBySlug } from "@/data/bookable-services";
 import { SITE_URL } from "@/lib/site";
 
 function errorResponse(message: string, status = 400) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     return errorResponse("Ogiltig förfrågan.");
   }
 
-  const service = healthcareServicesBySlug.get(payload.service);
+  const service = bookableServicesBySlug.get(payload.service);
   if (!service) return errorResponse("Tjänsten hittades inte.", 404);
 
   const priceOre = parsePriceToOre(service.price);
