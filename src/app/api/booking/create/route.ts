@@ -91,7 +91,11 @@ export async function POST(request: Request) {
       },
       success_url: `${SITE_URL}/boka/${payload.service}?bokning=klar&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/boka/${payload.service}?bokning=avbruten`,
-      expires_at: Math.floor(holdExpiresAt.getTime() / 1000),
+      // Stripe kräver minst 30 minuter för en Checkout-sessions egen
+      // utgångstid. Vår egen hold i databasen (BOOKING_HOLD_MINUTES) är
+      // kortare och är det som faktiskt släpper slotten igen om patienten
+      // inte betalar – det här är bara Stripes yttre säkerhetsmarginal.
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     });
 
     await sql`
