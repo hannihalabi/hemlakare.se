@@ -98,7 +98,7 @@ export const healthcareServices: HealthcareService[] = [
     price: "995 kr",
     originalPrice: "1 995 kr",
     priceNote: "Kampanjpris för läkarbesöket. Eventuella prover eller andra åtgärder kan tillkomma.",
-    bookingHref: "/mottagningar",
+    bookingHref: "/boka/fysiskt-lakarbesok",
     cardDescription:
       "Träffa en läkare på plats för medicinsk bedömning, kroppsundersökning och tydlig återkoppling. Just nu till kampanjpris 995 kr.",
     highlights: ["Personlig läkarbedömning", "Fysisk undersökning vid behov", "Tydlig plan efter besöket"],
@@ -154,7 +154,7 @@ export const healthcareServices: HealthcareService[] = [
     price: "595 kr",
     originalPrice: "995 kr",
     priceNote: "Kampanjpris för videosamtalet. Eventuella prover eller läkemedel ingår inte.",
-    bookingHref: "/mottagningar",
+    bookingHref: "/boka/digitalt-lakarbesok",
     cardDescription:
       "Träffa en läkare via videosamtal för medicinsk bedömning, rådgivning och behandling – tryggt och smidigt där du befinner dig.",
     highlights: ["Videosamtal med läkare", "Ingen restid", "Råd och plan efter besöket"],
@@ -208,7 +208,7 @@ export const healthcareServices: HealthcareService[] = [
       "Behöver du fortsätta en pågående behandling? En läkare går igenom läkemedlet, din hälsa och hur behandlingen fungerar innan ett eventuellt nytt recept utfärdas.",
     price: "495 kr",
     priceNote: "Avgiften gäller läkarens bedömning. Förnyat recept kan inte garanteras.",
-    bookingHref: "/mottagningar",
+    bookingHref: "/boka/receptfornyelse",
     cardDescription:
       "Förnya ett befintligt recept efter en medicinsk bedömning. Vi kontrollerar att behandlingen fortfarande är lämplig och säker för dig.",
     highlights: ["Bedömning av läkare", "Kontroll av behandling och dos", "Tydlig återkoppling"],
@@ -262,7 +262,7 @@ export const healthcareServices: HealthcareService[] = [
       "Har du upptäckt en ny prick, ett utslag eller en förändring i huden? Via bilder och videosamtal gör läkaren en första bedömning och hjälper dig vidare.",
     price: "695 kr",
     priceNote: "Priset gäller digital läkarbedömning. Provtagning, ingrepp eller specialistbesök ingår inte.",
-    bookingHref: "/mottagningar",
+    bookingHref: "/boka/hudforandringar",
     cardDescription:
       "Få en medicinsk bedömning av en hudförändring via ett digitalt läkarbesök och tydlig vägledning om nästa steg.",
     highlights: ["Bedömning via bilder och video", "Läkare går igenom förändringen", "Råd om fortsatt vård"],
@@ -317,7 +317,7 @@ export const healthcareServices: HealthcareService[] = [
     price: "695 kr/mån",
     originalPrice: "995 kr/mån",
     priceNote: "Läkemedel och eventuell provtagning ingår inte. Behandling och recept förutsätter medicinsk lämplighet.",
-    bookingHref: "/mottagningar",
+    bookingHref: "/boka/medicinsk-viktminskning",
     cardDescription:
       "Få läkarledd behandling med individuellt anpassad plan och löpande digital uppföljning. Läkemedel och eventuell provtagning tillkommer.",
     highlights: ["Individuell läkarbedömning", "Löpande digital uppföljning", "Fokus på hållbara vanor"],

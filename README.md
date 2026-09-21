@@ -21,6 +21,7 @@ patientinformation och en enkel kundservicechatt.
 - Metadata, sitemap och robots.txt för sökmotorer
 - Interaktiv demo av en kundservicechatt
 - Adminpanel för att hantera chattar i demon
+- Bokningsschema med lediga tider och betalning via Stripe (`/boka/[slug]`)
 
 ## Starta lokalt
 
@@ -48,6 +49,9 @@ tecken). Börja med att kopiera `.env.example` till `.env.local` och fyll i
 värdena. Utan dem kan de publika sidorna fortfarande byggas, men admin- och
 chattfunktionerna kan inte logga in.
 
+För bokningsflödet (`/boka/[slug]`) behövs dessutom Stripe- och
+Google Calendar-nycklarna som beskrivs i [Betalning och bokning](#betalning-och-bokning).
+
 ## Vanliga kommandon
 
 | Kommando | Vad det gör |
@@ -74,6 +78,7 @@ byggas.
 | `/aktuellt` | Artiklar och nyheter |
 | `/chatt-demo` | Presentationssida för chattprototypen |
 | `/admin` | Adminpanel med chattinkorg i prototypen |
+| `/boka/[slug]` | Bokningsschema med betalning för en tjänst |
 
 Artiklar, FAQ-svar och delar av vårdguiden har även egna adresser baserade på
 innehållets namn.
@@ -92,6 +97,83 @@ Första lokala inloggningen kräver dessutom en användare i `admin_users`.
 Migrationen skapar tabellen men inget lösenord. Skapa användaren i din lokala
 eller preview-databas med en bcrypt-hash, och använd sedan samma e-postadress
 och lösenord i `/admin`.
+
+## Betalning och bokning
+
+Bokningsschemat (`/boka/[slug]`) visar lediga tider för en tjänst, tar betalt
+med Stripe och bekräftar bokningen först när betalningen har gått igenom.
+
+Arkitekturen i korthet:
+
+- **Reglerna** för när tjänster kan bokas (veckodagar, tider, tjänstlängd)
+  ligger i tabellerna `provider_availability_rules` och `service_durations`
+  i databasen.
+- **Sanningskällan för upptagen tid** är vårdgivarens vanliga Google Calendar.
+  Lediga tider räknas fram som regler minus det som redan är upptaget i
+  kalendern (och minus egna pågående bokningar). Blockar du tid direkt i
+  kalendern (semester, ett hembesök du bokat per telefon) syns det
+  automatiskt som upptaget på sajten – ingen dubbel inmatning.
+- **Betalningen** sker inbäddat med Stripes Payment Element. När en patient
+  väljer en tid skapas en tillfällig "hold" (10 minuter) och en Stripe
+  `PaymentIntent`. Bokningen bekräftas och läggs i Google Calendar först när
+  Stripes webhook rapporterar att betalningen lyckats – inte innan.
+
+### 1. Kör databasmigrationen
+
+Migrationerna i `db/migrations/` körs manuellt mot Neon-databasen i den
+ordning filerna är numrerade, t.ex. via `psql "$DATABASE_URL" -f db/migrations/0007_bookings.sql`
+eller motsvarande i Neons SQL-editor. `0007_bookings.sql` skapar
+bokningstabellerna och lägger in exempelregler (vardagar 08–17) som bör
+justeras efter vårdgivarens faktiska schema.
+
+### 2. Skapa Stripe-nycklar
+
+1. Skapa ett konto på [dashboard.stripe.com](https://dashboard.stripe.com) om
+   det inte redan finns ett.
+2. Hämta `STRIPE_SECRET_KEY` och `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` under
+   **Developers → API keys**.
+3. Skapa en webhook (**Developers → Webhooks**) som pekar på
+   `https://<din-domän>/api/booking/webhook` och lyssnar på
+   `payment_intent.succeeded`, `payment_intent.payment_failed` och
+   `payment_intent.canceled`. Kopiera signeringshemligheten till
+   `STRIPE_WEBHOOK_SECRET`.
+   - Lokalt kan du i stället köra `stripe listen --forward-to localhost:3000/api/booking/webhook`
+     med [Stripe CLI](https://stripe.com/docs/stripe-cli) och använda
+     hemligheten den skriver ut.
+
+### 3. Koppla Google Calendar (engångssetup)
+
+Vårdgivaren loggar aldrig in via sajten – i stället skapas en engångs
+"refresh token" som backend sedan använder för att läsa/skriva i just den
+kalendern.
+
+1. Skapa ett projekt i [Google Cloud Console](https://console.cloud.google.com/),
+   aktivera **Google Calendar API** och skapa OAuth-klientuppgifter av typen
+   "Web application" med redirect-URI `http://localhost:3000/api/auth/google-calendar/callback`
+   (lägg till produktionens URL också när den finns).
+2. Fyll i `GOOGLE_CALENDAR_CLIENT_ID` och `GOOGLE_CALENDAR_CLIENT_SECRET` i
+   `.env.local`.
+3. Logga in med det Google-konto vars kalender ska styra tillgängligheten och
+   godkänn scopet `https://www.googleapis.com/auth/calendar` via Googles
+   [OAuth Playground](https://developers.google.com/oauthplayground) (ange
+   dina egna klientuppgifter under kugghjulet → "Use your own OAuth
+   credentials").
+4. Byt ut den engångskod Playground ger dig mot ett access- och refresh-token
+   och spara refresh-token som `GOOGLE_CALENDAR_REFRESH_TOKEN`.
+5. Sätt `GOOGLE_CALENDAR_ID` till `primary` (standardkalendern för det
+   inloggade kontot) eller till en specifik kalenders id om vårdgivaren har
+   en separat bokningskalender.
+
+Refresh-token upphör inte automatiskt att gälla och behöver bara skapas en
+gång per vårdgivarkalender.
+
+### API-rutter
+
+| Rutt | Gör |
+| --- | --- |
+| `GET /api/booking/slots?service=<slug>` | Lediga tider för en tjänst |
+| `POST /api/booking/create` | Skapar en hold + `PaymentIntent` för vald tid |
+| `POST /api/booking/webhook` | Stripe-webhook som bekräftar bokningen och skapar kalenderhändelsen |
 
 ## Var innehållet finns
 
@@ -130,7 +212,8 @@ Projektet använder:
 
 Artiklarna ligger i dag både som befintligt filinnehåll och i ett CMS-schema i
 databasen. Adminpanelen `/admin` har backend-inloggning, versionshantering,
-granskningsflöde, SEO-statistik och källor. Betalning, bokningsmotor och
+granskningsflöde, SEO-statistik och källor. Bokning och betalning finns för
+tjänster med fast pris (se [Betalning och bokning](#betalning-och-bokning));
 journalintegration ingår ännu inte.
 
 ## Inför produktion
