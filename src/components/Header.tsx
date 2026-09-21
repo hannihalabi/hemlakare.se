@@ -28,13 +28,6 @@ export default function Header() {
     function updateHeader() {
       const currentScrollY = Math.max(window.scrollY, 0);
 
-      if (!window.matchMedia("(max-width: 1279px)").matches) {
-        setHeaderVisible(true);
-        lastScrollY = currentScrollY;
-        frameId = null;
-        return;
-      }
-
       const distance = currentScrollY - lastScrollY;
       const direction = Math.sign(distance);
 
@@ -70,7 +63,7 @@ export default function Header() {
 
   return (
     <div
-      className={`sticky top-0 z-50 w-full transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none xl:translate-y-0 ${
+      className={`sticky top-0 z-50 w-full transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none ${
         headerVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
