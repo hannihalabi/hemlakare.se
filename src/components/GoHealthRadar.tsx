@@ -91,6 +91,8 @@ const vitals: VitalNode[] = rawVitals.map((vital) => ({
 
 /** Radie i procent av containerns halva bredd, från centrum. */
 const NODE_RADIUS = 42;
+/** Etiketterna sitter lite längre ut än ikonerna, radiellt bort från centrum. */
+const LABEL_RADIUS = 51;
 
 function polarToPercent(angleDeg: number, radiusPercent: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
@@ -108,7 +110,7 @@ const ARRIVAL_INTERVAL = SWEEP_DURATION / vitals.length;
 
 export default function GoHealthRadar() {
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[420px] select-none">
+    <div className="relative mx-auto aspect-square w-full max-w-[420px] select-none px-16 sm:px-0">
       <style>{`
         @keyframes gh-sweep-rotate {
           from { transform: rotate(0deg); }
@@ -271,13 +273,14 @@ export default function GoHealthRadar() {
           </div>
         </div>
 
-        {/* Vitalparameter-noder */}
+        {/* Vitalparameter-ikonerna sitter kvar innanför den klippta
+            radarskivan (så de ser ut att "sitta på" radarkanten). */}
         {vitals.map((vital) => {
           const pos = polarToPercent(vital.angle, NODE_RADIUS);
           return (
             <div
               key={vital.label}
-              className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
+              className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
             >
               <div
@@ -289,13 +292,29 @@ export default function GoHealthRadar() {
               >
                 <span className="size-3 sm:size-3.5">{vital.icon}</span>
               </div>
-              <span className="whitespace-nowrap rounded-full bg-[#0e0a22] px-2.5 py-1 text-[0.66rem] font-semibold text-white shadow-[0_2px_10px_rgba(0,0,0,0.35)] ring-1 ring-white/10 sm:text-[0.72rem]">
-                {vital.label}
-              </span>
             </div>
           );
         })}
       </div>
+
+      {/*
+        Textetiketterna ligger i ett EGET lager ovanpå den klippta
+        radarskivan (ingen overflow-hidden här), så ord som "Andningsfrekvens"
+        eller "Hjärtrytm" alltid får plats och kan sticka ut över radarns
+        kant istället för att klippas av den rundade cirkeln.
+      */}
+      {vitals.map((vital) => {
+        const pos = polarToPercent(vital.angle, LABEL_RADIUS);
+        return (
+          <span
+            key={vital.label}
+            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#0e0a22] px-1.5 py-0.5 text-[0.56rem] font-semibold text-white shadow-[0_2px_10px_rgba(0,0,0,0.4)] ring-1 ring-white/10 sm:px-2.5 sm:py-1 sm:text-[0.72rem]"
+            style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+          >
+            {vital.label}
+          </span>
+        );
+      })}
     </div>
   );
 }
