@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import BookingFlow from "@/components/booking/BookingFlow";
 import { healthcareServices } from "@/data/services";
 import { bookableServicesBySlug } from "@/data/bookable-services";
+import { bookingVariantsByService } from "@/data/booking-variants";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -30,6 +31,7 @@ export default async function BookingPage({ params }: PageProps) {
   const { slug } = await params;
   const service = bookableServicesBySlug.get(slug);
   if (!service) notFound();
+  const variants = bookingVariantsByService[slug];
 
   return (
     <>
@@ -41,7 +43,7 @@ export default async function BookingPage({ params }: PageProps) {
 
         <div className="mt-8">
           <Suspense fallback={<p className="text-sm text-gray-500">Laddar…</p>}>
-            <BookingFlow service={service} />
+            <BookingFlow service={service} variants={variants} />
           </Suspense>
         </div>
       </main>

@@ -1,5 +1,6 @@
 import { getSql } from "@/lib/db";
-import { getBusyIntervals } from "@/lib/google-calendar";
+import { getBusyIntervals, createBookingEvent } from "@/lib/google-calendar";
+import { bookableServicesBySlug } from "@/data/bookable-services";
 
 export const BOOKING_HOLD_MINUTES = 10;
 export const SLOT_GRANULARITY_MINUTES = 15;
@@ -170,4 +171,50 @@ export async function isSlotStillAvailable(serviceSlug: string, startIso: string
   if (isBusy) return { ok: false, reason: "Tiden är tyvärr redan bokad." };
 
   return { ok: true, endIso: end.toISOString() };
+}
+
+/**
+ * Markerar en pending bokning som confirmed och skapar Google
+ * Calendar-händelsen. Delas mellan Stripe-webhooken (efter lyckad betalning)
+ * och bokningar som inte kräver förskottsbetalning (t.ex. vaccin med
+ * "från"-pris, där det verkliga priset avgörs vid besöket).
+ */
+export async function confirmBooking(bookingId: string): Promise<void> {
+  const sql = getSql();
+  const rows = await sql`
+    select id, service_slug, variant_label, start_time, end_time, status, patient_name, patient_email
+    from bookings
+    where id = ${bookingId}
+  `;
+  const booking = rows[0];
+  if (!booking) {
+    console.error("confirmBooking: ingen bokning med id", bookingId);
+    return;
+  }
+  if (booking.status === "confirmed") return; // redan hanterad
+
+  const service = bookableServicesBySlug.get(booking.service_slug as string);
+  const variantLabel = booking.variant_label as string | null;
+  const summary = `${service?.name ?? booking.service_slug}${variantLabel ? ` – ${variantLabel}` : ""} – ${booking.patient_name}`;
+
+  let googleEventId: string | null = null;
+  try {
+    googleEventId = await createBookingEvent({
+      summary,
+      description: `Bokad via hemlakare.se.\nPatient: ${booking.patient_name}\nE-post: ${booking.patient_email}${variantLabel ? `\nVal: ${variantLabel}` : ""}`,
+      start: new Date(booking.start_time as string),
+      end: new Date(booking.end_time as string),
+      patientEmail: booking.patient_email as string,
+    });
+  } catch (error) {
+    // Bokningen ska bekräftas även om kalenderhändelsen misslyckas – den
+    // kan läggas till manuellt. Viktigast är att patienten inte tappas.
+    console.error("Kunde inte skapa Google Calendar-händelse för bekräftad bokning", booking.id, error);
+  }
+
+  await sql`
+    update bookings
+    set status = 'confirmed', google_event_id = ${googleEventId}, updated_at = now()
+    where id = ${booking.id}
+  `;
 }

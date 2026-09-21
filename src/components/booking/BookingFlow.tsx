@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { HealthcareService } from "@/data/services";
+import type { BookingVariant } from "@/data/booking-variants";
 
 type AvailableSlot = { start: string; end: string };
 
@@ -24,13 +25,21 @@ function groupSlotsByDay(slots: AvailableSlot[]): { day: string; slots: Availabl
   return [...groups.entries()].map(([day, daySlots]) => ({ day, slots: daySlots }));
 }
 
-type Step = "pick-time" | "patient-details";
+type Step = "pick-variant" | "pick-time" | "patient-details" | "confirmed-without-payment";
 
-export default function BookingFlow({ service }: { service: HealthcareService }) {
+type Props = {
+  service: HealthcareService;
+  /** Om satt måste patienten välja ett av dessa innan tid – t.ex. blodprovspaket eller vaccin. */
+  variants?: BookingVariant[];
+};
+
+export default function BookingFlow({ service, variants }: Props) {
   const searchParams = useSearchParams();
   const bokningStatus = searchParams.get("bokning");
 
-  const [step, setStep] = useState<Step>("pick-time");
+  const [step, setStep] = useState<Step>(variants && variants.length > 0 ? "pick-variant" : "pick-time");
+  const [selectedVariant, setSelectedVariant] = useState<BookingVariant | null>(null);
+
   const [slots, setSlots] = useState<AvailableSlot[] | null>(null);
   const [slotsError, setSlotsError] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<AvailableSlot | null>(null);
@@ -43,10 +52,14 @@ export default function BookingFlow({ service }: { service: HealthcareService })
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const priceLabel = selectedVariant ? selectedVariant.priceLabel : service.price;
+
   useEffect(() => {
-    // Efter en betalning (klar eller avbruten) är slotten som valdes inte
-    // längre bokningsbar via denna vy – hämta inte lediga tider i onödan.
+    // Väntar med att hämta tider tills ett ev. variantval är gjort, och
+    // hämtar inte alls efter en betalning (klar eller avbruten) – slotten
+    // som valdes är inte längre bokningsbar via denna vy.
     if (bokningStatus) return;
+    if (step !== "pick-time") return;
 
     let cancelled = false;
     fetch(`/api/booking/slots?service=${encodeURIComponent(service.slug)}`)
@@ -63,7 +76,7 @@ export default function BookingFlow({ service }: { service: HealthcareService })
     return () => {
       cancelled = true;
     };
-  }, [service.slug, bokningStatus]);
+  }, [service.slug, bokningStatus, step]);
 
   const dayGroups = useMemo(() => (slots ? groupSlotsByDay(slots) : []), [slots]);
 
@@ -77,6 +90,7 @@ export default function BookingFlow({ service }: { service: HealthcareService })
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           service: service.slug,
+          variantSlug: selectedVariant?.slug,
           startIso: selectedSlot.start,
           patientName,
           patientEmail,
@@ -90,6 +104,11 @@ export default function BookingFlow({ service }: { service: HealthcareService })
         setIsSubmitting(false);
         return;
       }
+      if (data.confirmedWithoutPayment) {
+        setStep("confirmed-without-payment");
+        setIsSubmitting(false);
+        return;
+      }
       // Stripe Checkout tar över hela sidan härifrån (kort, Klarna, Apple/Google
       // Pay m.m.) och skickar patienten tillbaka till success_url/cancel_url.
       window.location.href = data.checkoutUrl;
@@ -99,11 +118,15 @@ export default function BookingFlow({ service }: { service: HealthcareService })
     }
   }
 
-  if (bokningStatus === "klar") {
+  if (bokningStatus === "klar" || step === "confirmed-without-payment") {
     return (
       <div className="rounded-2xl border border-pink-100 bg-white p-6 text-center shadow-sm sm:p-8">
         <h2 className="text-xl font-bold text-gray-900">Din bokning är bekräftad</h2>
-        <p className="mt-4 text-sm text-gray-500">En bekräftelse skickas till din e-post.</p>
+        <p className="mt-4 text-sm text-gray-500">
+          {step === "confirmed-without-payment"
+            ? "En bekräftelse skickas till din e-post. Eventuell kostnad stäms av vid besöket."
+            : "En bekräftelse skickas till din e-post."}
+        </p>
       </div>
     );
   }
@@ -116,9 +139,44 @@ export default function BookingFlow({ service }: { service: HealthcareService })
         </p>
       )}
 
+      {step === "pick-variant" && variants && (
+        <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+          <h2 className="text-lg font-bold text-gray-900">Välj alternativ</h2>
+          <div className="mt-4 grid gap-2">
+            {variants.map((variant) => (
+              <button
+                key={variant.slug}
+                type="button"
+                onClick={() => {
+                  setSelectedVariant(variant);
+                  setStep("pick-time");
+                }}
+                className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 px-4 py-3 text-left transition hover:border-pink-200 hover:bg-pink-50"
+              >
+                <span>
+                  <span className="block text-sm font-semibold text-gray-900">{variant.label}</span>
+                  {variant.description && <span className="block text-xs text-gray-500">{variant.description}</span>}
+                </span>
+                <span className="shrink-0 text-sm font-semibold text-[#D81B7D]">{variant.priceLabel}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
       {step === "pick-time" && (
         <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+          {variants && (
+            <button
+              type="button"
+              onClick={() => setStep("pick-variant")}
+              className="mb-2 text-sm text-gray-500 hover:text-gray-700"
+            >
+              ← Välj ett annat alternativ
+            </button>
+          )}
           <h2 className="text-lg font-bold text-gray-900">Välj en tid</h2>
+          {selectedVariant && <p className="mt-1 text-sm text-gray-500">{selectedVariant.label} · {selectedVariant.priceLabel}</p>}
           {slotsError && <p className="mt-3 text-sm text-red-600">{slotsError}</p>}
           {!slots && !slotsError && <p className="mt-3 text-sm text-gray-500">Hämtar lediga tider…</p>}
           {slots && slots.length === 0 && (
@@ -157,7 +215,9 @@ export default function BookingFlow({ service }: { service: HealthcareService })
           <h2 className="mt-2 text-lg font-bold text-gray-900">
             {formatDayLabel(selectedSlot.start)} kl. {formatTimeLabel(selectedSlot.start)}
           </h2>
-          <p className="mt-1 text-sm text-gray-500">{service.name} · {service.price}</p>
+          <p className="mt-1 text-sm text-gray-500">
+            {selectedVariant ? `${service.name} – ${selectedVariant.label}` : service.name} · {priceLabel}
+          </p>
 
           <form
             className="mt-5 grid gap-4"
@@ -205,6 +265,12 @@ export default function BookingFlow({ service }: { service: HealthcareService })
               />
             </label>
 
+            {selectedVariant && !selectedVariant.requiresPayment && (
+              <p className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600">
+                Priset avgörs av vald omfattning och stäms av vid besöket – ingen betalning krävs för att boka tiden.
+              </p>
+            )}
+
             {submitError && <p className="text-sm text-red-600">{submitError}</p>}
 
             <button
@@ -212,7 +278,11 @@ export default function BookingFlow({ service }: { service: HealthcareService })
               disabled={isSubmitting}
               className="btn-cta mt-2 inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2 text-sm font-bold disabled:opacity-60"
             >
-              {isSubmitting ? "Skickar vidare till betalning…" : "Fortsätt till betalning"}
+              {isSubmitting
+                ? "Skickar…"
+                : selectedVariant && !selectedVariant.requiresPayment
+                  ? "Boka tid"
+                  : "Fortsätt till betalning"}
             </button>
           </form>
         </section>

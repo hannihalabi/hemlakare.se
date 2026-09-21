@@ -371,10 +371,10 @@ export const healthcareServices: HealthcareService[] = [
     lead:
       "Injektioner ska användas på rätt indikation. Därför börjar vi med en medicinsk bedömning av symtom, tidigare provsvar och vilken behandling som är lämplig för dig.",
     price: "1 495 kr",
-    priceNote: "Kontakta oss före bokning för besked om vilket preparat och vilken omfattning som erbjuds samt vad som ingår i priset.",
-    bookingHref: "/mottagningar",
+    priceNote: "Priset gäller injektionen. Vilket preparat som är lämpligt bedöms vid bokat besök av vårdpersonal.",
+    bookingHref: "/boka/vitamininjektioner",
     cardDescription:
-      "Vitamininjektioner ges efter en individuell medicinsk bedömning. Kontakta oss för information om preparat och vad som ingår.",
+      "Boka en tid för vitamininjektion. Vårdpersonal går igenom behov och lämpligt preparat vid besöket.",
     highlights: ["Individuell bedömning", "Behandling på medicinsk indikation", "Säker administration"],
     suitableTitle: "När kan injektionsbehandling vara aktuell?",
     suitableIntro:
@@ -405,7 +405,7 @@ export const healthcareServices: HealthcareService[] = [
       "Vi lovar inte ökad energi, stärkt immunförsvar eller andra effekter utan konstaterat medicinskt behov.",
     ],
     faq: [
-      { question: "Vilka vitamininjektioner erbjuder ni?", answer: "Utbud och ordination kan variera. Kontakta oss före bokning för besked om aktuellt preparat och vad som ingår i priset." },
+      { question: "Vilka vitamininjektioner erbjuder ni?", answer: "Utbud och ordination kan variera. Vårdpersonal går igenom vilket preparat som är lämpligt vid det bokade besöket." },
       { question: "Behöver jag ta blodprov först?", answer: "Det beror på symtom, tidigare diagnos och vilket vitamin det gäller. Läkaren avgör om provtagning behövs." },
       { question: "Kan jag boka en injektion utan läkarbedömning?", answer: "Nej, behandlingen ges endast när vården bedömer att den är medicinskt lämplig och säker." },
     ],
@@ -426,7 +426,7 @@ export const healthcareServices: HealthcareService[] = [
       "Välj en hälsokontroll utifrån hur bred analys du önskar. Du ser exakt vilka markörer som ingår i varje paket och får dina provsvar digitalt.",
     price: "Från 995 kr",
     priceNote: "Pris och antal markörer varierar mellan paketen. En hälsokontroll ersätter inte en individuell läkarbedömning vid symtom.",
-    bookingHref: "/patientavgifter#halsokontroller",
+    bookingHref: "/boka/blodprovstagning",
     cardDescription:
       "Välj ett paket utifrån hur omfattande hälsokontroll du önskar. Blodprovstagning och digitala provsvar ingår.",
     highlights: ["Sju tydliga paket", "Från 32 till 66 markörer", "Digitala provsvar"],
@@ -480,9 +480,9 @@ export const healthcareServices: HealthcareService[] = [
       "Få vaccination på en plats som passar dig. Vi hjälper dig att välja rätt vaccin utifrån ålder, hälsa, tidigare doser och eventuell resa.",
     price: "Från 295 kr/dos",
     priceNote: "Priser anges per dos. Hembesöksavgift kan tillkomma och flera vaccin kräver mer än en dos.",
-    bookingHref: "/mottagningar#vaccination-hemma",
+    bookingHref: "/boka/vaccination-hemma",
     cardDescription:
-      "Se vår prislista och kontakta oss så hjälper vi dig att planera och boka vaccination hemma.",
+      "Välj vaccin och boka en tid. Betalning sker inte i förväg – det slutliga priset stäms av vid besöket.",
     highlights: ["Vaccination i hemmet", "Standard- och resevaccin", "Individuell vaccinationsbedömning"],
     suitableTitle: "Vaccination för vardag, säsong och resa",
     suitableIntro:

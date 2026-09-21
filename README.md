@@ -119,15 +119,30 @@ Arkitekturen i korthet:
   Pay m.fl. hanteras helt av Stripe, utan egen redirect-hantering i koden.
   Bokningen bekräftas och läggs i Google Calendar först när Stripes webhook
   rapporterar att betalningen lyckats – inte innan.
+- **Tjänster med varianter** (`src/data/booking-variants.ts`) – just nu
+  blodprovspaket (`blodprovstagning`) och vaccin (`vaccination-hemma`) –
+  visar ett extra steg där patienten väljer alternativ innan tid. Paket med
+  fast pris kräver förskottsbetalning som övriga tjänster. Vaccin har bara
+  "från"-priser (beror på antal doser/hembesöksavgift), så de bokas **utan**
+  förskottsbetalning – bokningen bekräftas direkt och det slutliga priset
+  stäms av vid besöket.
 
 ### 1. Kör databasmigrationerna
 
 Migrationerna i `db/migrations/` körs manuellt mot Neon-databasen i den
 ordning filerna är numrerade, t.ex. via `psql "$DATABASE_URL" -f db/migrations/0007_bookings.sql`
-eller motsvarande i Neons SQL-editor. `0007_bookings.sql` skapar
-bokningstabellerna och lägger in exempelregler (vardagar 08–17) som bör
-justeras efter vårdgivarens faktiska schema. `0008_bookings_checkout_session.sql`
-byter bokningens Stripe-referenskolumn till Checkout Session (körs efter 0007).
+eller motsvarande i Neons SQL-editor.
+
+- `0007_bookings.sql` skapar bokningstabellerna och lägger in exempelregler
+  (vardagar 08–17) som bör justeras efter vårdgivarens faktiska schema.
+- `0008_bookings_checkout_session.sql` byter bokningens Stripe-referenskolumn
+  till Checkout Session.
+- `0009_test_service.sql` lägger till en intern testtjänst (`testtjanst`,
+  10 kr) för att verifiera hela flödet utan att riskera en riktig
+  patientbokning. Kan tas bort igen enligt kommentaren i filen.
+- `0010_booking_variants.sql` lägger till stöd för tjänster med flera
+  bokningsbara varianter (blodprovspaket, vaccin) och tillgänglighetsregler
+  för `blodprovstagning` och `vaccination-hemma`.
 
 ### 2. Skapa Stripe-nycklar
 

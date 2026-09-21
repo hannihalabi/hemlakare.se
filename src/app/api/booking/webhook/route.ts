@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getSql } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
-import { createBookingEvent } from "@/lib/google-calendar";
-import { bookableServicesBySlug } from "@/data/bookable-services";
+import { confirmBooking } from "@/lib/booking";
 
 // Stripe kräver den råa request-bodyn för signaturverifiering.
 export const runtime = "nodejs";
@@ -14,43 +13,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.error("Webhook: checkout-session saknar booking_id i metadata", session.id);
     return;
   }
-
-  const sql = getSql();
-  const rows = await sql`
-    select id, service_slug, start_time, end_time, status, patient_name, patient_email
-    from bookings
-    where id = ${bookingId}
-  `;
-  const booking = rows[0];
-  if (!booking) {
-    console.error("Webhook: ingen bokning matchar booking_id", bookingId);
-    return;
-  }
-  if (booking.status === "confirmed") return; // redan hanterad (Stripe kan skicka samma event flera gånger)
-
-  const service = bookableServicesBySlug.get(booking.service_slug as string);
-  const summary = `${service?.name ?? booking.service_slug} – ${booking.patient_name}`;
-
-  let googleEventId: string | null = null;
-  try {
-    googleEventId = await createBookingEvent({
-      summary,
-      description: `Bokad via hemlakare.se.\nPatient: ${booking.patient_name}\nE-post: ${booking.patient_email}`,
-      start: new Date(booking.start_time as string),
-      end: new Date(booking.end_time as string),
-      patientEmail: booking.patient_email as string,
-    });
-  } catch (error) {
-    // Betalningen har gått igenom – vi får inte tappa bokningen. Bokningen
-    // bekräftas ändå; kalenderhändelsen kan skapas/läggas till manuellt.
-    console.error("Kunde inte skapa Google Calendar-händelse för bekräftad bokning", booking.id, error);
-  }
-
-  await sql`
-    update bookings
-    set status = 'confirmed', google_event_id = ${googleEventId}, updated_at = now()
-    where id = ${booking.id}
-  `;
+  await confirmBooking(bookingId);
 }
 
 async function handleCheckoutExpired(session: Stripe.Checkout.Session) {
