@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import PromoBanner from "./PromoBanner";
 
 const navLinks = [
   { label: "Tjänster", href: "/#halsokontroller" },
@@ -68,11 +69,13 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header
-      className={`sticky top-0 z-50 w-full border-b border-gray-100 bg-white transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none xl:translate-y-0 ${
+    <div
+      className={`sticky top-0 z-50 w-full transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none xl:translate-y-0 ${
         headerVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
+      <PromoBanner />
+      <header className="relative w-full border-b border-gray-100 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 md:gap-2 shrink-0" aria-label="Hemläkare – startsidan">
           <Image
@@ -180,7 +183,8 @@ export default function Header() {
           </a>
         </nav>
       )}
-    </header>
+      </header>
+    </div>
   );
 }
 
