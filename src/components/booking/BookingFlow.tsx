@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { HealthcareService } from "@/data/services";
 import type { BookingVariant } from "@/data/booking-variants";
-
-type AvailableSlot = { start: string; end: string };
+import CalendarTimePicker, { type AvailableSlot } from "@/components/booking/CalendarTimePicker";
 
 function formatDayLabel(iso: string) {
   return new Date(iso).toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
@@ -13,16 +12,6 @@ function formatDayLabel(iso: string) {
 
 function formatTimeLabel(iso: string) {
   return new Date(iso).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
-}
-
-function groupSlotsByDay(slots: AvailableSlot[]): { day: string; slots: AvailableSlot[] }[] {
-  const groups = new Map<string, AvailableSlot[]>();
-  for (const slot of slots) {
-    const dayKey = slot.start.slice(0, 10);
-    if (!groups.has(dayKey)) groups.set(dayKey, []);
-    groups.get(dayKey)!.push(slot);
-  }
-  return [...groups.entries()].map(([day, daySlots]) => ({ day, slots: daySlots }));
 }
 
 type Step = "pick-variant" | "pick-time" | "patient-details" | "confirmed-without-payment";
@@ -77,8 +66,6 @@ export default function BookingFlow({ service, variants }: Props) {
       cancelled = true;
     };
   }, [service.slug, bokningStatus, step]);
-
-  const dayGroups = useMemo(() => (slots ? groupSlotsByDay(slots) : []), [slots]);
 
   async function handleSubmitDetails() {
     if (!selectedSlot) return;
@@ -179,31 +166,17 @@ export default function BookingFlow({ service, variants }: Props) {
           {selectedVariant && <p className="mt-1 text-sm text-gray-500">{selectedVariant.label} · {selectedVariant.priceLabel}</p>}
           {slotsError && <p className="mt-3 text-sm text-red-600">{slotsError}</p>}
           {!slots && !slotsError && <p className="mt-3 text-sm text-gray-500">Hämtar lediga tider…</p>}
-          {slots && slots.length === 0 && (
-            <p className="mt-3 text-sm text-gray-500">Inga lediga tider just nu. Kontakta oss så hjälper vi dig.</p>
+          {slots && (
+            <div className="mt-4">
+              <CalendarTimePicker
+                slots={slots}
+                onSelectSlot={(slot) => {
+                  setSelectedSlot(slot);
+                  setStep("patient-details");
+                }}
+              />
+            </div>
           )}
-          <div className="mt-4 grid gap-5">
-            {dayGroups.map(({ day, slots: daySlots }) => (
-              <div key={day}>
-                <p className="mb-2 text-sm font-semibold capitalize text-gray-700">{formatDayLabel(daySlots[0].start)}</p>
-                <div className="flex flex-wrap gap-2">
-                  {daySlots.map((slot) => (
-                    <button
-                      key={slot.start}
-                      type="button"
-                      onClick={() => {
-                        setSelectedSlot(slot);
-                        setStep("patient-details");
-                      }}
-                      className="rounded-full border border-pink-200 px-4 py-2 text-sm font-semibold text-[#D81B7D] transition hover:bg-pink-50"
-                    >
-                      {formatTimeLabel(slot.start)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
         </section>
       )}
 
