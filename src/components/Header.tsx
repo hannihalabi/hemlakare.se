@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
+  { label: "Tjänster", href: "/#halsokontroller" },
   { label: "Priser & paket", href: "/patientavgifter" },
   { label: "Om oss", href: "/om" },
   { label: "Mottagningar", href: "/mottagningar" },

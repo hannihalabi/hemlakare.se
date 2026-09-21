@@ -59,7 +59,7 @@ const categories = [
       },
       {
         q: "Vilka hälsokontroller erbjuder ni?",
-        a: "Vi erbjuder Hälsokontroll Light, Medium och Premium. Paketen har olika omfattning. Kontakta oss eller se prissidan för aktuellt innehåll och pris.",
+        a: "Vi erbjuder flera blodprovspaket med olika omfattning, från Hälsokontroll Lagom till Kvinna Plus och Man Plus. Se prissidan för antal markörer och aktuellt pris.",
       },
     ],
   },

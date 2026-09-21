@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { articles as aktuelltArticles } from "@/data/articles";
+import { healthcareServices } from "@/data/services";
 import { getPublishedContentSitemapEntriesSafe } from "@/lib/content-server";
 import { SITE_URL } from "@/lib/site";
 
@@ -83,5 +84,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...aktuelltRoutes, ...faqRoutes, ...vardguidenRoutes];
+  const serviceRoutes: MetadataRoute.Sitemap = healthcareServices.map((service) => ({
+    url: `${SITE_URL}/${service.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...aktuelltRoutes, ...faqRoutes, ...vardguidenRoutes];
 }

@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 
 const reviews = [
   {
@@ -127,70 +129,127 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
 
 export default function Omdomen() {
   const marqueeReviews = [...reviews, ...reviews];
+  const sectionRef = useRef<HTMLElement>(null);
+  const [showHoldHint, setShowHoldHint] = useState(false);
+  const [demoPaused, setDemoPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let timers: number[] = [];
+    let wasVisible = false;
+
+    const clearTimers = () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers = [];
+    };
+
+    const playHint = () => {
+      clearTimers();
+      setShowHoldHint(true);
+      setDemoPaused(false);
+
+      timers = [
+        window.setTimeout(() => setDemoPaused(true), 420),
+        window.setTimeout(() => setDemoPaused(false), 1_180),
+        window.setTimeout(() => setShowHoldHint(false), 1_500),
+      ];
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.65;
+
+        if (isVisible && !wasVisible) playHint();
+
+        if (!isVisible && wasVisible) {
+          clearTimers();
+          setShowHoldHint(false);
+          setDemoPaused(false);
+        }
+
+        wasVisible = isVisible;
+      },
+      { threshold: [0, 0.65] },
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+      clearTimers();
+    };
+  }, []);
+
+  const isPaused = demoPaused || userPaused;
 
   return (
-    <section className="overflow-hidden bg-[#fdf5f9] py-20">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6">
-        <h2 className="text-[2rem] sm:text-[2.4rem] font-bold tracking-tight text-gray-900 text-center">
-          Det här säger våra patienter
-        </h2>
+    <section
+      ref={sectionRef}
+      aria-label="Patientrecensioner"
+      className="overflow-hidden bg-[#fdf5f9] py-10 sm:py-14"
+    >
+      <div
+        className="relative w-full overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#e72e8a]"
+        role="group"
+        tabIndex={0}
+        aria-label="Rullande patientrecensioner. Tryck och håll, håll muspekaren över eller håll nere mellanslag för att pausa."
+        onPointerDown={() => setUserPaused(true)}
+        onPointerUp={() => setUserPaused(false)}
+        onPointerCancel={() => setUserPaused(false)}
+        onKeyDown={(event) => {
+          if (event.key === " " || event.key === "Enter") {
+            event.preventDefault();
+            setUserPaused(true);
+          }
+        }}
+        onKeyUp={(event) => {
+          if (event.key === " " || event.key === "Enter") setUserPaused(false);
+        }}
+        onBlur={() => setUserPaused(false)}
+      >
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#fdf5f9] to-transparent sm:w-24" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#fdf5f9] to-transparent sm:w-24" />
 
-        <div className="flex flex-wrap items-center justify-center gap-10">
-          <div className="flex flex-col items-center gap-1">
-            <span
-              className="text-[3rem] font-bold leading-none"
-              style={{ color: "#E72E8A" }}
+        {showHoldHint ? (
+          <span className="review-hold-hint" aria-hidden="true">
+            <svg
+              className="review-hold-icon"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              4,8
-            </span>
-            <Stars />
-            <span className="text-[0.875rem] font-semibold text-gray-700 mt-1">
-              Betyg på Google
-            </span>
-          </div>
+              <path
+                d="M12.25 17.25V7.5a3 3 0 0 1 6 0v7.25-2.5a2.75 2.75 0 0 1 5.5 0v3.5-1.25a2.75 2.75 0 0 1 5.5 0v5.25C29.25 26 25.25 30 19 30h-2.5c-3.1 0-5.45-1.05-7.4-3.35L4.4 21.1a2.7 2.7 0 0 1 4.05-3.55l3.8 4.1v-4.4Z"
+                stroke="currentColor"
+                strokeWidth="2.15"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8.4 8.4 5.75 6.9M9.35 4.7 8.25 1.9M5.1 12.2H2"
+                stroke="#E72E8A"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
+        ) : null}
 
-          <div className="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-4 shadow-sm">
-            <div className="flex gap-0.5" aria-hidden="true">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <svg key={i} width="22" height="22" viewBox="0 0 18 18" fill="none">
-                  <path
-                    d="M9 1.5l2.06 4.18 4.61.67-3.34 3.25.79 4.6L9 11.77l-4.12 2.43.79-4.6L2.33 6.35l4.61-.67L9 1.5Z"
-                    fill="#c0874a"
-                  />
-                </svg>
-              ))}
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-[1.4rem] font-bold text-gray-800">4.9</span>
-              <span className="text-[1rem] font-bold" style={{ color: "#2a7fa8" }}>
-                vården.se
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative w-screen overflow-hidden">
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[#fdf5f9] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[#fdf5f9] to-transparent" />
-
-          <div className="review-marquee-track flex w-max gap-5 px-6">
-            {marqueeReviews.map((review, index) => (
-              <div
-                key={`${review.name}-${index}`}
-                aria-hidden={index >= reviews.length}
-              >
-                <ReviewCard review={review} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <Link
-          href="/recensioner"
-          className="btn-cta px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
+        <div
+          className={`review-marquee-track flex w-max gap-5 px-5 sm:px-6 ${isPaused ? "review-marquee-paused" : ""}`}
         >
-          Se fler recensioner
-        </Link>
+          {marqueeReviews.map((review, index) => (
+            <div
+              key={`${review.name}-${index}`}
+              aria-hidden={index >= reviews.length}
+            >
+              <ReviewCard review={review} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

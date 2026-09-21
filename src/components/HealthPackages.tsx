@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { healthPackages } from "@/data/healthPackages";
+import { healthcareServices, vaccinePriceGroups } from "@/data/services";
 
-type VaccineGroup = {
+type ServiceGroup = {
   category: string;
-  vaccines: { name: string; price: string }[];
+  items: {
+    name: string;
+    price: string;
+    markerCount?: number;
+    markers?: string[];
+  }[];
 };
 
 type Service = {
@@ -13,102 +20,185 @@ type Service = {
   price: string;
   originalPrice?: string;
   href: string;
+  detailHref: string;
   description: string;
-  vaccineGroups?: VaccineGroup[];
+  groups?: ServiceGroup[];
+  note?: string;
 };
 
-const vaccineGroups: VaccineGroup[] = [
+const bloodTestGroups: ServiceGroup[] = [
   {
-    category: "Säsongs- och standardvaccin",
-    vaccines: [
-      { name: "Säsongsinfluensa", price: "Från 460 kr" },
-      { name: "TBE", price: "Från 420 kr" },
-      { name: "Bältros (Shingrix)", price: "Från 2 500 kr" },
-      { name: "RS-virus", price: "Från 2 220 kr" },
-      { name: "HPV", price: "Från 2 395 kr" },
-      { name: "Pneumokocker", price: "Från 995 kr" },
-      { name: "Stelkramp, difteri och kikhosta", price: "Från 450 kr" },
-      { name: "MPR", price: "Från 625 kr" },
-    ],
-  },
-  {
-    category: "Resevaccin",
-    vaccines: [
-      { name: "Hepatit A", price: "Från 495 kr" },
-      { name: "Hepatit B", price: "Från 480 kr" },
-      { name: "Rabies", price: "Från 1 270 kr" },
-      { name: "Tyfoidfeber", price: "Från 530 kr" },
-      { name: "Kolera", price: "Från 520 kr" },
-      { name: "Gula febern", price: "Från 735 kr" },
-      { name: "Japansk encefalit", price: "Från 1 670 kr" },
-      { name: "Dengue", price: "Från 2 140 kr" },
-      { name: "Meningokocker (ACWY/B)", price: "Från 960 kr" },
-    ],
-  },
-  {
-    category: "Barn, graviditet och senior",
-    vaccines: [
-      { name: "Barnvaccinationer", price: "Från 395 kr" },
-      { name: "Vaccination under graviditet", price: "Från 395 kr" },
-      { name: "Seniorvaccinationer 65+", price: "Från 295 kr" },
-    ],
+    category: "Blodprovspaket",
+    items: healthPackages.map((healthPackage) => ({
+      name: healthPackage.name,
+      price: healthPackage.price,
+      markerCount: healthPackage.markers,
+      markers: healthPackage.markerList,
+    })),
   },
 ];
 
-const services: Service[] = [
-  {
-    name: "Fysiskt läkarbesök",
-    price: "995 kr",
-    originalPrice: "1 995 kr",
-    href: "/mottagningar",
-    description:
-      "Läkaren kommer hem till dig i Stockholm för ett fysiskt läkarbesök med medicinsk bedömning och tydlig återkoppling. Just nu till kampanjpris 995 kr.",
-  },
-  {
-    name: "Digitalt läkarbesök",
-    price: "595 kr",
-    originalPrice: "995 kr",
-    href: "/mottagningar",
-    description:
-      "Just nu till kampanjpris 595 kr. Träffa en läkare via videosamtal för medicinsk bedömning, rådgivning och behandling – tryggt och smidigt där du befinner dig.",
-  },
-  {
-    name: "Receptförnyelse",
-    price: "495 kr",
-    href: "/mottagningar",
-    description:
-      "Förnya ett befintligt recept efter en medicinsk bedömning. Vi kontrollerar att behandlingen fortfarande är lämplig och säker för dig.",
-  },
-  {
-    name: "Hudförändringar",
-    price: "695 kr",
-    href: "/mottagningar",
-    description:
-      "Få en medicinsk bedömning av en hudförändring via ett digitalt läkarbesök och tydlig vägledning om nästa steg.",
-  },
-  {
-    name: "Medicinsk viktminskning",
-    price: "Se pris",
-    href: "/mottagningar",
-    description:
-      "Få en medicinsk bedömning och en individuellt anpassad plan för en trygg och hållbar viktminskning.",
-  },
-  {
-    name: "Vitamininjektioner",
-    price: "1 495 kr",
-    href: "/mottagningar",
-    description:
-      "Vitamininjektioner ges efter en individuell medicinsk bedömning och anpassas efter dina behov.",
-  },
-  {
-    name: "Vaccination hemma",
-    price: "Se prislista",
-    href: "/mottagningar#vaccination-hemma",
-    description:
-      "Välj vaccin nedan och kontakta oss så hjälper vi dig att boka vaccination hemma.",
-    vaccineGroups,
-  },
-];
+const markerCategoryOrder = [
+  "Blodsocker",
+  "Blodstatus",
+  "Hjärta och blodfetter",
+  "Hormoner och sköldkörtel",
+  "Lever",
+  "Njurar och elektrolyter",
+  "Vitaminer och mineraler",
+  "Inflammation",
+  "Enzymer och övrigt",
+] as const;
+
+function getMarkerCategory(marker: string): (typeof markerCategoryOrder)[number] {
+  if (["C-peptid", "Glukos", "HbA1c"].includes(marker)) return "Blodsocker";
+  if (
+    [
+      "MCV (medelcellvolym)",
+      "Erytrocyter (EPK)",
+      "Hematokrit (EVF)",
+      "Hemoglobin (Hb)",
+      "MCH (hemoglobinmassa)",
+      "Leukocyter (LPK)",
+      "Trombocyter (TPK)",
+      "Neutrofila granulocyter",
+      "Lymfocyter",
+      "Monocyter",
+      "Eosinofila granulocyter",
+      "Basofila granulocyter",
+      "Retikulocyter",
+      "RDW",
+    ].includes(marker)
+  ) {
+    return "Blodstatus";
+  }
+  if (
+    [
+      "Apo B/Apo A1-kvot",
+      "Apo A1",
+      "Apo B",
+      "HDL-kolesterol",
+      "LDL-kolesterol",
+      "Triglycerider",
+      "Totalkolesterol",
+      "LDL/HDL-kvot",
+      "non-HDL-kolesterol",
+    ].includes(marker)
+  ) {
+    return "Hjärta och blodfetter";
+  }
+  if (
+    [
+      "Kortisol",
+      "Fritt T3",
+      "Fritt T4",
+      "TSH",
+      "Testosteron",
+      "Bioaktivt testosteron",
+      "Östradiol",
+      "LH",
+      "Progesteron",
+      "SHBG",
+      "FSH",
+      "Prolaktin",
+      "PSA",
+      "Fritt PSA",
+    ].includes(marker)
+  ) {
+    return "Hormoner och sköldkörtel";
+  }
+  if (["ALAT", "ALP", "ASAT", "GT", "Albumin", "Bilirubin"].includes(marker)) {
+    return "Lever";
+  }
+  if (
+    [
+      "Cystatin C",
+      "Fosfat",
+      "Kalcium",
+      "Kalium",
+      "Klorid",
+      "Kreatinin",
+      "Natrium",
+      "eGFR (Cystatin C)",
+      "eGFR (Kreatinin)",
+      "Urat",
+      "Urea",
+    ].includes(marker)
+  ) {
+    return "Njurar och elektrolyter";
+  }
+  if (
+    [
+      "D-vitamin",
+      "Ferritin",
+      "Folat",
+      "Järn",
+      "Magnesium",
+      "Transferrin",
+      "Vitamin B12",
+      "Zink",
+    ].includes(marker)
+  ) {
+    return "Vitaminer och mineraler";
+  }
+  if (marker === "CRP") return "Inflammation";
+  return "Enzymer och övrigt";
+}
+
+function MarkerGrid({ markers }: { markers: string[] }) {
+  const groups = markerCategoryOrder
+    .map((category) => ({
+      category,
+      markers: markers.filter((marker) => getMarkerCategory(marker) === category),
+    }))
+    .filter((group) => group.markers.length > 0);
+
+  return (
+    <div className="space-y-4">
+      {groups.map((group) => (
+        <section key={group.category}>
+          <h5 className="mb-2 text-[0.7rem] font-bold uppercase tracking-[0.09em] text-[#D81B7D]">
+            {group.category}
+          </h5>
+          <ul className="grid gap-1.5 sm:grid-cols-2">
+            {group.markers.map((marker) => (
+              <li
+                key={marker}
+                className="rounded-lg border border-pink-100 bg-white px-2.5 py-2 text-[0.8rem] leading-snug text-gray-700 shadow-[0_2px_8px_rgba(15,23,42,0.03)]"
+              >
+                {marker}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+const services: Service[] = healthcareServices.map((service) => ({
+  name: service.name,
+  price:
+    service.slug === "blodprovstagning"
+      ? "Se paket"
+      : service.slug === "vaccination-hemma"
+        ? "Se prislista"
+        : service.price,
+  originalPrice: service.originalPrice,
+  href: service.bookingHref,
+  detailHref: `/${service.slug}`,
+  description: service.cardDescription,
+  groups:
+    service.slug === "blodprovstagning"
+      ? bloodTestGroups
+      : service.slug === "vaccination-hemma"
+        ? vaccinePriceGroups
+        : undefined,
+  note:
+    service.slug === "vaccination-hemma"
+      ? "Frånpriser per dos. Avgift för hembesök kan tillkomma."
+      : undefined,
+}));
 
 function CalendarIcon() {
   return (
@@ -147,6 +237,7 @@ function ChevronIcon({ open }: { open: boolean }) {
 
 export default function HealthPackages() {
   const [openService, setOpenService] = useState<string | null>(null);
+  const [openPackage, setOpenPackage] = useState<string | null>(null);
 
   return (
     <section id="halsokontroller" className="scroll-mt-24 bg-white px-5 py-16 sm:px-6 sm:py-20">
@@ -173,7 +264,10 @@ export default function HealthPackages() {
                       type="button"
                       aria-expanded={isOpen}
                       aria-controls={panelId}
-                      onClick={() => setOpenService(isOpen ? null : service.name)}
+                      onClick={() => {
+                        setOpenService(isOpen ? null : service.name);
+                        setOpenPackage(null);
+                      }}
                       className="group col-span-2 grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-2.5 text-left"
                     >
                       <span className="text-[#D81B7D]">
@@ -211,43 +305,111 @@ export default function HealthPackages() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      {service.vaccineGroups ? (
+                      {service.groups ? (
                         <div className="mx-4 border-t border-[#E72E8A]/15 pb-5 pl-6 pt-3 sm:mx-6 sm:pl-7">
                           <p className="text-[0.875rem] leading-relaxed text-gray-600 sm:text-[0.95rem]">
                             {service.description}
                           </p>
 
                           <div className="mt-4 space-y-5">
-                            {service.vaccineGroups.map((group) => (
+                            {service.groups.map((group) => (
                               <section key={group.category}>
                                 <h4 className="mb-1.5 text-[0.75rem] font-bold uppercase tracking-[0.1em] text-[#D81B7D]">
                                   {group.category}
                                 </h4>
-                                <dl className="divide-y divide-gray-200">
-                                  {group.vaccines.map((vaccine) => (
-                                    <div
-                                      key={vaccine.name}
-                                      className="flex items-start justify-between gap-4 py-2 text-[0.875rem] leading-snug"
-                                    >
-                                      <dt className="text-gray-700">{vaccine.name}</dt>
-                                      <dd className="shrink-0 font-semibold text-gray-900">
-                                        {vaccine.price}
-                                      </dd>
-                                    </div>
-                                  ))}
-                                </dl>
+                                <div className="divide-y divide-gray-200">
+                                  {group.items.map((item) => {
+                                    const packageOpen = openPackage === item.name;
+                                    const packagePanelId = `package-${item.name
+                                      .toLowerCase()
+                                      .replaceAll(" ", "-")}`;
+
+                                    return item.markers ? (
+                                      <div key={item.name}>
+                                        <button
+                                          type="button"
+                                          aria-expanded={packageOpen}
+                                          aria-controls={packagePanelId}
+                                          onClick={() =>
+                                            setOpenPackage(packageOpen ? null : item.name)
+                                          }
+                                          className="group grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2.5 py-3 text-left"
+                                        >
+                                          <span className="text-[#D81B7D]">
+                                            <ChevronIcon open={packageOpen} />
+                                          </span>
+                                          <span className="min-w-0">
+                                            <span className="block text-[0.875rem] font-semibold leading-snug text-gray-800 transition-colors group-hover:text-[#D81B7D]">
+                                              {item.name}
+                                            </span>
+                                            <span className="mt-0.5 block text-[0.75rem] text-gray-500">
+                                              {item.markerCount} markörer
+                                            </span>
+                                          </span>
+                                          <span className="shrink-0 text-[0.875rem] font-bold text-gray-950">
+                                            {item.price}
+                                          </span>
+                                        </button>
+
+                                        <div
+                                          id={packagePanelId}
+                                          className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                                            packageOpen
+                                              ? "grid-rows-[1fr] opacity-100"
+                                              : "grid-rows-[0fr] opacity-0"
+                                          }`}
+                                        >
+                                          <div className="overflow-hidden">
+                                            <div className="mb-3 rounded-2xl border border-pink-100 bg-[#fff8fb] p-3 sm:p-4">
+                                              <p className="mb-4 text-[0.8rem] leading-relaxed text-gray-600">
+                                                Följande {item.markerCount} markörer ingår i paketet:
+                                              </p>
+                                              <MarkerGrid markers={item.markers} />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div
+                                        key={item.name}
+                                        className="flex items-start justify-between gap-4 py-2 text-[0.875rem] leading-snug"
+                                      >
+                                        <span className="text-gray-700">{item.name}</span>
+                                        <span className="shrink-0 font-semibold text-gray-900">
+                                          {item.price}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
                               </section>
                             ))}
                           </div>
 
-                          <p className="mt-4 text-[0.8rem] leading-relaxed text-gray-500">
-                            Frånpriser per dos. Avgift för hembesök kan tillkomma.
-                          </p>
+                          {service.note ? (
+                            <p className="mt-4 text-[0.8rem] leading-relaxed text-gray-500">
+                              {service.note}
+                            </p>
+                          ) : null}
+                          <Link
+                            href={service.detailHref}
+                            className="mt-4 inline-flex items-center gap-1 text-[0.85rem] font-bold text-[#D81B7D] hover:underline"
+                          >
+                            Läs mer om {service.name.toLowerCase()} →
+                          </Link>
                         </div>
                       ) : (
-                        <p className="mx-4 border-t border-[#E72E8A]/15 pb-4 pl-6 pt-3 text-[0.875rem] leading-relaxed text-gray-600 sm:mx-6 sm:max-w-2xl sm:pb-5 sm:pl-7 sm:text-[0.95rem]">
-                          {service.description}
-                        </p>
+                        <div className="mx-4 border-t border-[#E72E8A]/15 pb-4 pl-6 pt-3 sm:mx-6 sm:max-w-2xl sm:pb-5 sm:pl-7">
+                          <p className="text-[0.875rem] leading-relaxed text-gray-600 sm:text-[0.95rem]">
+                            {service.description}
+                          </p>
+                          <Link
+                            href={service.detailHref}
+                            className="mt-3 inline-flex items-center gap-1 text-[0.85rem] font-bold text-[#D81B7D] hover:underline"
+                          >
+                            Läs mer om {service.name.toLowerCase()} →
+                          </Link>
+                        </div>
                       )}
                     </div>
                   </div>

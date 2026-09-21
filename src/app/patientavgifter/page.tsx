@@ -7,11 +7,11 @@ import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Priser och hälsokontroller",
-  description: "Se Hemläkare.se:s lanseringspris, patientavgifter och tre paket för hälsokontroll i Stockholm.",
+  description: "Se Hemläkare.se:s lanseringspris, patientavgifter och paket för hälsokontroll i Stockholm.",
   alternates: { canonical: "/patientavgifter" },
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
-    description: "Se Hemläkare.se:s lanseringspris, patientavgifter och tre paket för hälsokontroll i Stockholm.",
+    description: "Se Hemläkare.se:s lanseringspris, patientavgifter och paket för hälsokontroll i Stockholm.",
     url: `${SITE_URL}/patientavgifter`,
   },
 };
@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     q: "Vilka hälsokontroller erbjuder ni?",
-    a: "Vi erbjuder tre paket: Hälsokontroll Light, Medium och Premium. Kontakta oss för aktuellt innehåll och pris för respektive nivå.",
+    a: "Vi erbjuder flera blodprovspaket med olika omfattning, från Hälsokontroll Lagom till Kvinna Plus och Man Plus. Se paketen nedan för antal markörer och aktuellt pris.",
   },
 ];
 
@@ -222,11 +222,11 @@ export default function PatientavgifterPage() {
           <div className="mx-auto flex max-w-6xl flex-col gap-10">
             <div className="mx-auto flex max-w-2xl flex-col gap-3 text-center">
               <span className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-[#D81B7D]">
-                Tre nivåer
+                Flera nivåer
               </span>
               <h2 className="text-[1.9rem] font-bold text-gray-900">Hälsokontroller</h2>
               <p className="text-[0.95rem] leading-relaxed text-gray-600">
-                Välj Light, Medium eller Premium beroende på hur omfattande genomgång du önskar. Kontakta oss för aktuellt innehåll och pris.
+                Välj paket utifrån hur omfattande genomgång du önskar. Paketen innehåller mellan 32 och 66 hälsomarkörer.
               </p>
             </div>
 
@@ -237,6 +237,9 @@ export default function PatientavgifterPage() {
                     {healthPackage.level}
                   </p>
                   <h3 className="mt-3 text-[1.2rem] font-bold text-gray-900">{healthPackage.name}</h3>
+                  <p className="mt-1 text-[0.85rem] font-semibold text-gray-900">
+                    {healthPackage.markers} markörer · {healthPackage.price}
+                  </p>
                   <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-gray-600">
                     {healthPackage.description}
                   </p>

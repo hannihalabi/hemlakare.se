@@ -387,10 +387,10 @@ export default function VarforHemlakare() {
 
             <blockquote>
               <p className="text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
-                Privat vård ska inte vara förbehållen några få. Vår innovation gör det
-                möjligt att erbjuda personlig vård för 995 kronor – så att privat vård
-                blir tillgänglig för alla, utan att vi kompromissar med tid, omtanke eller
-                kvalitet.
+                I dag är det ofta den med störst plånbok som snabbast får tillgång till
+                privat vård. Det vill vi ändra på. Därför erbjuder vi alla möjligheten att
+                få privatfinansierad och personlig vård för 995 kronor – med tid, omtanke
+                och kvalitet. För ett mer jämställt samhälle.
               </p>
               <footer className="mt-6 flex items-center justify-between gap-2 border-t border-pink-100 pt-4">
                 <div>

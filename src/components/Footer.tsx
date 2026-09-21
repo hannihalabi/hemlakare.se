@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { healthcareServices } from "@/data/services";
 
 const quickLinks = [
   ["Frågor & svar", "/faq"],
@@ -123,7 +124,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="hidden lg:block" />
+        <div className="flex flex-col gap-4">
+          <h3 className="text-[1rem] font-bold">Våra tjänster</h3>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 lg:grid-cols-1">
+            {healthcareServices.map((service) => (
+              <Link
+                key={service.slug}
+                href={`/${service.slug}`}
+                className="text-[0.82rem] text-white/70 transition-colors hover:text-white"
+              >
+                {service.name}
+              </Link>
+            ))}
+          </div>
+        </div>
 
         <div className="flex flex-col gap-5">
           <h3 className="text-[1rem] font-bold">Få mer information</h3>

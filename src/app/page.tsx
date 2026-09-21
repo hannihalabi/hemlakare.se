@@ -30,9 +30,7 @@ const structuredData = {
     { "@type": "MedicalTherapy", name: "Digital konsultation" },
     { "@type": "MedicalTherapy", name: "Hembesök" },
     { "@type": "MedicalTherapy", name: "Vaccination hemma" },
-    { "@type": "MedicalTherapy", name: "Hälsokontroll Light" },
-    { "@type": "MedicalTherapy", name: "Hälsokontroll Medium" },
-    { "@type": "MedicalTherapy", name: "Hälsokontroll Premium" },
+    { "@type": "MedicalTherapy", name: "Blodprovstagning och hälsokontroller" },
     { "@type": "MedicalTherapy", name: "Prickmottagning" },
     { "@type": "MedicalTherapy", name: "Lunchföreläsningar om ungas psykiska hälsa" },
   ],
@@ -69,11 +67,11 @@ export default function Home() {
       <main>
         <Hero />
         <VarforHemlakare />
+        <Omdomen />
         <HurFungerar />
         <HealthPackages />
         <Prickmottagning />
         <Lunchforelasning />
-        <Omdomen />
         <Aktuellt />
       </main>
       <Footer />
