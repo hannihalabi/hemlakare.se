@@ -10,7 +10,7 @@ const article: Article = {
   date: "september 16, 2026",
   publishedAtIso: "2026-09-16",
   image: "/bilder/artiklar/bihaleinflammation-2026-09-16.jpg",
-  imageAlt: "Person hemma som håller handen mot kinden vid besvär som kan förekomma vid bihåleinflammation.",
+  imageAlt: "Person hemma som håller handen mot pannan vid besvär som kan förekomma vid bihåleinflammation.",
   authorName: "Hemläkare.se redaktion",
   targetQuery: "bihåleinflammation symtom behandling",
   excerpt: "Bihåleinflammation kommer ofta i samband med en förkylning och kan ge ansiktsvärk, nästäppa och försämrat luktsinne. De flesta blir bättre utan antibiotika.",
