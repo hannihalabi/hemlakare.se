@@ -25,7 +25,7 @@ export default function Lunchforelasning() {
             />
           </div>
 
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
             <p className="text-[1rem] text-gray-700 leading-relaxed">
               Du som är förälder till barn mellan 6–17 år, kan delta i våra kostnadsfria digitala
               lunchföreläsningar, där du får praktiska tips till hur du kan stärka relationen till

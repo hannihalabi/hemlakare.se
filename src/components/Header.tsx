@@ -27,7 +27,7 @@ export default function Header() {
     function updateHeader() {
       const currentScrollY = Math.max(window.scrollY, 0);
 
-      if (!window.matchMedia("(max-width: 767px)").matches) {
+      if (!window.matchMedia("(max-width: 1279px)").matches) {
         setHeaderVisible(true);
         lastScrollY = currentScrollY;
         frameId = null;
@@ -69,7 +69,7 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b border-gray-100 bg-white transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none md:translate-y-0 ${
+      className={`sticky top-0 z-50 w-full border-b border-gray-100 bg-white transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none xl:translate-y-0 ${
         headerVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -87,7 +87,7 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1" aria-label="Huvudmeny">
+        <nav className="hidden xl:flex items-center gap-1" aria-label="Huvudmeny">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -99,7 +99,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           <a
             href="tel:0108086084"
             className="btn-cta cta-attention flex items-center gap-2 px-5 py-2.5 rounded-full text-[0.875rem] font-semibold text-white transition-all"
@@ -120,7 +120,7 @@ export default function Header() {
           </a>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5 md:hidden">
+        <div className="flex shrink-0 items-center gap-1.5 xl:hidden">
           <a
             href="tel:0108086084"
             className="btn-cta cta-attention flex min-h-10 items-center gap-1.5 rounded-full px-3 text-[0.8rem] font-semibold tracking-[0.01em] text-white"
@@ -147,7 +147,7 @@ export default function Header() {
       {menuOpen && (
         <nav
           id="mobile-menu"
-          className="md:hidden border-t border-gray-100 bg-white px-6 py-4 flex flex-col gap-1"
+          className="xl:hidden border-t border-gray-100 bg-white px-6 py-4 flex flex-col gap-1"
           aria-label="Mobilmeny"
         >
           {navLinks.map((link) => (

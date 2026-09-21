@@ -183,20 +183,20 @@ export default function VarforHemlakare() {
 
   const baseVardcentralStyle: CSSProperties = {
     zIndex: activeComparison === "vardcentral" ? 20 : 10,
-    opacity: activeComparison === "vardcentral" ? 1 : 0.72,
+    opacity: activeComparison === "vardcentral" ? 1 : 0.85,
     transform:
       activeComparison === "vardcentral"
         ? "translateX(-51%) rotate(-1.5deg) scale(1)"
-        : "translateX(-58%) translateY(18px) rotate(-5deg) scale(0.94)",
+        : "translateX(-74%) translateY(26px) rotate(-7deg) scale(0.9)",
   };
 
   const baseHemlakareStyle: CSSProperties = {
     zIndex: activeComparison === "hemlakare" ? 20 : 10,
-    opacity: activeComparison === "hemlakare" ? 1 : 0.72,
+    opacity: activeComparison === "hemlakare" ? 1 : 0.85,
     transform:
       activeComparison === "hemlakare"
         ? "translateX(-49%) rotate(1.5deg) scale(1)"
-        : "translateX(-42%) translateY(18px) rotate(5deg) scale(0.94)",
+        : "translateX(-26%) translateY(26px) rotate(7deg) scale(0.9)",
   };
 
   let vardcentralStyle = baseVardcentralStyle;
@@ -206,25 +206,25 @@ export default function VarforHemlakare() {
     const progress = Math.min(dragOffset / 140, 1);
     vardcentralStyle = {
       zIndex: 10,
-      opacity: 0.72 + progress * 0.28,
-      transform: `translateX(${-58 + progress * 7}%) translateY(${18 * (1 - progress)}px) rotate(${-5 + progress * 3.5}deg) scale(${0.94 + progress * 0.06})`,
+      opacity: 0.85 + progress * 0.15,
+      transform: `translateX(${-74 + progress * 23}%) translateY(${26 * (1 - progress)}px) rotate(${-7 + progress * 5.5}deg) scale(${0.9 + progress * 0.1})`,
     };
     hemlakareStyle = {
       zIndex: 20,
-      opacity: 1 - progress * 0.24,
-      transform: `translateX(calc(-49% + ${dragOffset}px)) rotate(${1.5 + progress * 3.5}deg) scale(${1 - progress * 0.04})`,
+      opacity: 1 - progress * 0.15,
+      transform: `translateX(calc(-49% + ${dragOffset}px)) rotate(${1.5 + progress * 5.5}deg) scale(${1 - progress * 0.1})`,
     };
   } else if (isDragging && activeComparison === "vardcentral" && dragOffset < 0) {
     const progress = Math.min(Math.abs(dragOffset) / 140, 1);
     vardcentralStyle = {
       zIndex: 20,
-      opacity: 1 - progress * 0.24,
-      transform: `translateX(calc(-51% + ${dragOffset}px)) rotate(${-1.5 - progress * 3.5}deg) scale(${1 - progress * 0.04})`,
+      opacity: 1 - progress * 0.15,
+      transform: `translateX(calc(-51% + ${dragOffset}px)) rotate(${-1.5 - progress * 5.5}deg) scale(${1 - progress * 0.1})`,
     };
     hemlakareStyle = {
       zIndex: 10,
-      opacity: 0.72 + progress * 0.28,
-      transform: `translateX(${-42 - progress * 7}%) translateY(${18 * (1 - progress)}px) rotate(${5 - progress * 3.5}deg) scale(${0.94 + progress * 0.06})`,
+      opacity: 0.85 + progress * 0.15,
+      transform: `translateX(${-26 - progress * 23}%) translateY(${26 * (1 - progress)}px) rotate(${7 - progress * 5.5}deg) scale(${0.9 + progress * 0.1})`,
     };
   } else if (isDragging) {
     const resistedOffset = dragOffset * 0.25;
@@ -276,7 +276,7 @@ export default function VarforHemlakare() {
 
         <div className="w-full max-w-4xl">
           <div
-            className="relative h-[420px] touch-pan-y select-none md:hidden"
+            className="relative h-[420px] touch-pan-y select-none sm:h-[360px]"
             role="region"
             aria-roledescription="karusell"
             aria-label="Jämförelse mellan vanlig vårdcentral och Hemläkare.se"
@@ -287,7 +287,7 @@ export default function VarforHemlakare() {
           >
             <ComparisonCard
               type="vardcentral"
-              className={`absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] origin-bottom will-change-transform ${
+              className={`absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] max-w-md origin-bottom will-change-transform sm:h-[330px] ${
                 isDragging
                   ? ""
                   : "transition-[transform,opacity,filter] duration-200 ease-out"
@@ -297,7 +297,7 @@ export default function VarforHemlakare() {
             />
             <ComparisonCard
               type="hemlakare"
-              className={`absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] origin-bottom will-change-transform ${
+              className={`absolute left-1/2 top-1 h-[390px] w-[calc(100%-2rem)] max-w-md origin-bottom will-change-transform sm:h-[330px] ${
                 isDragging
                   ? ""
                   : "transition-[transform,opacity,filter] duration-200 ease-out"
@@ -307,7 +307,7 @@ export default function VarforHemlakare() {
             />
           </div>
 
-          <div className="mt-1 flex items-center justify-center gap-3 text-xs font-medium text-slate-500 md:hidden">
+          <div className="mt-1 flex items-center justify-center gap-3 text-xs font-medium text-slate-500">
             <button
               type="button"
               onClick={() => setActiveComparison("vardcentral")}
@@ -339,14 +339,9 @@ export default function VarforHemlakare() {
             </button>
           </div>
 
-          <p className="mt-2 text-center text-[0.72rem] text-slate-400 md:hidden">
-            Svep åt vänster eller höger för att jämföra
+          <p className="mt-2 text-center text-[0.72rem] text-slate-400">
+            Svep eller klicka på pilarna för att jämföra
           </p>
-
-          <div className="hidden gap-6 md:grid md:grid-cols-2">
-            <ComparisonCard type="vardcentral" />
-            <ComparisonCard type="hemlakare" />
-          </div>
         </div>
 
         </div>

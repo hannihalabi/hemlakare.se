@@ -62,7 +62,7 @@ export default function Prickmottagning() {
 
         <div className="w-full grid lg:grid-cols-2 gap-12 items-center">
           <div className="flex justify-center lg:justify-end">
-            <div className="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] lg:w-[400px] lg:h-[400px] lg:-mt-32">
+            <div className="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] lg:w-[400px] lg:h-[400px]">
               <Image
                 src="/bilder/hud-bild.png"
                 alt="Illustration av prickmottagning"
