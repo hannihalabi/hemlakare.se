@@ -1,10 +1,11 @@
 import { getSql } from "@/lib/db";
 import { getBusyIntervals, createBookingEvent } from "@/lib/google-calendar";
 import { bookableServicesBySlug } from "@/data/bookable-services";
+import { BOOKING_WINDOW_DAYS } from "@/lib/booking-constants";
 
 export const BOOKING_HOLD_MINUTES = 10;
 export const SLOT_GRANULARITY_MINUTES = 15;
-export const BOOKING_WINDOW_DAYS = 21;
+export { BOOKING_WINDOW_DAYS };
 
 type AvailabilityRule = {
   weekday: number;

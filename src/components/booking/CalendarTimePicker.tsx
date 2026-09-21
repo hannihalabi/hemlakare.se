@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export type AvailableSlot = { start: string; end: string };
 
@@ -61,24 +61,41 @@ function groupSlotsByTimeOfDay(slots: AvailableSlot[]): { label: string; slots: 
   return order.filter((label) => groups.has(label)).map((label) => ({ label, slots: groups.get(label)! }));
 }
 
+function Spinner() {
+  return (
+    <span
+      className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-pink-200 border-t-[#D81B7D]"
+      aria-hidden
+    />
+  );
+}
+
 type View = "month" | "day";
 
-export default function CalendarTimePicker({
-  slots,
-  onSelectSlot,
-}: {
-  slots: AvailableSlot[];
+type Props = {
+  slots: AvailableSlot[] | null;
+  slotsError: string | null;
   onSelectSlot: (slot: AvailableSlot) => void;
-}) {
+  /** Hur många dagar framåt som ska gå att bläddra till, oavsett om det finns lediga tider där. */
+  maxDaysAhead: number;
+};
+
+export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, maxDaysAhead }: Props) {
   const today = useMemo(() => {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
     return now;
   }, []);
 
+  const furthestBookableDate = useMemo(() => {
+    const date = new Date(today);
+    date.setDate(date.getDate() + maxDaysAhead);
+    return date;
+  }, [today, maxDaysAhead]);
+
   const slotsByDay = useMemo(() => {
     const map = new Map<string, AvailableSlot[]>();
-    for (const slot of slots) {
+    for (const slot of slots ?? []) {
       const key = dateKey(new Date(slot.start));
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(slot);
@@ -86,26 +103,23 @@ export default function CalendarTimePicker({
     return map;
   }, [slots]);
 
-  const firstAvailableDate = useMemo(() => {
-    if (slots.length === 0) return today;
-    const first = new Date(slots[0].start);
-    first.setHours(0, 0, 0, 0);
-    return first;
-  }, [slots, today]);
-
-  const [visibleMonth, setVisibleMonth] = useState<Date>(() => startOfMonth(firstAvailableDate));
+  const [visibleMonth, setVisibleMonth] = useState<Date>(() => startOfMonth(today));
   const [view, setView] = useState<View>("month");
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-  const lastAvailableDate = useMemo(() => {
-    if (slots.length === 0) return today;
-    const last = new Date(slots[slots.length - 1].start);
-    last.setHours(0, 0, 0, 0);
-    return last;
-  }, [slots, today]);
+  // Om lediga tider dyker upp i en senare månad än den som visas (vanligast
+  // direkt efter första laddningen), hoppar vyn dit automatiskt en gång så
+  // patienten inte behöver klicka fram till första lediga tiden själv.
+  const hasAutoJumped = useRef(false);
+  useEffect(() => {
+    if (hasAutoJumped.current || !slots || slots.length === 0) return;
+    hasAutoJumped.current = true;
+    const first = new Date(slots[0].start);
+    setVisibleMonth((current) => (startOfMonth(first) > current ? startOfMonth(first) : current));
+  }, [slots]);
 
   const canGoToPreviousMonth = startOfMonth(visibleMonth) > startOfMonth(today);
-  const canGoToNextMonth = startOfMonth(visibleMonth) < startOfMonth(lastAvailableDate);
+  const canGoToNextMonth = startOfMonth(visibleMonth) < startOfMonth(furthestBookableDate);
 
   const gridDays = useMemo(() => {
     const monthStart = startOfMonth(visibleMonth);
@@ -126,6 +140,19 @@ export default function CalendarTimePicker({
     [selectedDay, slotsByDay],
   );
   const dayGroups = useMemo(() => groupSlotsByTimeOfDay(daySlots), [daySlots]);
+
+  if (slotsError) {
+    return <p className="text-sm text-red-600">{slotsError}</p>;
+  }
+
+  if (!slots) {
+    return (
+      <div className="flex items-center gap-3 py-6 text-sm text-gray-500">
+        <Spinner />
+        Hämtar lediga tider…
+      </div>
+    );
+  }
 
   if (view === "day" && selectedDay) {
     return (
@@ -176,7 +203,7 @@ export default function CalendarTimePicker({
             aria-label="Föregående månad"
             disabled={!canGoToPreviousMonth}
             onClick={() => setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1))}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] disabled:opacity-30 disabled:hover:bg-transparent"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-lg text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] disabled:opacity-30 disabled:hover:bg-transparent"
           >
             ‹
           </button>
@@ -185,7 +212,7 @@ export default function CalendarTimePicker({
             aria-label="Nästa månad"
             disabled={!canGoToNextMonth}
             onClick={() => setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1))}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] disabled:opacity-30 disabled:hover:bg-transparent"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-lg text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] disabled:opacity-30 disabled:hover:bg-transparent"
           >
             ›
           </button>
@@ -205,7 +232,8 @@ export default function CalendarTimePicker({
           const count = slotsByDay.get(key)?.length ?? 0;
           const isPast = day < today;
           const isToday = isSameDay(day, today);
-          const hasSlots = count > 0 && inCurrentMonth && !isPast;
+          const isBeyondWindow = day > furthestBookableDate;
+          const hasSlots = count > 0 && inCurrentMonth && !isPast && !isBeyondWindow;
 
           return (
             <button

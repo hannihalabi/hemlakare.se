@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import type { HealthcareService } from "@/data/services";
 import type { BookingVariant } from "@/data/booking-variants";
 import CalendarTimePicker, { type AvailableSlot } from "@/components/booking/CalendarTimePicker";
+import { BOOKING_WINDOW_DAYS } from "@/lib/booking-constants";
 
 function formatDayLabel(iso: string) {
   return new Date(iso).toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
@@ -42,6 +43,17 @@ export default function BookingFlow({ service, variants }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const priceLabel = selectedVariant ? selectedVariant.priceLabel : service.price;
+
+  useEffect(() => {
+    // Kalendern täcker hela skärmen som en modal – lås bakgrundsscroll så
+    // inte sidan bakom kan scrolla samtidigt på mobil.
+    if (step !== "pick-time") return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [step]);
 
   useEffect(() => {
     // Väntar med att hämta tider tills ett ev. variantval är gjort, och
@@ -152,32 +164,37 @@ export default function BookingFlow({ service, variants }: Props) {
       )}
 
       {step === "pick-time" && (
-        <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-          {variants && (
-            <button
-              type="button"
-              onClick={() => setStep("pick-variant")}
-              className="mb-2 text-sm text-gray-500 hover:text-gray-700"
-            >
-              ← Välj ett annat alternativ
-            </button>
-          )}
-          <h2 className="text-lg font-bold text-gray-900">Välj en tid</h2>
-          {selectedVariant && <p className="mt-1 text-sm text-gray-500">{selectedVariant.label} · {selectedVariant.priceLabel}</p>}
-          {slotsError && <p className="mt-3 text-sm text-red-600">{slotsError}</p>}
-          {!slots && !slotsError && <p className="mt-3 text-sm text-gray-500">Hämtar lediga tider…</p>}
-          {slots && (
-            <div className="mt-4">
-              <CalendarTimePicker
-                slots={slots}
-                onSelectSlot={(slot) => {
-                  setSelectedSlot(slot);
-                  setStep("patient-details");
-                }}
-              />
-            </div>
-          )}
-        </section>
+        <div className="fixed inset-0 z-50 flex flex-col bg-white">
+          <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 sm:px-6">
+            {variants ? (
+              <button
+                type="button"
+                onClick={() => setStep("pick-variant")}
+                className="inline-flex items-center gap-1 text-sm font-medium text-gray-500 transition hover:text-[#D81B7D]"
+              >
+                ← Välj ett annat alternativ
+              </button>
+            ) : (
+              <span />
+            )}
+            <p className="text-sm font-semibold text-gray-500">
+              {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
+            </p>
+          </div>
+
+          <div className="mx-auto w-full max-w-md flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+            <h2 className="mb-4 text-lg font-bold text-gray-900">Välj en tid</h2>
+            <CalendarTimePicker
+              slots={slots}
+              slotsError={slotsError}
+              maxDaysAhead={BOOKING_WINDOW_DAYS}
+              onSelectSlot={(slot) => {
+                setSelectedSlot(slot);
+                setStep("patient-details");
+              }}
+            />
+          </div>
+        </div>
       )}
 
       {step === "patient-details" && selectedSlot && (
