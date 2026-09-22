@@ -253,7 +253,7 @@ export default function MottagningarPage() {
                 ibland minuter. Du kan även boka digitala möten kvällstid och helger.
               </p>
               <ul className="flex flex-col gap-2">
-                {["Digital läkarkontakt", "Videokonsultation", "Bildanalys (t.ex. hud)", "Receptförnyelse", "Remiss och sjukintyg"].map((item) => (
+                {["Digital läkarkontakt", "Videokonsultation", "Bildanalys (t.ex. hud)", "Remiss och sjukintyg"].map((item) => (
                   <li key={item} className="flex items-center gap-2 text-[0.92rem] text-gray-700">
                     <span
                       className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"

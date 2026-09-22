@@ -271,6 +271,5 @@ function servicePath(slug: string) {
 function getCtaLabel(slug: string) {
   if (slug === "blodprovstagning") return "Se paket och boka";
   if (slug === "vaccination-hemma") return "Fråga om tid";
-  if (slug === "medicinsk-viktminskning") return "Starta din bedömning";
   return "Boka tid";
 }

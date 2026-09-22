@@ -113,7 +113,7 @@ export function createDemoState(now = Date.now()): ChatDemoState {
             "m-1041-1",
             "visitor",
             "Markus Berg",
-            "Ingår receptförnyelse i priset för ett digitalt besök?",
+            "Ingår uppföljning i priset för ett digitalt besök?",
             now - 7 * minute,
             false,
           ),

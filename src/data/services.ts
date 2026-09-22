@@ -114,7 +114,7 @@ export const healthcareServices: HealthcareService[] = [
     steps: [
       { title: "Boka en tid", description: "Välj en tid och lämna kort information om vad du söker för." },
       { title: "Träffa läkaren", description: "Läkaren går igenom symtom och sjukdomshistoria och undersöker det som är relevant." },
-      { title: "Få en plan", description: "Du får råd om behandling och uppföljning. Vid behov diskuteras provtagning, recept eller remiss." },
+      { title: "Få en plan", description: "Du får råd om behandling och uppföljning. Vid behov diskuteras provtagning eller remiss." },
     ],
     scopeTitle: "Det här ingår i besöket",
     scopeIntro:
@@ -123,20 +123,20 @@ export const healthcareServices: HealthcareService[] = [
       "Genomgång av symtom, läkemedel och relevant sjukdomshistoria",
       "Riktad fysisk undersökning utifrån medicinskt behov",
       "Individuell rådgivning och behandlingsplan",
-      "Recept eller remiss när läkaren bedömer att det är medicinskt motiverat",
+      "Remiss när läkaren bedömer att det är medicinskt motiverat",
     ],
     importantTitle: "Bra att veta före besöket",
     important: [
       "Ta gärna fram din aktuella läkemedelslista och tidigare relevanta provsvar.",
-      "Diagnos, recept, provtagning eller remiss kan aldrig garanteras utan avgörs av läkaren.",
+      "Diagnos, provtagning eller remiss kan aldrig garanteras utan avgörs av läkaren.",
       "Vid livshotande symtom ska du ringa 112. För sjukvårdsrådgivning kan du ringa 1177.",
     ],
     faq: [
       { question: "Vad kostar ett fysiskt läkarbesök?", answer: "Besöket kostar just nu 995 kr, jämfört med ordinarie pris 2 790 kr. Eventuella prover, läkemedel eller andra åtgärder kan tillkomma." },
-      { question: "Kan jag få recept eller remiss?", answer: "Ja, om läkaren efter sin bedömning anser att det är medicinskt motiverat. Recept och remiss kan inte garanteras på förhand." },
+      { question: "Kan jag få remiss?", answer: "Ja, om läkaren efter sin bedömning anser att det är medicinskt motiverat. Remiss kan inte garanteras på förhand." },
       { question: "Vad ska jag förbereda?", answer: "Ha gärna legitimation, aktuell läkemedelslista och relevanta tidigare vård- eller provuppgifter tillgängliga." },
     ],
-    relatedSlugs: ["digitalt-lakarbesok", "receptfornyelse", "blodprovstagning"],
+    relatedSlugs: ["digitalt-lakarbesok", "hudforandringar", "blodprovstagning"],
     sources: [
       { label: "1177 – Kroppsundersökning hos läkare", href: "https://www.1177.se/undersokning-behandling/undersokningar-och-provtagning/kroppsundersokningar/kroppsundersokning/" },
     ],
@@ -177,7 +177,6 @@ export const healthcareServices: HealthcareService[] = [
     scopeItems: [
       "Medicinsk bedömning utifrån samtal och synliga symtom",
       "Råd om egenvård och behandling",
-      "Recept när det är medicinskt lämpligt och säkert",
       "Hänvisning till fysisk vård, provtagning eller akut vård när det behövs",
     ],
     importantTitle: "När ska du välja annan vård?",
@@ -188,66 +187,11 @@ export const healthcareServices: HealthcareService[] = [
     ],
     faq: [
       { question: "Vad kostar ett digitalt läkarbesök?", answer: "Besöket kostar just nu 595 kr, jämfört med ordinarie pris 995 kr." },
-      { question: "Kan läkaren skriva recept digitalt?", answer: "Ja, när läkaren bedömer att det är medicinskt lämpligt och har tillräckligt underlag. Vissa läkemedel eller besvär kräver fysisk undersökning." },
       { question: "Vad händer om digital vård inte räcker?", answer: "Läkaren förklarar vilken fortsatt vård som behövs, till exempel ett fysiskt besök, provtagning eller akut bedömning." },
     ],
-    relatedSlugs: ["fysiskt-lakarbesok", "receptfornyelse", "hudforandringar"],
+    relatedSlugs: ["fysiskt-lakarbesok", "hudforandringar", "blodprovstagning"],
     sources: [
       { label: "1177 – Videosamtal med vården", href: "https://www.1177.se/om-1177/nar-du-loggar-in-pa-1177.se/det-har-kan-du-gora-nar-du-loggat-in/kontakta-varden-pa-natet/videosamtal-med-varden/" },
-    ],
-  },
-  {
-    slug: "receptfornyelse",
-    name: "Receptförnyelse",
-    eyebrow: "Medicinsk receptbedömning",
-    seoTitle: "Receptförnyelse online – medicinsk bedömning",
-    metaDescription:
-      "Ansök om receptförnyelse för 495 kr. En läkare bedömer om din befintliga behandling fortfarande är lämplig och säker.",
-    title: "Receptförnyelse med medicinsk trygghet",
-    lead:
-      "Behöver du fortsätta en pågående behandling? En läkare går igenom läkemedlet, din hälsa och hur behandlingen fungerar innan ett eventuellt nytt recept utfärdas.",
-    price: "495 kr",
-    priceNote: "Avgiften gäller läkarens bedömning. Förnyat recept kan inte garanteras.",
-    bookingHref: "/boka/receptfornyelse",
-    cardDescription:
-      "Förnya ett befintligt recept efter en medicinsk bedömning. Vi kontrollerar att behandlingen fortfarande är lämplig och säker för dig.",
-    highlights: ["Bedömning av läkare", "Kontroll av behandling och dos", "Tydlig återkoppling"],
-    suitableTitle: "När kan receptförnyelse passa?",
-    suitableIntro:
-      "Tjänsten gäller i första hand läkemedel du redan använder. Läkaren behöver kunna bedöma effekt, säkerhet och behov av uppföljning.",
-    suitableFor: [
-      "Pågående, väldokumenterad behandling som behöver förnyas",
-      "Läkemedel där dos och effekt varit stabila",
-      "När du kan lämna aktuella uppgifter om hälsa och andra läkemedel",
-      "När det inte finns nya symtom som kräver fysisk undersökning",
-    ],
-    steps: [
-      { title: "Lämna uppgifter", description: "Ange läkemedel, dos, anledning till behandlingen och hur den har fungerat." },
-      { title: "Läkarbedömning", description: "Läkaren bedömer nytta, risker, interaktioner och om uppföljning behövs." },
-      { title: "Besked", description: "Du får besked om recept kan förnyas eller om provtagning eller läkarbesök krävs först." },
-    ],
-    scopeTitle: "Bedömningen omfattar",
-    scopeIntro: "Receptförnyelse är ett medicinskt beslut, inte en automatisk beställning.",
-    scopeItems: [
-      "Kontroll av aktuellt läkemedel och dosering",
-      "Genomgång av effekt, biverkningar och relevanta hälsouppgifter",
-      "Bedömning av behov av provtagning eller annan uppföljning",
-      "Förnyelse när läkaren har tillräckligt underlag och behandlingen är lämplig",
-    ],
-    importantTitle: "Begränsningar och säkerhet",
-    important: [
-      "Vissa läkemedel, bland annat beroendeframkallande eller särskilt reglerade preparat, kräver ofta annan uppföljning och förnyas inte rutinmässigt.",
-      "Nya symtom, ändrad dos eller utebliven effekt kan göra att ett längre eller fysiskt läkarbesök behövs.",
-      "Avgiften avser bedömningen även om läkaren inte kan förnya receptet.",
-    ],
-    faq: [
-      { question: "Är ett nytt recept garanterat?", answer: "Nej. Läkaren måste först bedöma att behandlingen är medicinskt motiverad och säker och att underlaget är tillräckligt." },
-      { question: "Kan alla läkemedel förnyas?", answer: "Nej. Vissa läkemedel kräver fysisk undersökning, provtagning eller uppföljning hos ordinarie behandlande läkare." },
-      { question: "Vad behöver jag uppge?", answer: "Läkemedlets namn och dos, varför du använder det, hur länge du behandlats, effekt, eventuella biverkningar och andra aktuella läkemedel." },
-    ],
-    relatedSlugs: ["digitalt-lakarbesok", "fysiskt-lakarbesok", "blodprovstagning"],
-    sources: [
-      { label: "Läkemedelsverket – Skriva recept", href: "https://www.lakemedelsverket.se/sv/behandling-och-forskrivning/forskrivning/skriva-recept" },
     ],
   },
   {
@@ -299,65 +243,9 @@ export const healthcareServices: HealthcareService[] = [
       { question: "Hur tar jag bra bilder?", answer: "Använd dagsljus, fokusera tydligt och ta både en översiktsbild och en närbild. Lägg gärna en linjal bredvid utan att täcka förändringen." },
       { question: "Vad händer om läkaren är osäker?", answer: "Du får rekommendation om fysisk undersökning, dermatoskopi eller annan fortsatt vård." },
     ],
-    relatedSlugs: ["digitalt-lakarbesok", "fysiskt-lakarbesok", "receptfornyelse"],
+    relatedSlugs: ["digitalt-lakarbesok", "fysiskt-lakarbesok", "blodprovstagning"],
     sources: [
       { label: "1177 – Födelsemärken och hudförändringar", href: "https://www.1177.se/sjukdomar--besvar/hud-har-och-naglar/fodelsemarken-och-hudforandringar/fodelsemarken-leverflackar" },
-    ],
-  },
-  {
-    slug: "medicinsk-viktminskning",
-    name: "Medicinsk viktminskning",
-    eyebrow: "Läkarledd behandling",
-    seoTitle: "Medicinsk viktminskning – läkarledd behandling",
-    metaDescription:
-      "Medicinsk viktminskning med läkarbedömning och digital uppföljning för 695 kr/mån. Individuell plan; läkemedel och provtagning tillkommer.",
-    title: "Medicinsk viktminskning med en plan som följs upp",
-    lead:
-      "Övervikt och obesitas är medicinska tillstånd som kan behöva långsiktig behandling. Du får en individuell läkarbedömning, en realistisk plan och återkommande uppföljning.",
-    price: "695 kr/mån",
-    originalPrice: "995 kr/mån",
-    priceNote: "Läkemedel och eventuell provtagning ingår inte. Behandling och recept förutsätter medicinsk lämplighet.",
-    bookingHref: "/boka/medicinsk-viktminskning",
-    cardDescription:
-      "Få läkarledd behandling med individuellt anpassad plan och löpande digital uppföljning. Läkemedel och eventuell provtagning tillkommer.",
-    highlights: ["Individuell läkarbedömning", "Löpande digital uppföljning", "Fokus på hållbara vanor"],
-    suitableTitle: "Vem kan få medicinsk behandling?",
-    suitableIntro:
-      "Läkaren gör en helhetsbedömning av viktutveckling, hälsa, tidigare försök och möjliga risker. Läkemedel är inte rätt för alla.",
-    suitableFor: [
-      "Dig som lever med övervikt eller obesitas och vill ha medicinskt stöd",
-      "Dig som provat livsstilsförändringar men behöver mer strukturerad hjälp",
-      "Dig som kan delta i regelbunden uppföljning av effekt och biverkningar",
-      "Dig som vill kombinera medicinsk behandling med hållbara förändringar i vardagen",
-    ],
-    steps: [
-      { title: "Medicinsk kartläggning", description: "Vi går igenom viktutveckling, levnadsvanor, sjukdomar, läkemedel och tidigare behandlingar." },
-      { title: "Individuell plan", description: "Läkaren bedömer om provtagning eller läkemedel är aktuellt och sätter mål tillsammans med dig." },
-      { title: "Regelbunden uppföljning", description: "Effekt, mående och eventuella biverkningar följs upp och planen justeras vid behov." },
-    ],
-    scopeTitle: "Ett program med medicinsk uppföljning",
-    scopeIntro: "Behandlingen utgår från din hälsa – inte från en snabb standardlösning.",
-    scopeItems: [
-      "Medicinsk bedömning av förutsättningar och riskfaktorer",
-      "Individuell plan för matvanor, rörelse, sömn och återhämtning",
-      "Bedömning av läkemedelsbehandling när det är relevant",
-      "Uppföljning av resultat, tolerans och fortsatt behandlingsbehov",
-    ],
-    importantTitle: "Viktigt om läkemedelsbehandling",
-    important: [
-      "Receptbelagda viktläkemedel skrivs bara ut efter individuell medicinsk bedömning och kan ha biverkningar och kontraindikationer.",
-      "Läkemedelskostnad och eventuell provtagning betalas separat.",
-      "Resultat varierar. Behandlingen behöver följas upp och kan behöva avslutas eller ändras om nyttan inte överväger riskerna.",
-    ],
-    faq: [
-      { question: "Vad ingår i månadspriset?", answer: "Månadspriset 695 kr avser det läkarledda programmet och digital uppföljning. Läkemedel och eventuell provtagning tillkommer." },
-      { question: "Får alla viktläkemedel?", answer: "Nej. Läkaren bedömer bland annat hälsa, viktrelaterade risker, andra läkemedel och kontraindikationer innan eventuell förskrivning." },
-      { question: "Hur länge pågår behandlingen?", answer: "Det varierar. Viktbehandling är ofta långsiktig och fortsättning avgörs utifrån effekt, säkerhet och din individuella plan." },
-    ],
-    relatedSlugs: ["blodprovstagning", "digitalt-lakarbesok", "fysiskt-lakarbesok"],
-    sources: [
-      { label: "1177 – Obesitas hos vuxna", href: "https://www.1177.se/sjukdomar--besvar/hormoner/obesitas--fetma-och-overvikt/obesitas--fetma-och-overvikt-hos-vuxna/" },
-      { label: "Socialstyrelsen – Riktlinjer för vård vid obesitas", href: "https://www.socialstyrelsen.se/kunskapsstod-och-regler/regler-och-riktlinjer/nationella-riktlinjer/riktlinjer-och-utvarderingar/obesitas/om-riktlinjerna-for-patienter/" },
     ],
   },
   {
@@ -463,7 +351,7 @@ export const healthcareServices: HealthcareService[] = [
       { question: "Behöver jag fasta före provtagningen?", answer: "Det beror på vilka analyser som ingår. Följ alltid de förberedelseinstruktioner du får inför just ditt prov." },
       { question: "Ingår läkarutlåtande?", answer: "Innehållet kan variera mellan paketen. Kontrollera paketinformationen vid bokning och boka läkarbesök om du behöver en medicinsk helhetsbedömning." },
     ],
-    relatedSlugs: ["fysiskt-lakarbesok", "medicinsk-viktminskning", "vitamininjektioner"],
+    relatedSlugs: ["fysiskt-lakarbesok", "digitalt-lakarbesok", "vitamininjektioner"],
     sources: [
       { label: "1177 – Blodprov", href: "https://www.1177.se/undersokning-behandling/undersokningar-och-provtagning/provtagning-och-matningar/blodprov/" },
     ],

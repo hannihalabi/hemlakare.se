@@ -64,14 +64,6 @@ const reviews = [
     color: "#7a6a2e",
   },
   {
-    initials: "K",
-    name: "Karin H.",
-    quote: "Äntligen en vårdcentral utan timslånga väntetider i telefon. Allt sker online, smidigt och enkelt. Läkaren svarade samma dag och skickade recept direkt till apoteket.",
-    source: "Google",
-    bg: "#e8d4d4",
-    color: "#7a2e2e",
-  },
-  {
     initials: "T",
     name: "Thomas R.",
     quote: "Väldigt imponerad av servicen. Min dotter fick hjälp med sin allergi snabbt och smidigt via videosamtal. Slapp ta ledigt från jobbet. Det här är framtidens vård.",

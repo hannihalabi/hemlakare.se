@@ -80,10 +80,6 @@ const categories = [
         a: "Ja, vi erbjuder vaccination hemma i Stockholm. Tillgänglighet och pris beror på vilket vaccin du behöver, var i området du bor och hur många som ska vaccineras.",
       },
       {
-        q: "Kan jag få recept digitalt?",
-        a: "Ja, läkaren kan förnya eller utfärda recept direkt online. Receptet skickas digitalt till valfritt apotek.",
-      },
-      {
         q: "Hur begär jag en remiss?",
         a: "Kontakta oss online om varför du behöver remiss. Läkaren bedömer och utfärdar remissen digitalt om det är medicinskt motiverat.",
       },

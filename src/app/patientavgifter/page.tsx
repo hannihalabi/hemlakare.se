@@ -56,7 +56,6 @@ const fees = [
     desc: "Läkaren kommer hem till dig i Stockholm",
   },
   { type: "Digitalt läkarbesök", price: "595 kr", desc: "Läkare via videosamtal" },
-  { type: "Receptförnyelse", price: "495 kr", desc: "Medicinsk bedömning av receptet" },
   { type: "Hudförändringar", price: "695 kr", desc: "Digital läkarbedömning av hudbesvär" },
   { type: "Hälsokontroll", price: "Från 995 kr", desc: "Hälsokontroller med blodprov" },
   { type: "Vaccination hemma", price: "Från 295 kr/dos", desc: "Priset beror på vaccin – hembesöksavgift kan tillkomma" },
