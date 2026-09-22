@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export type AvailableSlot = { start: string; end: string };
 
@@ -193,29 +193,85 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1));
   };
 
-  // Vertikal swipe: dra uppåt → föregående månad, dra nedåt → nästa månad.
+  // Vertikal swipe: dra uppåt → nästa månad, dra nedåt → föregående månad.
+  // Ligger som en native (icke-passiv) touchmove-lyssnare eftersom vi måste
+  // kunna avbryta sidans egen scroll så draget känns som att bläddra kalendern
+  // och inte scrollar iväg sidan under fingret.
+  const swipeAreaRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef<number | null>(null);
+  const swipeLockedAxis = useRef<"vertical" | "horizontal" | null>(null);
   const [swipeHint, setSwipeHint] = useState<"up" | "down" | null>(null);
   const SWIPE_THRESHOLD = 48;
+  const AXIS_LOCK_THRESHOLD = 8;
 
-  const handleTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
-    touchStartY.current = e.touches[0].clientY;
-  };
-  const handleTouchMove = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (touchStartY.current == null) return;
-    const delta = e.touches[0].clientY - touchStartY.current;
-    if (delta > 12) setSwipeHint("down");
-    else if (delta < -12) setSwipeHint("up");
-    else setSwipeHint(null);
-  };
-  const handleTouchEnd = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (touchStartY.current == null) return;
-    const delta = e.changedTouches[0].clientY - touchStartY.current;
-    if (delta <= -SWIPE_THRESHOLD) goToNextMonth();
-    else if (delta >= SWIPE_THRESHOLD) goToPreviousMonth();
-    touchStartY.current = null;
-    setSwipeHint(null);
-  };
+  const canGoToPreviousMonthRef = useRef(canGoToPreviousMonth);
+  const canGoToNextMonthRef = useRef(canGoToNextMonth);
+  const goToPreviousMonthRef = useRef(goToPreviousMonth);
+  const goToNextMonthRef = useRef(goToNextMonth);
+  useEffect(() => {
+    canGoToPreviousMonthRef.current = canGoToPreviousMonth;
+    canGoToNextMonthRef.current = canGoToNextMonth;
+    goToPreviousMonthRef.current = goToPreviousMonth;
+    goToNextMonthRef.current = goToNextMonth;
+  });
+
+  useEffect(() => {
+    const el = swipeAreaRef.current;
+    if (!el) return;
+
+    let startX = 0;
+
+    const onStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+      startX = e.touches[0].clientX;
+      swipeLockedAxis.current = null;
+    };
+
+    const onMove = (e: TouchEvent) => {
+      if (touchStartY.current == null) return;
+      const deltaY = e.touches[0].clientY - touchStartY.current;
+      const deltaX = e.touches[0].clientX - startX;
+
+      if (!swipeLockedAxis.current) {
+        if (Math.abs(deltaY) < AXIS_LOCK_THRESHOLD && Math.abs(deltaX) < AXIS_LOCK_THRESHOLD) return;
+        swipeLockedAxis.current = Math.abs(deltaY) > Math.abs(deltaX) ? "vertical" : "horizontal";
+      }
+      if (swipeLockedAxis.current !== "vertical") return;
+
+      // Blockera sidans scroll så länge vi tolkar detta som en kalender-swipe.
+      e.preventDefault();
+
+      if (deltaY < -12 && canGoToNextMonthRef.current) setSwipeHint("up");
+      else if (deltaY > 12 && canGoToPreviousMonthRef.current) setSwipeHint("down");
+      else setSwipeHint(null);
+    };
+
+    const onEnd = (e: TouchEvent) => {
+      if (touchStartY.current == null) return;
+      const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+      if (swipeLockedAxis.current === "vertical") {
+        if (deltaY <= -SWIPE_THRESHOLD) goToNextMonthRef.current();
+        else if (deltaY >= SWIPE_THRESHOLD) goToPreviousMonthRef.current();
+      }
+      touchStartY.current = null;
+      swipeLockedAxis.current = null;
+      setSwipeHint(null);
+    };
+
+    el.addEventListener("touchstart", onStart, { passive: true });
+    el.addEventListener("touchmove", onMove, { passive: false });
+    el.addEventListener("touchend", onEnd, { passive: true });
+    el.addEventListener("touchcancel", onEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener("touchstart", onStart);
+      el.removeEventListener("touchmove", onMove);
+      el.removeEventListener("touchend", onEnd);
+      el.removeEventListener("touchcancel", onEnd);
+    };
+  }, []);
+
+  const [demoBookedDialogDay, setDemoBookedDialogDay] = useState<Date | null>(null);
 
   const gridDays = useMemo(() => {
     const monthStart = startOfMonth(visibleMonth);
@@ -310,12 +366,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
         </div>
       </div>
 
-      <div
-        className="relative touch-pan-x"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      <div ref={swipeAreaRef} className="relative touch-pan-x">
         {canGoToPreviousMonth && (
           <div
             className={[
@@ -375,8 +426,22 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
                 )}
                 {showDemoBookedBadge && (
                   <span
-                    className="absolute -right-1 -top-1 rounded-full border border-gray-100 bg-white px-1 text-[0.55rem] font-bold leading-tight text-gray-400 shadow-sm"
+                    role="button"
+                    tabIndex={0}
                     title="Antal bokade patienter denna dag"
+                    aria-label={`${demoBookedCountForPastDay(key)} bokade patienter ${formatDayHeading(day).toLowerCase()}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDemoBookedDialogDay(day);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key !== "Enter" && e.key !== " ") return;
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setDemoBookedDialogDay(day);
+                    }}
+                    className="hl-booked-badge absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[0.62rem] font-extrabold leading-none text-white shadow-[0_3px_10px_-2px_rgba(216,27,125,0.75)] ring-2 ring-white transition hover:scale-110 active:scale-95"
+                    style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 60%, #a71668 100%)" }}
                   >
                     {demoBookedCountForPastDay(key)}
                   </span>
@@ -407,16 +472,63 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
         <p className="mt-4 text-sm text-gray-500">Inga lediga tider just nu. Kontakta oss så hjälper vi dig.</p>
       )}
 
+      {demoBookedDialogDay && (
+        <div
+          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 p-4 sm:items-center"
+          role="presentation"
+          onClick={() => setDemoBookedDialogDay(null)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="hl-booked-dialog-title"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-[0_24px_60px_-20px_rgba(15,23,42,0.35)]"
+          >
+            <span
+              className="mx-auto flex h-14 w-14 items-center justify-center rounded-full text-xl font-extrabold text-white shadow-[0_10px_26px_-8px_rgba(216,27,125,0.7)]"
+              style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 60%, #a71668 100%)" }}
+              aria-hidden
+            >
+              {demoBookedCountForPastDay(dateKey(demoBookedDialogDay))}
+            </span>
+            <h4 id="hl-booked-dialog-title" className="mt-4 text-base font-bold text-gray-900">
+              {formatDayHeading(demoBookedDialogDay)}
+            </h4>
+            <p className="mt-2 text-sm leading-relaxed text-gray-600">
+              Vi hade{" "}
+              <strong className="font-bold text-gray-900">
+                {demoBookedCountForPastDay(dateKey(demoBookedDialogDay))} bokade patienter
+              </strong>{" "}
+              den här dagen.
+            </p>
+            <button
+              type="button"
+              onClick={() => setDemoBookedDialogDay(null)}
+              className="btn-cta mt-5 inline-flex h-11 w-full items-center justify-center rounded-full text-sm font-bold text-white"
+            >
+              Stäng
+            </button>
+          </div>
+        </div>
+      )}
+
       <style>{`
         @keyframes hl-swipe-bob {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(3px); }
         }
+        @keyframes hl-booked-glow {
+          0%, 100% { box-shadow: 0 3px 10px -2px rgba(216,27,125,0.75); }
+          50% { box-shadow: 0 3px 16px 1px rgba(216,27,125,0.95); }
+        }
         .hl-swipe-hint-up span { animation: hl-swipe-bob 1.6s ease-in-out infinite reverse; }
         .hl-swipe-hint-down span { animation: hl-swipe-bob 1.6s ease-in-out infinite; }
+        .hl-booked-badge { animation: hl-booked-glow 2.4s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
           .hl-swipe-hint-up span,
-          .hl-swipe-hint-down span {
+          .hl-swipe-hint-down span,
+          .hl-booked-badge {
             animation: none !important;
           }
         }
