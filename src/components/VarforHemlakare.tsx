@@ -382,11 +382,11 @@ export default function VarforHemlakare() {
 
             <blockquote>
               <p className="text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
-                Privat vård ska inte vara en fråga om plånbok. Därför erbjuder vi
-                personlig, privatfinansierad vård till en rimlig kostnad – utan att
-                kompromissa med tid, omtanke eller kvalitet. Vårt fokus är förebyggande
-                vård: genom att följa blodtryck och andra riskfaktorer kan
-                hjärt-kärlsjukdom upptäckas och åtgärdas i tid.
+                Många sjukdomar hade aldrig behövt uppstå om de upptäckts i tid. Vi tror
+                inte att privat vård ska vara en fråga om plånbok – och tack vare vår
+                innovation har fler nu möjlighet till privatfinansierad vård. Därför
+                erbjuder vi personlig vård till ett rimligt pris, utan att kompromissa
+                med tid, omtanke eller kvalitet. För ett mer jämställt samhälle.
               </p>
               <footer className="mt-6 flex items-center justify-between gap-2 border-t border-pink-100 pt-4">
                 <div>
@@ -394,10 +394,10 @@ export default function VarforHemlakare() {
                   <p className="mt-0.5 text-sm text-gray-500">Hemläkare.se</p>
                 </div>
                 <Link
-                  href="/mottagningar"
+                  href="/om"
                   className="btn-cta cta-attention inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-full px-4 text-[0.875rem] font-bold text-white"
                 >
-                  Boka tid
+                  Läs mer
                   <ArrowIcon direction="right" />
                 </Link>
               </footer>
