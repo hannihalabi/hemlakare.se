@@ -33,7 +33,7 @@ const bloodTestGroups: ServiceGroup[] = [
     items: healthPackages.map((healthPackage) => ({
       name: healthPackage.name,
       price: healthPackage.price,
-      originalPrice: healthPackage.originalPrice,
+      originalPrice: "originalPrice" in healthPackage ? healthPackage.originalPrice : undefined,
       markerCount: healthPackage.markers,
       markers: healthPackage.markerList,
     })),

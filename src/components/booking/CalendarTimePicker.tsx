@@ -61,12 +61,58 @@ function groupSlotsByTimeOfDay(slots: AvailableSlot[]): { label: string; slots: 
   return order.filter((label) => groups.has(label)).map((label) => ({ label, slots: groups.get(label)! }));
 }
 
-function Spinner() {
+function LoadingMark() {
   return (
-    <span
-      className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-pink-200 border-t-[#D81B7D]"
-      aria-hidden
-    />
+    <div className="flex flex-col items-center justify-center gap-5 py-16 text-center">
+      <span className="relative flex h-16 w-16 items-center justify-center">
+        <span className="hl-loading-ping absolute inset-0 rounded-full bg-[#D81B7D]/15" />
+        <span
+          className="hl-loading-pulse absolute inset-0 rounded-full opacity-90"
+          style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 55%, #a71668 100%)" }}
+        />
+        <svg
+          viewBox="0 0 128 128"
+          fill="none"
+          className="hl-loading-pulse relative h-8 w-8 text-white"
+          aria-hidden="true"
+        >
+          <g stroke="currentColor" strokeWidth="7.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M64 88
+                     C45 75 27 59 27 41
+                     C27 29 36 22 48 22
+                     C56 22 61 26 64 32
+                     C67 26 72 22 80 22
+                     C92 22 101 29 101 41
+                     C101 59 83 75 64 88Z" />
+            <path d="M64 88
+                     V99
+                     C64 111 75 116 84 108
+                     L95 98" />
+            <circle cx="101" cy="84" r="10" />
+            <path d="M91 101 L95 97" />
+          </g>
+        </svg>
+      </span>
+      <p className="text-sm font-medium text-gray-500">Letar tillgängliga tider</p>
+      <style>{`
+        @keyframes hl-breathe {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.08); opacity: 0.88; }
+        }
+        @keyframes hl-loading-ping {
+          0% { transform: scale(1); opacity: 0.6; }
+          100% { transform: scale(1.9); opacity: 0; }
+        }
+        .hl-loading-pulse { animation: hl-breathe 1.8s ease-in-out infinite; }
+        .hl-loading-ping { animation: hl-loading-ping 1.8s ease-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .hl-loading-pulse,
+          .hl-loading-ping {
+            animation: none !important;
+          }
+        }
+      `}</style>
+    </div>
   );
 }
 
@@ -146,12 +192,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
   }
 
   if (!slots) {
-    return (
-      <div className="flex items-center gap-3 py-6 text-sm text-gray-500">
-        <Spinner />
-        Hämtar lediga tider…
-      </div>
-    );
+    return <LoadingMark />;
   }
 
   if (view === "day" && selectedDay) {
