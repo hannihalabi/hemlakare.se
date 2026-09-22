@@ -282,7 +282,28 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     };
   };
 
-  const [demoBookedDialogDay, setDemoBookedDialogDay] = useState<Date | null>(null);
+  const [openBookedPopoverKey, setOpenBookedPopoverKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!openBookedPopoverKey) return;
+
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element) || !target.closest(`[data-booked-popover="${openBookedPopoverKey}"]`)) {
+        setOpenBookedPopoverKey(null);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenBookedPopoverKey(null);
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [openBookedPopoverKey]);
 
   const gridDays = useMemo(() => {
     const monthStart = startOfMonth(visibleMonth);
@@ -401,7 +422,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             </div>
           ))}
 
-          {gridDays.map((day) => {
+          {gridDays.map((day, dayIndex) => {
             const inCurrentMonth = day.getMonth() === visibleMonth.getMonth();
             const key = dateKey(day);
             const count = slotsByDay.get(key)?.length ?? 0;
@@ -412,6 +433,16 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             // Platshållare för investerardemo: visa en känsla av efterfrågan på
             // passerade dagar som saknar riktiga tider i underlaget.
             const showDemoBookedBadge = inCurrentMonth && isPast && count === 0;
+            const isBookedPopoverOpen = openBookedPopoverKey === key;
+            const columnIndex = dayIndex % 7;
+            const popoverAlignment =
+              columnIndex <= 1
+                ? "left-0"
+                : columnIndex >= 5
+                  ? "right-0"
+                  : "left-1/2 -translate-x-1/2";
+            const popoverArrowAlignment =
+              columnIndex <= 1 ? "left-2" : columnIndex >= 5 ? "right-2" : "left-1/2 -translate-x-1/2";
 
             // showDemoBookedBadge-dagar är alltid !hasSlots (de saknar per definition
             // riktiga tider), vilket gör dagsknappen `disabled`. En disabled HTML-knapp
@@ -439,19 +470,48 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
                 >
                   {day.getDate()}
                   {hasSlots && (
-                    <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-[#D81B7D]" aria-hidden />
+                    <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
                   )}
                 </button>
                 {showDemoBookedBadge && (
                   <button
                     type="button"
+                    data-booked-popover={key}
                     title="Antal bokade patienter denna dag"
                     aria-label={`${demoBookedCountForPastDay(key)} bokade patienter ${formatDayHeading(day).toLowerCase()}`}
-                    onClick={() => setDemoBookedDialogDay(day)}
-                    className="hl-booked-badge absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[0.62rem] font-extrabold leading-none text-white ring-2 ring-white transition hover:scale-110 active:scale-95"
-                    style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 60%, #a71668 100%)" }}
+                    aria-expanded={isBookedPopoverOpen}
+                    aria-describedby={isBookedPopoverOpen ? `booked-popover-${key}` : undefined}
+                    onClick={() => setOpenBookedPopoverKey((current) => (current === key ? null : key))}
+                    className="hl-booked-badge absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-emerald-200 bg-white text-emerald-600 shadow-sm transition hover:border-emerald-300 hover:bg-emerald-50 hover:shadow active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
                   >
-                    {demoBookedCountForPastDay(key)}
+                    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden>
+                      <path
+                        d="m5 10.25 3.1 3.1L15.5 6"
+                        stroke="currentColor"
+                        strokeWidth="2.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <span className="absolute -right-1.5 -top-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-white px-0.5 text-[0.48rem] font-bold leading-none text-emerald-800 shadow-[0_1px_3px_rgba(15,23,42,0.18)] ring-1 ring-emerald-100">
+                      {demoBookedCountForPastDay(key)}
+                    </span>
+                    {isBookedPopoverOpen && (
+                      <span
+                        id={`booked-popover-${key}`}
+                        role="tooltip"
+                        className={`absolute top-8 z-30 w-max max-w-[11rem] rounded-xl bg-slate-900 px-3 py-2 text-left text-xs font-medium leading-snug text-white shadow-xl ${popoverAlignment}`}
+                      >
+                        <span className="block font-bold">{demoBookedCountForPastDay(key)} bokningar</span>
+                        <span className="mt-0.5 block whitespace-nowrap text-slate-300">
+                          {formatDayHeading(day)}
+                        </span>
+                        <span
+                          className={`absolute -top-1 h-2.5 w-2.5 rotate-45 bg-slate-900 ${popoverArrowAlignment}`}
+                          aria-hidden
+                        />
+                      </span>
+                    )}
                   </button>
                 )}
               </div>
@@ -480,47 +540,6 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
         <p className="mt-4 text-sm text-gray-500">Inga lediga tider just nu. Kontakta oss så hjälper vi dig.</p>
       )}
 
-      {demoBookedDialogDay && (
-        <div
-          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 p-4 sm:items-center"
-          role="presentation"
-          onClick={() => setDemoBookedDialogDay(null)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="hl-booked-dialog-title"
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-[0_24px_60px_-20px_rgba(15,23,42,0.35)]"
-          >
-            <span
-              className="mx-auto flex h-14 w-14 items-center justify-center rounded-full text-xl font-extrabold text-white shadow-[0_10px_26px_-8px_rgba(216,27,125,0.7)]"
-              style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 60%, #a71668 100%)" }}
-              aria-hidden
-            >
-              {demoBookedCountForPastDay(dateKey(demoBookedDialogDay))}
-            </span>
-            <h4 id="hl-booked-dialog-title" className="mt-4 text-base font-bold text-gray-900">
-              {formatDayHeading(demoBookedDialogDay)}
-            </h4>
-            <p className="mt-2 text-sm leading-relaxed text-gray-600">
-              Vi hade{" "}
-              <strong className="font-bold text-gray-900">
-                {demoBookedCountForPastDay(dateKey(demoBookedDialogDay))} bokade patienter
-              </strong>{" "}
-              den här dagen.
-            </p>
-            <button
-              type="button"
-              onClick={() => setDemoBookedDialogDay(null)}
-              className="btn-cta mt-5 inline-flex h-11 w-full items-center justify-center rounded-full text-sm font-bold text-white"
-            >
-              Stäng
-            </button>
-          </div>
-        </div>
-      )}
-
       <style>{`
         @keyframes hl-swipe-bob {
           0%, 100% { transform: translateY(0); }
@@ -528,7 +547,6 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
         }
         .hl-swipe-hint-up span { animation: hl-swipe-bob 1.6s ease-in-out infinite reverse; }
         .hl-swipe-hint-down span { animation: hl-swipe-bob 1.6s ease-in-out infinite; }
-        .hl-booked-badge { box-shadow: 0 2px 6px -1px rgba(216,27,125,0.55); }
         @media (prefers-reduced-motion: reduce) {
           .hl-swipe-hint-up span,
           .hl-swipe-hint-down span {
