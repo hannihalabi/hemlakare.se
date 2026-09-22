@@ -96,7 +96,7 @@ export const healthcareServices: HealthcareService[] = [
     lead:
       "När besvären behöver undersökas på plats kommer läkaren hem till dig i Stockholm. Du får tid att beskriva hur du mår, en fysisk undersökning och en tydlig plan framåt.",
     price: "995 kr",
-    originalPrice: "1 995 kr",
+    originalPrice: "2 790 kr",
     priceNote: "Kampanjpris för läkarbesöket. Eventuella prover eller andra åtgärder kan tillkomma.",
     bookingHref: "/boka/fysiskt-lakarbesok",
     cardDescription:
@@ -132,7 +132,7 @@ export const healthcareServices: HealthcareService[] = [
       "Vid livshotande symtom ska du ringa 112. För sjukvårdsrådgivning kan du ringa 1177.",
     ],
     faq: [
-      { question: "Vad kostar ett fysiskt läkarbesök?", answer: "Besöket kostar just nu 995 kr, jämfört med ordinarie pris 1 995 kr. Eventuella prover, läkemedel eller andra åtgärder kan tillkomma." },
+      { question: "Vad kostar ett fysiskt läkarbesök?", answer: "Besöket kostar just nu 995 kr, jämfört med ordinarie pris 2 790 kr. Eventuella prover, läkemedel eller andra åtgärder kan tillkomma." },
       { question: "Kan jag få recept eller remiss?", answer: "Ja, om läkaren efter sin bedömning anser att det är medicinskt motiverat. Recept och remiss kan inte garanteras på förhand." },
       { question: "Vad ska jag förbereda?", answer: "Ha gärna legitimation, aktuell läkemedelslista och relevanta tidigare vård- eller provuppgifter tillgängliga." },
     ],
@@ -416,7 +416,7 @@ export const healthcareServices: HealthcareService[] = [
   },
   {
     slug: "blodprovstagning",
-    name: "Blodprovstagning",
+    name: "Hälsokontroll",
     eyebrow: "Hälsokontroller med blodprov",
     seoTitle: "Blodprovstagning – välj hälsokontroll och blodprovspaket",
     metaDescription:

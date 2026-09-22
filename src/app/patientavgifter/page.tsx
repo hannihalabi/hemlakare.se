@@ -52,10 +52,10 @@ const fees = [
   {
     type: "Läkarhjälp – digitalt eller på mottagning",
     price: "995 kr",
-    originalPrice: "1 995 kr",
+    originalPrice: "2 790 kr",
     desc: "Lanseringspris under begränsad tid",
   },
-  { type: "Hembesök", price: "Från 1 995 kr", desc: "Läkaren kommer hem till dig i Stockholm" },
+  { type: "Hembesök", price: "Från 2 790 kr", desc: "Läkaren kommer hem till dig i Stockholm" },
   { type: "Vaccination hemma", price: "På förfrågan", desc: "Priset beror på vaccin och område" },
   { type: "Recept och remiss", price: "Ingår", desc: "Vid konsultation – ingen extra avgift" },
   { type: "Provtagning", price: "Från 195 kr", desc: "Beroende på typ av prov" },
@@ -108,10 +108,10 @@ export default function PatientavgifterPage() {
               </div>
               <div className="rounded-2xl bg-white px-6 py-5 text-center shadow-sm">
                 <p className="text-[0.82rem] text-gray-500">
-                  Ordinarie pris <del className="font-semibold decoration-2">1 995 kr</del>
+                  Ordinarie pris <del className="font-semibold decoration-2">2 790 kr</del>
                 </p>
                 <p className="mt-1 text-[2.5rem] font-black tracking-tight text-[#D81B7D]">995 kr</p>
-                <p className="mt-1 text-[0.78rem] font-bold text-green-700">Du sparar 1 000 kr</p>
+                <p className="mt-1 text-[0.78rem] font-bold text-green-700">Du sparar 1 795 kr</p>
               </div>
             </div>
           </div>
@@ -213,7 +213,7 @@ export default function PatientavgifterPage() {
             </div>
 
             <p className="text-[0.82rem] text-gray-400 text-center">
-              * Lanseringspriset 995 kr gäller läkarhjälp under en begränsad introduktionsperiod. Ordinarie pris är 1 995 kr. Övriga tjänster kan variera beroende på omfattning.
+              * Lanseringspriset 995 kr gäller läkarhjälp under en begränsad introduktionsperiod. Ordinarie pris är 2 790 kr. Övriga tjänster kan variera beroende på omfattning.
             </p>
           </div>
         </section>

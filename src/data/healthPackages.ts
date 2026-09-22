@@ -83,6 +83,7 @@ export const healthPackages = [
       33, 34, 35, 37, 38, 42, 49, 52, 55, 59, 112, 136, 149, 265,
     ]),
     price: "995 kr",
+    originalPrice: "2 790 kr",
     description:
       "Kontroll av bland annat lever, njurar, hjärta, kärl, blodsocker och sköldkörtel.",
   },

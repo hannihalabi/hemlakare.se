@@ -10,6 +10,7 @@ type ServiceGroup = {
   items: {
     name: string;
     price: string;
+    originalPrice?: string;
     markerCount?: number;
     markers?: string[];
   }[];
@@ -32,6 +33,7 @@ const bloodTestGroups: ServiceGroup[] = [
     items: healthPackages.map((healthPackage) => ({
       name: healthPackage.name,
       price: healthPackage.price,
+      originalPrice: healthPackage.originalPrice,
       markerCount: healthPackage.markers,
       markers: healthPackage.markerList,
     })),
@@ -240,7 +242,7 @@ export default function HealthPackages() {
   const [openPackage, setOpenPackage] = useState<string | null>(null);
 
   return (
-    <section id="halsokontroller" className="scroll-mt-24 bg-white px-5 py-16 sm:px-6 sm:py-20">
+    <section id="halsokontroller" className="scroll-mt-24 bg-white px-5 py-10 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-4xl">
         <div className="overflow-hidden rounded-[2rem] border border-gray-200 bg-[#f7f7f8] shadow-[0_12px_35px_rgba(15,23,42,0.05)]">
           <div className="border-b border-gray-200 px-5 py-5 sm:px-7">
@@ -346,8 +348,15 @@ export default function HealthPackages() {
                                               {item.markerCount} markörer
                                             </span>
                                           </span>
-                                          <span className="shrink-0 text-[0.875rem] font-bold text-gray-950">
-                                            {item.price}
+                                          <span className="shrink-0 text-right">
+                                            <span className="block text-[0.875rem] font-bold text-gray-950">
+                                              {item.price}
+                                            </span>
+                                            {item.originalPrice ? (
+                                              <span className="block text-[0.75rem] text-gray-400 line-through">
+                                                {item.originalPrice}
+                                              </span>
+                                            ) : null}
                                           </span>
                                         </button>
 

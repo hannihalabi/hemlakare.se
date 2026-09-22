@@ -43,7 +43,7 @@ const categories = [
     faqs: [
       {
         q: "Vad kostar det?",
-        a: "Just nu kostar läkarhjälp 995 kr i lanseringspris, jämfört med ordinarie pris 1 995 kr. Erbjudandet gäller under en begränsad introduktionsperiod. Hembesök och andra tjänster prissätts separat.",
+        a: "Just nu kostar läkarhjälp 995 kr i lanseringspris, jämfört med ordinarie pris 2 790 kr. Erbjudandet gäller under en begränsad introduktionsperiod. Hembesök och andra tjänster prissätts separat.",
       },
       {
         q: "Gäller mitt frikort?",

@@ -70,7 +70,7 @@ export default function Hero() {
                         995 kr
                       </strong>
                       <span className="mt-0.5 block text-[0.875rem] text-gray-500">
-                        Ord. pris <del className="decoration-2">1995 kr</del>
+                        Ord. pris <del className="decoration-2">2790 kr</del>
                       </span>
                     </>
                   )}

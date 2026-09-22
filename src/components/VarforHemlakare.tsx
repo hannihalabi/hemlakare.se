@@ -20,11 +20,11 @@ const vardcentral = [
 ];
 
 const hemlakare = [
-  "Hjälp samma dag – ofta inom timmar",
-  "Din egen läkare och sköterska, varje gång",
-  "Tid och lugn för en noggrann bedömning",
-  "Kvalitet före kvantitet – vi prioriterar dig",
-  "Privatfinansierad – fri från regionens budgettryck",
+  "Vi tar din hälsa på allvar och står alltid på din sida",
+  "Snabb tillgång till din egna läkare",
+  "Endast läkare från topp-rankade globala universitet",
+  "Avsatt tid för noggrann bedömning, vi skyndar inte på patientsamtalet",
+  "Kvalitet före kvantitet - du är i prioritet",
 ];
 
 function CrossIcon() {
@@ -257,8 +257,8 @@ export default function VarforHemlakare() {
           </h2>
           <p className="text-[1rem] text-gray-600 leading-relaxed">
             Snabb och personlig vård ska inte vara en fråga om plånbok. Därför kostar ett
-            besök hos Hemläkare <strong className="font-bold text-gray-900">995 kr</strong>{" "}
-            istället för över 2 000 kr – utan att vi kompromissar med tid, omtanke eller
+            läkarbesök hos Hemläkare <strong className="font-bold text-gray-900">995 kr</strong>{" "}
+            (<del>2 790 kr</del>) – utan att vi kompromissar med tid, omtanke eller
             kvalitet.
           </p>
         </div>
@@ -382,14 +382,13 @@ export default function VarforHemlakare() {
 
             <blockquote>
               <p className="text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
-                I dag är det ofta den med störst plånbok som snabbast får tillgång till
-                privat vård. Det vill vi ändra på. Därför erbjuder vi alla möjligheten att
-                få privatfinansierad och personlig vård för 995 kronor – med tid, omtanke
-                och kvalitet. För ett mer jämställt samhälle.
+                Privat vård ska inte vara en fråga om plånbok. Därför erbjuder vi
+                personlig, privatfinansierad vård för en rimlig kostnad – med tid, omtanke
+                och kvalitet för alla. För ett mer jämlikt samhälle.
               </p>
               <footer className="mt-6 flex items-center justify-between gap-2 border-t border-pink-100 pt-4">
                 <div>
-                  <p className="font-bold text-gray-950">Hanni</p>
+                  <p className="font-bold text-gray-950">Grundare</p>
                   <p className="mt-0.5 text-sm text-gray-500">Hemläkare.se</p>
                 </div>
                 <Link

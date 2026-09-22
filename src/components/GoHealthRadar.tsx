@@ -1,29 +1,25 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 
 /**
- * Levande radar-visualisering för GoHealth: sex vitalparametrar utplacerade
- * runt en sveepande radarcirkel. När sweepen passerar en nod "ekar" den upp
- * som på en riktig radarskärm, och strax därefter skickas ett datapaket
- * från noden in mot en central, pulserande AI-nod. Ren SVG/CSS-animation
- * (inget canvas/WebGL) så den är lätt, SSR-säker och respekterar
- * prefers-reduced-motion.
+ * Levande radar-visualisering för GoHealth. Varje vitalparameter har en egen,
+ * kontinuerlig dataström in mot AI-kärnan. Radarsvepet ligger kvar som ett
+ * lågmält bakgrundslager, medan linjerna visar att synkningen aldrig stannar.
  */
 
 type VitalNode = {
   label: string;
   angle: number; // grader, 0 = rakt upp, medurs
   icon: ReactNode;
-  /** Sekunder in i sweep-cykeln (0–8) då sweepen når denna nod. */
-  hitTime: number;
 };
 
-const SWEEP_DURATION = 8; // sekunder för ett varv
-const SIGNAL_DELAY = 0.55; // sekunder mellan att noden "ekar upp" och att den skickar sin signal
-const PACKET_TRAVEL_TIME = 0.6; // sekunder paketets resa in mot centrum tar
+const SWEEP_DURATION = 14;
+const STREAM_DURATION = 2.2;
+// Låt viewport-entrén bli klar innan första avläsningen vid Puls.
+const SCAN_START_DELAY = 1.2;
 
-const rawVitals: { label: string; angle: number; icon: ReactNode }[] = [
+const vitals: VitalNode[] = [
   {
     label: "Puls",
     angle: 0,
@@ -43,7 +39,7 @@ const rawVitals: { label: string; angle: number; icon: ReactNode }[] = [
     ),
   },
   {
-    label: "Hjärta",
+    label: "Rytm",
     angle: 120,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -84,11 +80,6 @@ const rawVitals: { label: string; angle: number; icon: ReactNode }[] = [
   },
 ];
 
-const vitals: VitalNode[] = rawVitals.map((vital) => ({
-  ...vital,
-  hitTime: (vital.angle / 360) * SWEEP_DURATION,
-}));
-
 /** Radie i procent av containerns halva bredd, från centrum. */
 const NODE_RADIUS = 42;
 /** Etiketterna sitter lite längre ut än ikonerna, radiellt bort från centrum. */
@@ -96,198 +87,312 @@ const LABEL_RADIUS = 51;
 
 function polarToPercent(angleDeg: number, radiusPercent: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
-  const x = 50 + radiusPercent * Math.cos(rad);
-  const y = 50 + radiusPercent * Math.sin(rad);
-  return { x, y };
+  return {
+    x: 50 + radiusPercent * Math.cos(rad),
+    y: 50 + radiusPercent * Math.sin(rad),
+  };
 }
 
-/** Andel (0–1) av sweep-cykeln som motsvarar SIGNAL_DELAY sekunder. */
-const SIGNAL_DELAY_FRACTION = SIGNAL_DELAY / SWEEP_DURATION;
-/** Tid tills det allra första paketet (från noden vid vinkel 0) når centrum. */
-const FIRST_ARRIVAL = SIGNAL_DELAY + PACKET_TRAVEL_TIME;
-/** Tid mellan varje efterföljande ankomst (noderna är jämnt fördelade). */
-const ARRIVAL_INTERVAL = SWEEP_DURATION / vitals.length;
-
 export default function GoHealthRadar() {
+  const radarRef = useRef<HTMLDivElement>(null);
+  const streamFilterId = useId();
+
+  useEffect(() => {
+    const radar = radarRef.current;
+    if (!radar) return;
+
+    const reveal = () => radar.setAttribute("data-visible", "true");
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      reveal();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        reveal();
+        observer.disconnect();
+      },
+      { threshold: 0.22, rootMargin: "0px 0px -6% 0px" },
+    );
+
+    observer.observe(radar);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[420px] select-none px-16 sm:px-0">
+    <div
+      ref={radarRef}
+      data-visible="false"
+      className="gh-radar-stage relative mx-auto aspect-square w-full max-w-[420px] select-none px-16 sm:px-0"
+      role="img"
+      aria-label="Sex hälsovärden synkas kontinuerligt med GoHealth AI"
+    >
       <style>{`
         @keyframes gh-sweep-rotate {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-        @keyframes gh-ring-pulse {
-          0%, 100% { opacity: 0.35; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.015); }
+        @keyframes gh-ring-breathe {
+          0%, 100% { opacity: 0.2; transform: scale(0.995); }
+          50% { opacity: 0.42; transform: scale(1.012); }
         }
-        /* Nodens "eko": sweepen anländer vid 0%, ljuset byggs upp och klingar
-           sedan av över SIGNAL_DELAY_FRACTION av cykeln – som ett sonar-eko,
-           inte en blixt. */
-        @keyframes gh-node-echo {
-          0% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 0.5; }
-          ${(SIGNAL_DELAY_FRACTION * 55).toFixed(2)}% { filter: brightness(1.8) saturate(1.4); transform: scale(1.2); opacity: 1; }
-          ${(SIGNAL_DELAY_FRACTION * 260).toFixed(2)}% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 0.5; }
-          100% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 0.5; }
+        @keyframes gh-data-flow {
+          from { stroke-dashoffset: 0; }
+          to { stroke-dashoffset: -22; }
         }
-        @keyframes gh-node-ring {
-          0%, ${(SIGNAL_DELAY_FRACTION * 15).toFixed(2)}% { box-shadow: 0 0 0 0 rgba(255, 143, 196, 0); }
-          ${(SIGNAL_DELAY_FRACTION * 55).toFixed(2)}% { box-shadow: 0 0 0 10px rgba(255, 143, 196, 0.32); }
-          ${(SIGNAL_DELAY_FRACTION * 180).toFixed(2)}% { box-shadow: 0 0 0 20px rgba(255, 143, 196, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(255, 143, 196, 0); }
+        @keyframes gh-stream-glow {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.9; }
         }
-        @keyframes gh-packet-fade {
-          0%, ${(SIGNAL_DELAY_FRACTION * 100).toFixed(2)}% { opacity: 0; }
-          ${(SIGNAL_DELAY_FRACTION * 100 + 1.5).toFixed(2)}% { opacity: 1; }
-          ${((SIGNAL_DELAY + PACKET_TRAVEL_TIME) / SWEEP_DURATION * 100 - 1.5).toFixed(2)}% { opacity: 1; }
-          ${((SIGNAL_DELAY + PACKET_TRAVEL_TIME) / SWEEP_DURATION * 100).toFixed(2)}%, 100% { opacity: 0; }
+        @keyframes gh-node-scan {
+          0% { filter: brightness(1.25) saturate(1.12); transform: scale(1.24); }
+          3% { filter: brightness(1.1) saturate(1.05); transform: scale(1.06); }
+          5% { filter: brightness(1.18) saturate(1.1); transform: scale(1.14); }
+          9%, 100% { filter: brightness(1) saturate(1); transform: scale(1); }
         }
-        /* Kärnan "knockar till" i samma ögonblick som ett paket anländer
-           (period = ARRIVAL_INTERVAL, fas satt via animation-delay =
-           FIRST_ARRIVAL på elementen), och slappnar av däremellan. */
-        @keyframes gh-core-pulse {
-          0% { transform: scale(1.18); filter: brightness(1.4); }
-          35%, 100% { transform: scale(1); filter: brightness(1); }
+        @keyframes gh-node-halo {
+          0% { opacity: 0.65; transform: scale(1); }
+          9%, 100% { opacity: 0; transform: scale(2.1); }
         }
-        @keyframes gh-core-ring-fire {
-          0% { transform: scale(1); opacity: 0.85; }
-          100% { transform: scale(2.4); opacity: 0; }
+        @keyframes gh-core-breathe {
+          0%, 100% { filter: brightness(1); transform: scale(1); }
+          50% { filter: brightness(1.15); transform: scale(1.055); }
         }
-        .gh-node-anim {
+        @keyframes gh-core-wave {
+          0% { opacity: 0.38; transform: scale(0.82); }
+          70%, 100% { opacity: 0; transform: scale(1.75); }
+        }
+
+        .gh-radar-stage {
+          opacity: 0;
+          filter: blur(8px);
+          transform: translateY(20px) scale(0.965);
+          transition:
+            opacity 950ms ease,
+            filter 1100ms ease,
+            transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gh-radar-stage[data-visible="true"] {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0) scale(1);
+        }
+        .gh-radar-disc {
+          transition: box-shadow 1300ms ease;
+        }
+        .gh-radar-stage[data-visible="true"] .gh-radar-disc {
+          box-shadow:
+            0 28px 72px -30px rgba(151, 42, 99, 0.24),
+            inset 0 0 64px rgba(232, 61, 147, 0.07),
+            0 0 0 1px rgba(216, 27, 125, 0.09);
+        }
+        .gh-data-layer {
+          opacity: 0;
+          transition: opacity 1200ms ease 320ms;
+        }
+        .gh-radar-stage[data-visible="true"] .gh-data-layer { opacity: 1; }
+        .gh-node-shell,
+        .gh-label {
+          opacity: 0;
+          transition:
+            opacity 700ms ease,
+            transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gh-node-shell { transform: translate(-50%, -50%) scale(0.72); }
+        .gh-label { transform: translate(-50%, -50%) scale(0.9); }
+        .gh-radar-stage[data-visible="true"] .gh-node-shell,
+        .gh-radar-stage[data-visible="true"] .gh-label {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        .gh-sweep {
+          animation: gh-sweep-rotate ${SWEEP_DURATION}s linear ${SCAN_START_DELAY}s infinite;
+        }
+        .gh-data-stream {
           animation:
-            gh-node-echo ${SWEEP_DURATION}s linear infinite,
-            gh-node-ring ${SWEEP_DURATION}s linear infinite;
+            gh-data-flow ${STREAM_DURATION}s linear infinite,
+            gh-stream-glow 3.6s ease-in-out infinite;
+          stroke-dasharray: 12 10;
+          stroke-linecap: round;
         }
-        .gh-packet { animation: gh-packet-fade ${SWEEP_DURATION}s linear infinite; }
-        .gh-core-pulse { animation: gh-core-pulse ${ARRIVAL_INTERVAL}s ease-out infinite; }
-        .gh-core-ring { animation: gh-core-ring-fire ${ARRIVAL_INTERVAL}s ease-out infinite; }
+        .gh-node-anim { animation: gh-node-scan ${SWEEP_DURATION}s ease-in-out infinite; }
+        .gh-node-halo {
+          opacity: 0;
+          animation: gh-node-halo ${SWEEP_DURATION}s ease-out infinite;
+        }
+        /* Samma start och period håller avläsningen i fas med svepet. */
+        .gh-sweep, .gh-node-anim, .gh-node-halo { animation-play-state: paused; }
+        .gh-radar-stage[data-visible="true"] .gh-sweep,
+        .gh-radar-stage[data-visible="true"] .gh-node-anim,
+        .gh-radar-stage[data-visible="true"] .gh-node-halo { animation-play-state: running; }
+        .gh-core-pulse { animation: gh-core-breathe 3.4s ease-in-out infinite; }
+        .gh-core-wave { animation: gh-core-wave 3.4s ease-out infinite; }
+
         @media (prefers-reduced-motion: reduce) {
-          .gh-sweep, .gh-ring-pulse, .gh-node-anim, .gh-packet, .gh-core-pulse, .gh-core-ring {
+          .gh-radar-stage,
+          .gh-radar-stage[data-visible="true"] {
+            opacity: 1;
+            filter: none;
+            transform: none;
+            transition: none;
+          }
+          .gh-data-layer,
+          .gh-node-shell,
+          .gh-label {
+            opacity: 1;
+            transition: none;
+          }
+          .gh-node-shell,
+          .gh-radar-stage[data-visible="true"] .gh-node-shell,
+          .gh-label,
+          .gh-radar-stage[data-visible="true"] .gh-label {
+            transform: translate(-50%, -50%);
+          }
+          .gh-sweep,
+          .gh-ring-breathe,
+          .gh-data-stream,
+          .gh-node-anim,
+          .gh-node-halo,
+          .gh-core-pulse,
+          .gh-core-wave {
             animation: none !important;
           }
-          .gh-packet animateMotion { display: none; }
         }
       `}</style>
 
-      {/* Bakgrund: mörk radarskiva med koncentriska ringar och punktgrid */}
       <div
-        className="absolute inset-0 overflow-hidden rounded-full"
+        className="gh-radar-disc absolute inset-0 overflow-hidden rounded-full"
         style={{
-          background: "radial-gradient(circle at 50% 42%, #1b1035 0%, #0e0a22 55%, #070512 100%)",
-          boxShadow: "0 30px 80px -20px rgba(23, 8, 46, 0.65), inset 0 0 60px rgba(232, 61, 147, 0.08)",
+          background: "radial-gradient(circle at 50% 42%, #ffffff 0%, #fff9fc 48%, #fceef5 100%)",
+          boxShadow:
+            "0 20px 55px -32px rgba(151, 42, 99, 0.16), inset 0 0 48px rgba(232, 61, 147, 0.04), 0 0 0 1px rgba(216, 27, 125, 0.06)",
         }}
+        aria-hidden="true"
       >
-        {/* Punktgrid */}
         <div
-          className="absolute inset-0 opacity-[0.18]"
+          className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle, rgba(116,70,98,0.26) 1px, transparent 1px)",
             backgroundSize: "18px 18px",
           }}
-          aria-hidden
         />
 
-        {/* Koncentriska ringar */}
         {[86, 64, 42].map((size, index) => (
           <div
             key={size}
-            className="gh-ring-pulse absolute rounded-full border border-pink-300/25"
+            className="gh-ring-breathe absolute rounded-full border border-[#d81b7d]/25"
             style={{
               inset: `${(100 - size) / 2}%`,
-              animation: `gh-ring-pulse ${3.4 + index * 0.6}s ease-in-out infinite`,
-              animationDelay: `${index * 0.4}s`,
+              animation: `gh-ring-breathe ${5.2 + index * 0.8}s ease-in-out infinite`,
+              animationDelay: `${index * -0.7}s`,
             }}
-            aria-hidden
           />
         ))}
 
-        {/* Roterande sweep-kon */}
         <div
-          className="gh-sweep absolute inset-0 rounded-full"
+          className="gh-sweep absolute inset-0 rounded-full opacity-70"
           style={{
-            animation: `gh-sweep-rotate ${SWEEP_DURATION}s linear infinite`,
             background:
-              "conic-gradient(from 0deg, rgba(232,61,147,0.55) 0deg, rgba(232,61,147,0.12) 26deg, transparent 60deg, transparent 360deg)",
+              "conic-gradient(from 0deg, transparent 0deg, transparent 288deg, rgba(232,61,147,0.045) 326deg, rgba(232,61,147,0.18) 360deg)",
           }}
-          aria-hidden
         />
 
-        {/* Linjer från varje nod in mot centrum + datapaket som färdas längs dem */}
-        <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden>
-          {vitals.map((vital) => {
+        <svg viewBox="0 0 100 100" className="gh-data-layer absolute inset-0 h-full w-full">
+          <defs>
+            {/* Fasta SVG-koordinater: lodräta linjer har en bounding box med bredd 0. */}
+            <filter id={streamFilterId} filterUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+              <feGaussianBlur stdDeviation="0.7" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {vitals.map((vital, index) => {
             const outer = polarToPercent(vital.angle, NODE_RADIUS);
+            const path = `M ${outer.x} ${outer.y} L 50 50`;
+            const phase = (index * STREAM_DURATION) / vitals.length;
+
             return (
-              <g key={vital.label}>
+              <g key={vital.angle}>
+                <path d={path} fill="none" stroke="rgba(173,40,112,0.1)" strokeWidth="1.5" />
+                <path d={path} fill="none" stroke="rgba(173,40,112,0.23)" strokeWidth="0.32" />
                 <path
-                  d={`M ${outer.x} ${outer.y} L 50 50`}
+                  d={path}
+                  pathLength="100"
                   fill="none"
-                  stroke="rgba(244,155,199,0.18)"
-                  strokeWidth="0.4"
+                  stroke="rgba(216,27,125,0.78)"
+                  strokeWidth="0.72"
+                  filter={`url(#${streamFilterId})`}
+                  className="gh-data-stream"
+                  style={{ animationDelay: `${-phase}s, ${-phase * 0.7}s` }}
                 />
-                <circle r="1.4" fill="#ff8fc4" className="gh-packet" style={{ animationDelay: `${vital.hitTime}s` }}>
-                  {/*
-                    En hel cykel = SWEEP_DURATION (samma som sweepens varv,
-                    så resan börjar precis när sweepen är tillbaka nästa
-                    gång). Paketet står still vid noden under SIGNAL_DELAY
-                    (ekot hinner synas), reser sedan snabbt (PACKET_TRAVEL)
-                    in mot centrum, och väntar osynligt (opacity redan 0)
-                    resten av cykeln.
-                  */}
-                  <animateMotion
-                    dur={`${SWEEP_DURATION}s`}
-                    begin={`${vital.hitTime}s`}
-                    repeatCount="indefinite"
-                    keyPoints={`0;0;1;1`}
-                    keyTimes={`0;${(SIGNAL_DELAY / SWEEP_DURATION).toFixed(4)};${((SIGNAL_DELAY + PACKET_TRAVEL_TIME) / SWEEP_DURATION).toFixed(4)};1`}
-                    calcMode="linear"
-                    path={`M ${outer.x} ${outer.y} L 50 50`}
-                  />
-                </circle>
               </g>
             );
           })}
         </svg>
 
-        {/* Central AI-nod – "knockar till" varje gång ett datapaket anländer */}
         <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-          <span
-            className="gh-core-ring absolute size-14 rounded-full border border-pink-300/60"
-            style={{ animationDelay: `${FIRST_ARRIVAL}s` }}
-            aria-hidden
-          />
+          <span className="gh-core-wave absolute size-16 rounded-full border border-[#d81b7d]/40" />
+          <span className="gh-core-wave absolute size-16 rounded-full border border-[#e83d93]/25 [animation-delay:-1.7s]" />
           <div
-            className="gh-core-pulse grid size-14 place-items-center rounded-full text-white shadow-[0_0_30px_rgba(232,61,147,0.55)]"
-            style={{
-              background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 55%, #a71668 100%)",
-              animationDelay: `${FIRST_ARRIVAL}s`,
-            }}
+            className="gh-core-pulse grid size-14 place-items-center rounded-full text-white shadow-[0_0_32px_rgba(232,61,147,0.58)]"
+            style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 55%, #a71668 100%)" }}
           >
-            <svg viewBox="0 0 24 24" fill="none" className="size-6" aria-hidden>
-              <path
-                d="M12 3a3 3 0 0 1 3 3v1a3 3 0 0 1 2 2.83V11a3 3 0 0 1-1 2.24V15a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-1.76A3 3 0 0 1 7 11v-1.17A3 3 0 0 1 9 7V6a3 3 0 0 1 3-3Z"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinejoin="round"
-              />
-              <path d="M12 3v18M7 9.83c1.2.7 2.4.7 5 0M7 13.24c1.6.6 3.4.6 5 0M17 9.83c-1.2.7-2.4.7-5 0" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            <svg
+              viewBox="0 0 128 128"
+              fill="none"
+              className="shrink-0"
+              style={{ width: "2.52rem", height: "2.52rem" }}
+              aria-hidden="true"
+              role="img"
+              aria-label="Hemläkares logotyp"
+            >
+              <g stroke="currentColor" strokeWidth="7.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M64 88
+                         C45 75 27 59 27 41
+                         C27 29 36 22 48 22
+                         C56 22 61 26 64 32
+                         C67 26 72 22 80 22
+                         C92 22 101 29 101 41
+                         C101 59 83 75 64 88Z" />
+                <path d="M64 88
+                         V99
+                         C64 111 75 116 84 108
+                         L95 98" />
+                <circle cx="101" cy="84" r="10" />
+                <path d="M91 101 L95 97" />
+              </g>
             </svg>
           </div>
         </div>
 
-        {/* Vitalparameter-ikonerna sitter kvar innanför den klippta
-            radarskivan (så de ser ut att "sitta på" radarkanten). */}
-        {vitals.map((vital) => {
+        {vitals.map((vital, index) => {
           const pos = polarToPercent(vital.angle, NODE_RADIUS);
+          const scanDelay = SCAN_START_DELAY + (vital.angle / 360) * SWEEP_DURATION;
+
           return (
             <div
-              key={vital.label}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+              key={vital.angle}
+              className="gh-node-shell absolute"
+              style={{
+                left: `${pos.x}%`,
+                top: `${pos.y}%`,
+                transitionDelay: `${380 + index * 70}ms`,
+              }}
             >
+              <span
+                className="gh-node-halo absolute inset-0 rounded-full bg-pink-300/45 blur-[1px]"
+                style={{ animationDelay: `${scanDelay}s` }}
+              />
               <div
-                className="gh-node-anim grid size-6 place-items-center rounded-full text-white/80 sm:size-7"
+                className="gh-node-anim relative grid size-6 place-items-center rounded-full text-white/90 shadow-[0_0_18px_rgba(232,61,147,0.42)] sm:size-7"
                 style={{
                   background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 55%, #a71668 100%)",
-                  animationDelay: `${vital.hitTime}s`,
+                  animationDelay: `${scanDelay}s`,
                 }}
               >
                 <span className="size-3 sm:size-3.5">{vital.icon}</span>
@@ -297,19 +402,17 @@ export default function GoHealthRadar() {
         })}
       </div>
 
-      {/*
-        Textetiketterna ligger i ett EGET lager ovanpå den klippta
-        radarskivan (ingen overflow-hidden här), så etiketter som "Andning"
-        eller "Hjärta" alltid får plats och kan sticka ut över radarns
-        kant istället för att klippas av den rundade cirkeln.
-      */}
-      {vitals.map((vital) => {
+      {vitals.map((vital, index) => {
         const pos = polarToPercent(vital.angle, LABEL_RADIUS);
         return (
           <span
-            key={vital.label}
-            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#0e0a22] px-1.5 py-0.5 text-[0.56rem] font-semibold text-white shadow-[0_2px_10px_rgba(0,0,0,0.4)] ring-1 ring-white/10 sm:px-2.5 sm:py-1 sm:text-[0.72rem]"
-            style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+            key={vital.angle}
+            className="gh-label pointer-events-none absolute whitespace-nowrap rounded-full bg-white/95 px-1.5 py-0.5 text-[0.56rem] font-semibold text-[#432d3b] shadow-[0_4px_14px_rgba(94,41,72,0.16)] ring-1 ring-[#d81b7d]/15 backdrop-blur-sm sm:px-2.5 sm:py-1 sm:text-[0.72rem]"
+            style={{
+              left: `${pos.x}%`,
+              top: `${pos.y}%`,
+              transitionDelay: `${460 + index * 70}ms`,
+            }}
           >
             {vital.label}
           </span>
