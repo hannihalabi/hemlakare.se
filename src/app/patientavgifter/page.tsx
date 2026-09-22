@@ -7,11 +7,11 @@ import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Priser och hälsokontroller",
-  description: "Se Hemläkare.se:s lanseringspris, patientavgifter och paket för hälsokontroll i Stockholm.",
+  description: "Se Hemläkare.se:s priser, patientavgifter och paket för hälsokontroll i Stockholm.",
   alternates: { canonical: "/patientavgifter" },
   openGraph: {
     title: "Patientavgifter — Hemläkare.se",
-    description: "Se Hemläkare.se:s lanseringspris, patientavgifter och paket för hälsokontroll i Stockholm.",
+    description: "Se Hemläkare.se:s priser, patientavgifter och paket för hälsokontroll i Stockholm.",
     url: `${SITE_URL}/patientavgifter`,
   },
 };
@@ -50,15 +50,16 @@ const included = [
 
 const fees = [
   {
-    type: "Läkarhjälp – digitalt eller på mottagning",
+    type: "Fysiskt läkarbesök",
     price: "995 kr",
     originalPrice: "2 790 kr",
-    desc: "Lanseringspris under begränsad tid",
+    desc: "Läkaren kommer hem till dig i Stockholm",
   },
-  { type: "Hembesök", price: "Från 2 790 kr", desc: "Läkaren kommer hem till dig i Stockholm" },
-  { type: "Vaccination hemma", price: "På förfrågan", desc: "Priset beror på vaccin och område" },
-  { type: "Recept och remiss", price: "Ingår", desc: "Vid konsultation – ingen extra avgift" },
-  { type: "Provtagning", price: "Från 195 kr", desc: "Beroende på typ av prov" },
+  { type: "Digitalt läkarbesök", price: "595 kr", desc: "Läkare via videosamtal" },
+  { type: "Receptförnyelse", price: "495 kr", desc: "Medicinsk bedömning av receptet" },
+  { type: "Hudförändringar", price: "695 kr", desc: "Digital läkarbedömning av hudbesvär" },
+  { type: "Hälsokontroll", price: "Från 995 kr", desc: "Hälsokontroller med blodprov" },
+  { type: "Vaccination hemma", price: "Från 295 kr/dos", desc: "Priset beror på vaccin – hembesöksavgift kan tillkomma" },
 ];
 
 export default function PatientavgifterPage() {
@@ -97,13 +98,13 @@ export default function PatientavgifterPage() {
             <div className="grid items-center gap-7 p-7 sm:p-10 md:grid-cols-[1fr_auto]">
               <div>
                 <span className="inline-flex rounded-full bg-[#E72E8A] px-3.5 py-1.5 text-[0.72rem] font-extrabold uppercase tracking-[0.12em] text-white">
-                  Lanseringspris · begränsad tid
+                  Aktuellt pris
                 </span>
                 <h2 className="mt-4 text-[1.7rem] font-bold text-gray-900">
                   Läkarhjälp för mindre än halva ordinarie priset
                 </h2>
                 <p className="mt-2 max-w-xl text-[0.92rem] leading-relaxed text-gray-600">
-                  Boka digitalt eller på vår mottagning i Stockholm till vårt introduktionspris.
+                  Boka digitalt eller på vår mottagning i Stockholm.
                 </p>
               </div>
               <div className="rounded-2xl bg-white px-6 py-5 text-center shadow-sm">
@@ -126,7 +127,7 @@ export default function PatientavgifterPage() {
                   <path d="M12 8v4m0 4h.01" stroke="#E72E8A" strokeWidth="2" strokeLinecap="round" />
                 </svg>
                 <div>
-                  <p className="text-[0.95rem] font-bold text-gray-900 mb-1">Viktigt att känna till innan du listar dig</p>
+                  <p className="text-[0.95rem] font-bold text-gray-900 mb-1">Viktigt att känna till innan du blir patient</p>
                   <p className="text-[0.9rem] text-gray-600 leading-relaxed">
                     Vanliga patientavgifter, frikort och högkostnadsskydd <strong>gäller inte</strong> hos oss.
                     Vi är inte en del av den offentligt finansierade primärvården.
@@ -213,7 +214,7 @@ export default function PatientavgifterPage() {
             </div>
 
             <p className="text-[0.82rem] text-gray-400 text-center">
-              * Lanseringspriset 995 kr gäller läkarhjälp under en begränsad introduktionsperiod. Ordinarie pris är 2 790 kr. Övriga tjänster kan variera beroende på omfattning.
+              * Priset 995 kr gäller fysiskt läkarbesök. Ordinarie pris är 2 790 kr. Övriga tjänster kan variera beroende på omfattning.
             </p>
           </div>
         </section>
@@ -273,7 +274,7 @@ export default function PatientavgifterPage() {
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
             <h2 className="text-[1.6rem] font-bold text-gray-900">Utforska Vårdguiden</h2>
             <p className="text-[0.95rem] text-gray-600">
-              Lista dig idag och få tillgång till din egen läkare redan imorgon.
+              Bli patient idag och få tillgång till din egen läkare redan imorgon.
             </p>
             <Link
               href="/vardguiden"

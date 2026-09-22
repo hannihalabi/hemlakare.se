@@ -100,7 +100,7 @@ export default function Prickmottagning() {
 
             <div className="flex flex-col items-center gap-4 mt-2 text-center">
               <Link
-                href="/mottagningar"
+                href="/boka/hudforandringar"
                 className="btn-cta inline-flex w-full items-center justify-center px-10 py-4 rounded-full text-[1rem] font-bold text-white transition-all"
               >
                 Boka direkt

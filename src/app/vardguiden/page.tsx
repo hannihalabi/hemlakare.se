@@ -312,7 +312,7 @@ export default function VardguidenPage() {
                   </svg>
                 ),
                 title: "Din personliga läkare",
-                body: "Lista dig hos oss och få en fast läkare som känner dig och din hälsohistorik.",
+                body: "Bli patient hos oss och få en fast läkare som känner dig och din hälsohistorik.",
               },
             ].map((item) => (
               <div key={item.title} className="flex flex-col gap-3">

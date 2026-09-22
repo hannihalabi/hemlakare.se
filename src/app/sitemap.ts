@@ -85,7 +85,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const serviceRoutes: MetadataRoute.Sitemap = healthcareServices.map((service) => ({
-    url: `${SITE_URL}/${service.slug}`,
+    url:
+      service.slug === "fysiskt-lakarbesok"
+        ? `${SITE_URL}/lakare/hembesok`
+        : `${SITE_URL}/${service.slug}`,
     changeFrequency: "monthly",
     priority: 0.85,
   }));

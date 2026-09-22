@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
-import ImagePlaceholder from "@/components/ImagePlaceholder";
 import Image from "next/image";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/site";
@@ -57,54 +56,6 @@ const values = [
     title: "Kvalitet",
     desc: "Vi kompromissar aldrig med medicinsk kvalitet. Vår personal är legitimerad och erfaren – och väljer att arbeta här.",
   },
-];
-
-const team = [
-  {
-    name: "Dr. Anna Lindqvist",
-    role: "Grundare & Medicinsk chef",
-    bio: "Specialist i allmänmedicin med 15 års erfarenhet. Startade Hemläkare.se efter att ha sett hur systemen svikit patienterna för länge.",
-    image: null,
-    initials: "AL",
-    bg: "#e8d4e8",
-    color: "#6e2e7a",
-  },
-  {
-    name: "Marcus Bergström",
-    role: "VD & Medgrundare",
-    bio: "Bakgrund inom healthtech och digital innovation. Tror att teknologi och mänsklig omsorg kan förenas.",
-    image: null,
-    initials: "MB",
-    bg: "#d4dde8",
-    color: "#2e4a7a",
-  },
-  {
-    name: "Dr. Sara Johansson",
-    role: "Distriktsläkare",
-    bio: "Specialiserad på kroniska sjukdomar och preventiv medicin. Älskar det personliga mötet med patienten.",
-    image: null,
-    initials: "SJ",
-    bg: "#d4e8d8",
-    color: "#2e7a3e",
-  },
-  {
-    name: "Petra Ek",
-    role: "Distriktssköterska",
-    bio: "20 år i vården, varav 10 som hemsjukvårdssköterska. Ingen förstår hembesökets värde bättre än Petra.",
-    image: null,
-    initials: "PE",
-    bg: "#e8d5c4",
-    color: "#7a4f2e",
-  },
-];
-
-const milestones = [
-  { year: "2019", text: "Hemläkare.se grundas i Stockholm med idén om vård utan väntrum." },
-  { year: "2020", text: "Första digitala konsultationen genomförd. Onlinebokning lanseras." },
-  { year: "2022", text: "Prickmottagningen lanseras – digital hudvård med läkarbedömning samma dag." },
-  { year: "2023", text: "Mottagningen för Ungas Psykiska Hälsa öppnar. 20 000 patienter." },
-  { year: "2024", text: "Blodtrycksmätare kopplad till din läkare – proaktiv hälsoövervakning i hemmet." },
-  { year: "2026", text: "Idag. Vi fortsätter att växa – med patienten i centrum, alltid." },
 ];
 
 
@@ -195,12 +146,20 @@ export default function OmOssPage() {
 
         <section className="py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
-            <ImagePlaceholder label="Bild på läkare i hembesök eller digital konsultation" />
+            <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-gray-100 shadow-xl">
+              <Image
+                src="/landningspage/hemlakare-grupp.png"
+                alt="Teamet på Hemläkare.se."
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
             <div className="flex flex-col gap-6">
               <h2 className="text-[2rem] font-bold text-gray-900">Så arbetar vi</h2>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
-                Vår modell är enkel: du listas hos oss och får ett fast vårdteam – din läkare
-                och sköterska – som lär känna dig och din hälsohistoria.
+                Vår modell är enkel: du blir patient hos oss och får ett fast vårdteam – din
+                läkare och sköterska – som lär känna dig och din hälsohistoria.
               </p>
               <p className="text-[0.98rem] text-gray-600 leading-relaxed">
                 Behöver du snabb hjälp bokar du en tid online. Behöver du ett fysiskt möte
@@ -216,91 +175,11 @@ export default function OmOssPage() {
           </div>
         </section>
 
-        <section className="py-20 px-6 bg-[#fdf5f9]">
-          <div className="max-w-3xl mx-auto flex flex-col gap-10">
-            <div className="text-center flex flex-col gap-2">
-              <h2 className="text-[2rem] font-bold text-gray-900">Vår resa</h2>
-              <p className="text-[0.95rem] text-gray-500">Från idé till en av Sveriges mest uppskattade privatvårdscentraler</p>
-            </div>
-            <div className="flex flex-col gap-0">
-              {milestones.map((m, i) => (
-                <div key={m.year} className="flex gap-6 relative">
-                  <div className="flex flex-col items-center">
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[0.7rem] font-bold shrink-0 z-10"
-                      style={{ background: "linear-gradient(180deg, #E72E8A 0%, #D81B7D 100%)" }}
-                    >
-                      {m.year.slice(2)}
-                    </div>
-                    {i < milestones.length - 1 && (
-                      <div className="w-0.5 h-full bg-pink-100 mt-1" />
-                    )}
-                  </div>
-                  <div className="pb-8 pt-1.5 flex flex-col gap-1">
-                    <span className="text-[0.82rem] font-bold" style={{ color: "#E72E8A" }}>{m.year}</span>
-                    <p className="text-[0.95rem] text-gray-700 leading-relaxed">{m.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 px-6 bg-white">
-          <div className="max-w-6xl mx-auto flex flex-col gap-12">
-            <div className="text-center flex flex-col gap-2">
-              <h2 className="text-[2rem] font-bold text-gray-900">Teamet bakom</h2>
-              <p className="text-[0.95rem] text-gray-500">Erfarna, engagerade och valda för sin passion för vård</p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {team.map((member) => (
-                <div key={member.name} className="bg-[#fdf5f9] rounded-2xl p-6 flex flex-col gap-4 border border-gray-100">
-                  <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-[1.3rem] font-bold"
-                    style={{ background: member.bg, color: member.color }}
-                  >
-                    {member.initials}
-                  </div>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[0.95rem] font-bold text-gray-900">{member.name}</span>
-                    <span className="text-[0.78rem] font-semibold" style={{ color: "#E72E8A" }}>{member.role}</span>
-                  </div>
-                  <p className="text-[0.85rem] text-gray-600 leading-relaxed">{member.bio}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-[0.85rem] text-gray-400">
-              + ett team av läkare, sköterskor, psykologer och hälsopedagoger i Stockholm
-            </p>
-          </div>
-        </section>
-
-        <section className="py-16 px-6 bg-[#f4f4f8]">
-          <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-            {[
-              { num: "30 000+", label: "Listade patienter" },
-              { num: "4,8", label: "Snittbetyg på Google" },
-              { num: "7 år", label: "I branschen" },
-              { num: "<4h", label: "Svarstid i snitt" },
-            ].map((s) => (
-              <div key={s.label} className="bg-white rounded-2xl py-8 px-4 shadow-sm border border-gray-100 flex flex-col gap-2">
-                <span
-                  className="text-[2rem] font-bold"
-                  style={{ color: "#E72E8A" }}
-                >
-                  {s.num}
-                </span>
-                <span className="text-[0.82rem] font-semibold text-gray-500">{s.label}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="py-20 px-6 bg-white text-center">
           <div className="max-w-xl mx-auto flex flex-col items-center gap-6">
             <h2 className="text-[1.8rem] font-bold text-gray-900">Redo att testa en bättre vård?</h2>
             <p className="text-[0.95rem] text-gray-600">
-              Lista dig idag och upplev skillnaden med ett personligt vårdteam som verkligen finns där för dig.
+              Bli patient idag och upplev skillnaden med ett personligt vårdteam som verkligen finns där för dig.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link

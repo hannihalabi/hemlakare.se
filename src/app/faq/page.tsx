@@ -16,8 +16,8 @@ const categories = [
     ),
     faqs: [
       {
-        q: "Behöver jag lista mig?",
-        a: "Ja, för att få tillgång till din egen läkare och sköterska behöver du lista dig hos oss. Det gör du enkelt online på bara några minuter med hjälp av BankID.",
+        q: "Behöver jag bli patient hos er?",
+        a: "Ja, för att få tillgång till din egen läkare och sköterska behöver du bli patient hos oss. Det gör du enkelt online på bara några minuter med hjälp av BankID.",
       },
       {
         q: "Hur bokar jag en tid?",
@@ -25,11 +25,11 @@ const categories = [
       },
       {
         q: "Hur snabbt kan jag komma igång?",
-        a: "Du kan lista dig och skicka ditt första ärende samma dag. Vår personal svarar oftast inom några timmar under vardagar.",
+        a: "Du kan bli patient och skicka ditt första ärende samma dag. Vår personal svarar oftast inom några timmar under vardagar.",
       },
       {
-        q: "Kan jag lista hela familjen?",
-        a: "Ja, du kan lista flera familjemedlemmar under samma konto. Barn listas av en vårdnadshavare.",
+        q: "Kan jag registrera hela familjen?",
+        a: "Ja, du kan registrera flera familjemedlemmar under samma konto. Barn registreras av en vårdnadshavare.",
       },
     ],
   },
@@ -43,7 +43,7 @@ const categories = [
     faqs: [
       {
         q: "Vad kostar det?",
-        a: "Just nu kostar läkarhjälp 995 kr i lanseringspris, jämfört med ordinarie pris 2 790 kr. Erbjudandet gäller under en begränsad introduktionsperiod. Hembesök och andra tjänster prissätts separat.",
+        a: "Läkarhjälp kostar 995 kr, jämfört med ordinarie pris 2 790 kr. Hembesök och andra tjänster prissätts separat.",
       },
       {
         q: "Gäller mitt frikort?",

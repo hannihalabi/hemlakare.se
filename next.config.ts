@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
       { source: "/aktuellt/njurb%C3%A4ckeninflammation", destination: "/aktuellt/njurbackeninflammation", permanent: true },
       { source: "/aktuellt/s%C3%B6mnapne", destination: "/aktuellt/somnapne", permanent: true },
       { source: "/aktuellt/kortisonet-bip%C3%A5verkan", destination: "/aktuellt/kortisonet-bipaverkan", permanent: true },
+      { source: "/fysiskt-lakarbesok", destination: "/lakare/hembesok", permanent: true },
     ];
   },
 };

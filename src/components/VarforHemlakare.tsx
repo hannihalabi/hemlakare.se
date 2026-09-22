@@ -21,8 +21,8 @@ const vardcentral = [
 
 const hemlakare = [
   "Vi tar din hälsa på allvar och står alltid på din sida",
-  "Snabb tillgång till din egna läkare",
-  "Endast läkare från topp-rankade globala universitet",
+  "Snabbare remisser och röntgen",
+  "Svenska läkare med hög medicinsk kompetens",
   "Avsatt tid för noggrann bedömning, vi skyndar inte på patientsamtalet",
   "Kvalitet före kvantitet - du är i prioritet",
 ];

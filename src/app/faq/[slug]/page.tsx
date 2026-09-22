@@ -8,11 +8,11 @@ import { SITE_URL } from "@/lib/site";
 const articles: Record<string, { title: string; body: string }> = {
   "vad-kostar-det": {
     title: "Vad kostar det?",
-    body: "Hemläkare.se är privatfinansierad vård. Just nu kostar läkarhjälp 995 kr i lanseringspris, jämfört med ordinarie pris 2 790 kr. Erbjudandet gäller under en begränsad introduktionsperiod. Frikort och högkostnadsskydd gäller inte hos oss.",
+    body: "Hemläkare.se är privatfinansierad vård. Läkarhjälp kostar 995 kr, jämfört med ordinarie pris 2 790 kr. Frikort och högkostnadsskydd gäller inte hos oss.",
   },
   "lista-mig": {
-    title: "Behöver jag lista mig?",
-    body: "Ja, för att få tillgång till din egen läkare och sköterska behöver du lista dig hos oss. Det gör du enkelt online på bara några minuter.",
+    title: "Behöver jag bli patient hos er?",
+    body: "Ja, för att få tillgång till din egen läkare och sköterska behöver du bli patient hos oss. Det gör du enkelt online på bara några minuter.",
   },
   "var-finns-ni": {
     title: "Var finns ni?",

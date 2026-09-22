@@ -128,7 +128,7 @@ export default function Footer() {
             {healthcareServices.map((service) => (
               <Link
                 key={service.slug}
-                href={`/${service.slug}`}
+                href={`/${service.slug === "fysiskt-lakarbesok" ? "lakare/hembesok" : service.slug}`}
                 className="text-[0.82rem] text-white/70 transition-colors hover:text-white"
               >
                 {service.name}

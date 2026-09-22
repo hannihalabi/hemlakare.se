@@ -97,10 +97,10 @@ export const healthcareServices: HealthcareService[] = [
       "När besvären behöver undersökas på plats kommer läkaren hem till dig i Stockholm. Du får tid att beskriva hur du mår, en fysisk undersökning och en tydlig plan framåt.",
     price: "995 kr",
     originalPrice: "2 790 kr",
-    priceNote: "Kampanjpris för läkarbesöket. Eventuella prover eller andra åtgärder kan tillkomma.",
+    priceNote: "Priset gäller läkarbesöket. Eventuella prover eller andra åtgärder kan tillkomma.",
     bookingHref: "/boka/fysiskt-lakarbesok",
     cardDescription:
-      "Träffa en läkare på plats för medicinsk bedömning, kroppsundersökning och tydlig återkoppling. Just nu till kampanjpris 995 kr.",
+      "Träffa en läkare på plats för medicinsk bedömning, kroppsundersökning och tydlig återkoppling. Kostar 995 kr.",
     highlights: ["Personlig läkarbedömning", "Fysisk undersökning vid behov", "Tydlig plan efter besöket"],
     suitableTitle: "När passar ett fysiskt läkarbesök?",
     suitableIntro:
@@ -153,7 +153,7 @@ export const healthcareServices: HealthcareService[] = [
       "Träffa en läkare via videosamtal för medicinsk bedömning, rådgivning och en tydlig plan. Om dina besvär behöver undersökas fysiskt hjälper vi dig att förstå nästa steg.",
     price: "595 kr",
     originalPrice: "995 kr",
-    priceNote: "Kampanjpris för videosamtalet. Eventuella prover eller läkemedel ingår inte.",
+    priceNote: "Priset gäller videosamtalet. Eventuella prover eller läkemedel ingår inte.",
     bookingHref: "/boka/digitalt-lakarbesok",
     cardDescription:
       "Träffa en läkare via videosamtal för medicinsk bedömning, rådgivning och behandling – tryggt och smidigt där du befinner dig.",

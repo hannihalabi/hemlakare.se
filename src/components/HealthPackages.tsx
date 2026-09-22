@@ -188,7 +188,7 @@ const services: Service[] = healthcareServices.map((service) => ({
         : service.price,
   originalPrice: service.originalPrice,
   href: service.bookingHref,
-  detailHref: `/${service.slug}`,
+  detailHref: `/${service.slug === "fysiskt-lakarbesok" ? "lakare/hembesok" : service.slug}`,
   description: service.cardDescription,
   groups:
     service.slug === "blodprovstagning"
