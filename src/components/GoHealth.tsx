@@ -39,7 +39,10 @@ export default function GoHealth() {
           </p>
         </div>
 
-        <p className="text-sm font-semibold text-gray-400">Kommer snart – håll utkik</p>
+        <p className="max-w-md text-xs italic text-gray-400">
+          24 månaders bindningstid · Smartklocka ingår · Hälsokontroll görs innan start
+          av GoHealth-prenumerationen
+        </p>
       </div>
     </section>
   );
