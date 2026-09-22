@@ -45,6 +45,14 @@ export default function BookingFlow({ service, variants }: Props) {
 
   const priceLabel = selectedVariant ? selectedVariant.priceLabel : service.price;
 
+  const closeBookingFlow = () => {
+    if (window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.push("/#halsokontroller");
+  };
+
   useEffect(() => {
     // Kalendern täcker hela skärmen som en modal – lås bakgrundsscroll så
     // inte sidan bakom kan scrolla samtidigt på mobil.
@@ -186,7 +194,7 @@ export default function BookingFlow({ service, variants }: Props) {
             <button
               type="button"
               aria-label="Avbryt bokning och stäng"
-              onClick={() => router.push(`/${service.slug}`)}
+              onClick={closeBookingFlow}
               className="flex h-9 w-9 items-center justify-center rounded-full text-xl text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
             >
               ×

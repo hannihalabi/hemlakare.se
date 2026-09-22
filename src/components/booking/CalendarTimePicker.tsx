@@ -193,10 +193,10 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1));
   };
 
-  // Vertikal swipe: dra uppåt → nästa månad, dra nedåt → föregående månad.
+  // Horisontell swipe: dra åt vänster → nästa månad, dra åt höger → föregående.
   // Ligger som en native (icke-passiv) touchmove-lyssnare eftersom vi måste
-  // kunna avbryta sidans egen scroll så draget känns som att bläddra kalendern
-  // och inte scrollar iväg sidan under fingret.
+  // kunna avbryta webbläsarens horisontella gest när användaren bläddrar i
+  // kalendern. Vertikal scroll lämnas orörd.
   //
   // Elementet monteras/avmonteras när komponenten växlar mellan sina villkorliga
   // return-grenar (laddning → månadsvy → dagsvy). En vanlig useRef + useEffect med
@@ -205,9 +205,8 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
   // lyssnaren aldrig satts upp, oavsett vad som hände senare. Ett callback ref
   // anropas däremot av React varje gång just den här noden faktiskt monteras
   // eller avmonteras, så vi missar aldrig tillfället att koppla på lyssnarna.
-  const touchStartY = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
   const swipeLockedAxis = useRef<"vertical" | "horizontal" | null>(null);
-  const [swipeHint, setSwipeHint] = useState<"up" | "down" | null>(null);
   const SWIPE_THRESHOLD = 48;
   const AXIS_LOCK_THRESHOLD = 8;
 
@@ -230,43 +229,38 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     swipeCleanupRef.current = null;
     if (!el) return;
 
-    let startX = 0;
+    let startY = 0;
 
     const onStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
-      startX = e.touches[0].clientX;
+      touchStartX.current = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
       swipeLockedAxis.current = null;
     };
 
     const onMove = (e: TouchEvent) => {
-      if (touchStartY.current == null) return;
-      const deltaY = e.touches[0].clientY - touchStartY.current;
-      const deltaX = e.touches[0].clientX - startX;
+      if (touchStartX.current == null) return;
+      const deltaX = e.touches[0].clientX - touchStartX.current;
+      const deltaY = e.touches[0].clientY - startY;
 
       if (!swipeLockedAxis.current) {
         if (Math.abs(deltaY) < AXIS_LOCK_THRESHOLD && Math.abs(deltaX) < AXIS_LOCK_THRESHOLD) return;
         swipeLockedAxis.current = Math.abs(deltaY) > Math.abs(deltaX) ? "vertical" : "horizontal";
       }
-      if (swipeLockedAxis.current !== "vertical") return;
+      if (swipeLockedAxis.current !== "horizontal") return;
 
-      // Blockera sidans scroll så länge vi tolkar detta som en kalender-swipe.
+      // Blockera webbläsarens egen sidgest när detta är en kalenderswipe.
       e.preventDefault();
-
-      if (deltaY < -12 && canGoToNextMonthRef.current) setSwipeHint("up");
-      else if (deltaY > 12 && canGoToPreviousMonthRef.current) setSwipeHint("down");
-      else setSwipeHint(null);
     };
 
     const onEnd = (e: TouchEvent) => {
-      if (touchStartY.current == null) return;
-      const deltaY = e.changedTouches[0].clientY - touchStartY.current;
-      if (swipeLockedAxis.current === "vertical") {
-        if (deltaY <= -SWIPE_THRESHOLD) goToNextMonthRef.current();
-        else if (deltaY >= SWIPE_THRESHOLD) goToPreviousMonthRef.current();
+      if (touchStartX.current == null) return;
+      const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+      if (swipeLockedAxis.current === "horizontal") {
+        if (deltaX <= -SWIPE_THRESHOLD) goToNextMonthRef.current();
+        else if (deltaX >= SWIPE_THRESHOLD) goToPreviousMonthRef.current();
       }
-      touchStartY.current = null;
+      touchStartX.current = null;
       swipeLockedAxis.current = null;
-      setSwipeHint(null);
     };
 
     el.addEventListener("touchstart", onStart, { passive: true });
@@ -382,39 +376,27 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             aria-label="Föregående månad"
             disabled={!canGoToPreviousMonth}
             onClick={goToPreviousMonth}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-xl text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] active:scale-90 disabled:opacity-30 disabled:hover:bg-transparent"
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition hover:border-pink-200 hover:bg-pink-50 hover:text-[#D81B7D] active:scale-95 disabled:border-transparent disabled:bg-transparent disabled:text-gray-300 disabled:shadow-none"
           >
-            ‹
+            <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
+              <path d="m14.5 6-6 6 6 6" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
           <button
             type="button"
             aria-label="Nästa månad"
             disabled={!canGoToNextMonth}
             onClick={goToNextMonth}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-xl text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] active:scale-90 disabled:opacity-30 disabled:hover:bg-transparent"
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition hover:border-pink-200 hover:bg-pink-50 hover:text-[#D81B7D] active:scale-95 disabled:border-transparent disabled:bg-transparent disabled:text-gray-300 disabled:shadow-none"
           >
-            ›
+            <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
+              <path d="m9.5 6 6 6-6 6" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
       </div>
 
-      <div ref={swipeAreaCallbackRef} className="relative touch-pan-x">
-        {canGoToPreviousMonth && (
-          <div
-            className={[
-              "hl-swipe-hint-up pointer-events-none absolute inset-x-0 -top-1 flex justify-center transition-opacity",
-              swipeHint === "down" ? "opacity-100" : "opacity-40",
-            ].join(" ")}
-            aria-hidden
-          >
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-pink-50 text-[#D81B7D]">
-              <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
-                <path d="M18 15 12 9 6 15" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-          </div>
-        )}
-
+      <div ref={swipeAreaCallbackRef} className="relative touch-pan-y">
         <div className="mt-4 grid grid-cols-7 gap-1 text-center">
           {WEEKDAY_LABELS.map((label, index) => (
             <div key={`${label}-${index}`} className="text-xs font-semibold text-gray-400">
@@ -519,41 +501,12 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
           })}
         </div>
 
-        {canGoToNextMonth && (
-          <div
-            className={[
-              "hl-swipe-hint-down pointer-events-none absolute inset-x-0 -bottom-1 flex justify-center transition-opacity",
-              swipeHint === "up" ? "opacity-100" : "opacity-40",
-            ].join(" ")}
-            aria-hidden
-          >
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-pink-50 text-[#D81B7D]">
-              <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
-                <path d="M6 9 12 15 18 9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-          </div>
-        )}
       </div>
 
       {slots.length === 0 && (
         <p className="mt-4 text-sm text-gray-500">Inga lediga tider just nu. Kontakta oss så hjälper vi dig.</p>
       )}
 
-      <style>{`
-        @keyframes hl-swipe-bob {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(3px); }
-        }
-        .hl-swipe-hint-up span { animation: hl-swipe-bob 1.6s ease-in-out infinite reverse; }
-        .hl-swipe-hint-down span { animation: hl-swipe-bob 1.6s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) {
-          .hl-swipe-hint-up span,
-          .hl-swipe-hint-down span {
-            animation: none !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
