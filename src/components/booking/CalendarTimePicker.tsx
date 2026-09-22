@@ -197,7 +197,14 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
   // Ligger som en native (icke-passiv) touchmove-lyssnare eftersom vi måste
   // kunna avbryta sidans egen scroll så draget känns som att bläddra kalendern
   // och inte scrollar iväg sidan under fingret.
-  const swipeAreaRef = useRef<HTMLDivElement>(null);
+  //
+  // Elementet monteras/avmonteras när komponenten växlar mellan sina villkorliga
+  // return-grenar (laddning → månadsvy → dagsvy). En vanlig useRef + useEffect med
+  // tom deps-array kör bara EN gång direkt efter första render – om elementet inte
+  // fanns då (t.ex. för att kalendern fortfarande visade laddningsläget) hade
+  // lyssnaren aldrig satts upp, oavsett vad som hände senare. Ett callback ref
+  // anropas däremot av React varje gång just den här noden faktiskt monteras
+  // eller avmonteras, så vi missar aldrig tillfället att koppla på lyssnarna.
   const touchStartY = useRef<number | null>(null);
   const swipeLockedAxis = useRef<"vertical" | "horizontal" | null>(null);
   const [swipeHint, setSwipeHint] = useState<"up" | "down" | null>(null);
@@ -215,8 +222,12 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     goToNextMonthRef.current = goToNextMonth;
   });
 
-  useEffect(() => {
-    const el = swipeAreaRef.current;
+  const swipeCleanupRef = useRef<(() => void) | null>(null);
+  const swipeAreaCallbackRef = (el: HTMLDivElement | null) => {
+    // Städa bort ev. tidigare lyssnare innan vi kopplar på en ny (eller inga alls
+    // om noden avmonterades).
+    swipeCleanupRef.current?.();
+    swipeCleanupRef.current = null;
     if (!el) return;
 
     let startX = 0;
@@ -263,13 +274,13 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     el.addEventListener("touchend", onEnd, { passive: true });
     el.addEventListener("touchcancel", onEnd, { passive: true });
 
-    return () => {
+    swipeCleanupRef.current = () => {
       el.removeEventListener("touchstart", onStart);
       el.removeEventListener("touchmove", onMove);
       el.removeEventListener("touchend", onEnd);
       el.removeEventListener("touchcancel", onEnd);
     };
-  }, []);
+  };
 
   const [demoBookedDialogDay, setDemoBookedDialogDay] = useState<Date | null>(null);
 
@@ -366,7 +377,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
         </div>
       </div>
 
-      <div ref={swipeAreaRef} className="relative touch-pan-x">
+      <div ref={swipeAreaCallbackRef} className="relative touch-pan-x">
         {canGoToPreviousMonth && (
           <div
             className={[
@@ -402,51 +413,48 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             // passerade dagar som saknar riktiga tider i underlaget.
             const showDemoBookedBadge = inCurrentMonth && isPast && count === 0;
 
+            // showDemoBookedBadge-dagar är alltid !hasSlots (de saknar per definition
+            // riktiga tider), vilket gör dagsknappen `disabled`. En disabled HTML-knapp
+            // blockerar pointer-events för HELA sitt innehåll, så en badge som låg som
+            // barn till knappen kunde aldrig ta emot klick oavsett egna handlers. Badgen
+            // ligger därför nu som ett eget syskon-element i en gemensam wrapper, inte
+            // nästlad inuti dagsknappen.
             return (
-              <button
-                key={key}
-                type="button"
-                disabled={!hasSlots}
-                onClick={() => {
-                  setSelectedDay(day);
-                  setView("day");
-                }}
-                className={[
-                  "relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm transition",
-                  !inCurrentMonth ? "text-transparent" : "",
-                  hasSlots
-                    ? "font-semibold text-gray-900 hover:bg-pink-50 active:scale-95"
-                    : "text-gray-300",
-                  isToday && inCurrentMonth ? "ring-1 ring-inset ring-pink-200" : "",
-                ].join(" ")}
-              >
-                {day.getDate()}
-                {hasSlots && (
-                  <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-[#D81B7D]" aria-hidden />
-                )}
+              <div key={key} className="relative">
+                <button
+                  type="button"
+                  disabled={!hasSlots}
+                  onClick={() => {
+                    setSelectedDay(day);
+                    setView("day");
+                  }}
+                  className={[
+                    "relative flex aspect-square w-full flex-col items-center justify-center rounded-xl text-sm transition",
+                    !inCurrentMonth ? "text-transparent" : "",
+                    hasSlots
+                      ? "font-semibold text-gray-900 hover:bg-pink-50 active:scale-95"
+                      : "text-gray-300",
+                    isToday && inCurrentMonth ? "ring-1 ring-inset ring-pink-200" : "",
+                  ].join(" ")}
+                >
+                  {day.getDate()}
+                  {hasSlots && (
+                    <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-[#D81B7D]" aria-hidden />
+                  )}
+                </button>
                 {showDemoBookedBadge && (
-                  <span
-                    role="button"
-                    tabIndex={0}
+                  <button
+                    type="button"
                     title="Antal bokade patienter denna dag"
                     aria-label={`${demoBookedCountForPastDay(key)} bokade patienter ${formatDayHeading(day).toLowerCase()}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDemoBookedDialogDay(day);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key !== "Enter" && e.key !== " ") return;
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setDemoBookedDialogDay(day);
-                    }}
-                    className="hl-booked-badge absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[0.62rem] font-extrabold leading-none text-white shadow-[0_3px_10px_-2px_rgba(216,27,125,0.75)] ring-2 ring-white transition hover:scale-110 active:scale-95"
+                    onClick={() => setDemoBookedDialogDay(day)}
+                    className="hl-booked-badge absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[0.62rem] font-extrabold leading-none text-white ring-2 ring-white transition hover:scale-110 active:scale-95"
                     style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 60%, #a71668 100%)" }}
                   >
                     {demoBookedCountForPastDay(key)}
-                  </span>
+                  </button>
                 )}
-              </button>
+              </div>
             );
           })}
         </div>
@@ -518,17 +526,12 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(3px); }
         }
-        @keyframes hl-booked-glow {
-          0%, 100% { box-shadow: 0 3px 10px -2px rgba(216,27,125,0.75); }
-          50% { box-shadow: 0 3px 16px 1px rgba(216,27,125,0.95); }
-        }
         .hl-swipe-hint-up span { animation: hl-swipe-bob 1.6s ease-in-out infinite reverse; }
         .hl-swipe-hint-down span { animation: hl-swipe-bob 1.6s ease-in-out infinite; }
-        .hl-booked-badge { animation: hl-booked-glow 2.4s ease-in-out infinite; }
+        .hl-booked-badge { box-shadow: 0 2px 6px -1px rgba(216,27,125,0.55); }
         @media (prefers-reduced-motion: reduce) {
           .hl-swipe-hint-up span,
-          .hl-swipe-hint-down span,
-          .hl-booked-badge {
+          .hl-swipe-hint-down span {
             animation: none !important;
           }
         }
