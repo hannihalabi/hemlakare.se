@@ -178,9 +178,11 @@ export default function BookingFlow({ service, variants }: Props) {
             ) : (
               <span />
             )}
-            <p className="hidden text-sm font-semibold text-gray-500 sm:block">
-              {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
-            </p>
+            {slots !== null && (
+              <p className="hidden text-sm font-semibold text-gray-500 sm:block">
+                {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
+              </p>
+            )}
             <button
               type="button"
               aria-label="Avbryt bokning och stäng"
@@ -190,12 +192,14 @@ export default function BookingFlow({ service, variants }: Props) {
               ×
             </button>
           </div>
-          <p className="px-4 pt-2 text-sm font-semibold text-gray-500 sm:hidden">
-            {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
-          </p>
+          {slots !== null && (
+            <p className="px-4 pt-2 text-sm font-semibold text-gray-500 sm:hidden">
+              {selectedVariant ? `${selectedVariant.label} · ${selectedVariant.priceLabel}` : `${service.name} · ${service.price}`}
+            </p>
+          )}
 
           <div className="mx-auto w-full max-w-md flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-            <h2 className="mb-4 text-lg font-bold text-gray-900">Välj en tid</h2>
+            {slots !== null && <h2 className="mb-4 text-lg font-bold text-gray-900">Välj en tid</h2>}
             <CalendarTimePicker
               slots={slots}
               slotsError={slotsError}

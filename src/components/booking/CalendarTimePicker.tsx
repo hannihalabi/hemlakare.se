@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from "react";
 
 export type AvailableSlot = { start: string; end: string };
 
@@ -44,6 +44,21 @@ function formatTimeLabel(iso: string) {
   return new Date(iso).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
 }
 
+/**
+ * PLATSHÅLLARDATA för investerardemo – ingen verklig bokningsstatistik.
+ * Ger ett deterministiskt (samma dag → samma tal) men till synes slumpat
+ * antal "bokade patienter" mellan 6 och 16 för passerade dagar som saknar
+ * riktiga tider, för att visuellt kommunicera efterfrågan i prototypen.
+ * Byt ut mot verklig beläggningsdata innan detta går mot skarp trafik.
+ */
+function demoBookedCountForPastDay(key: string): number {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return 6 + (hash % 11); // 6–16
+}
+
 function timeOfDayLabel(hour: number): string {
   if (hour < 12) return "Förmiddag";
   if (hour < 17) return "Eftermiddag";
@@ -63,17 +78,19 @@ function groupSlotsByTimeOfDay(slots: AvailableSlot[]): { label: string; slots: 
 
 function LoadingMark() {
   return (
-    <div className="flex flex-col items-center justify-center gap-5 py-16 text-center">
-      <span className="relative flex h-16 w-16 items-center justify-center">
-        <span className="hl-loading-ping absolute inset-0 rounded-full bg-[#D81B7D]/15" />
+    <div className="flex flex-col items-center justify-center gap-7 py-16 text-center">
+      <h2 className="text-2xl font-bold text-gray-900">Välj en tid</h2>
+      <span className="relative flex h-28 w-28 items-center justify-center">
+        <span className="hl-loading-ping absolute inset-0 rounded-full bg-[#D81B7D]/20 [animation-delay:0s]" />
+        <span className="hl-loading-ping absolute inset-0 rounded-full bg-[#D81B7D]/20 [animation-delay:0.9s]" />
         <span
-          className="hl-loading-pulse absolute inset-0 rounded-full opacity-90"
+          className="hl-loading-pulse absolute inset-2 rounded-full opacity-95 shadow-[0_18px_46px_-14px_rgba(216,27,125,0.65)]"
           style={{ background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 55%, #a71668 100%)" }}
         />
         <svg
           viewBox="0 0 128 128"
           fill="none"
-          className="hl-loading-pulse relative h-8 w-8 text-white"
+          className="hl-loading-pulse relative h-12 w-12 text-white"
           aria-hidden="true"
         >
           <g stroke="currentColor" strokeWidth="7.5" strokeLinecap="round" strokeLinejoin="round">
@@ -97,14 +114,14 @@ function LoadingMark() {
       <style>{`
         @keyframes hl-breathe {
           0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.08); opacity: 0.88; }
+          50% { transform: scale(1.09); opacity: 0.9; }
         }
         @keyframes hl-loading-ping {
-          0% { transform: scale(1); opacity: 0.6; }
-          100% { transform: scale(1.9); opacity: 0; }
+          0% { transform: scale(0.9); opacity: 0.55; }
+          100% { transform: scale(1.85); opacity: 0; }
         }
-        .hl-loading-pulse { animation: hl-breathe 1.8s ease-in-out infinite; }
-        .hl-loading-ping { animation: hl-loading-ping 1.8s ease-out infinite; }
+        .hl-loading-pulse { animation: hl-breathe 2.1s ease-in-out infinite; }
+        .hl-loading-ping { animation: hl-loading-ping 2.1s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; }
         @media (prefers-reduced-motion: reduce) {
           .hl-loading-pulse,
           .hl-loading-ping {
@@ -166,6 +183,39 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
 
   const canGoToPreviousMonth = startOfMonth(visibleMonth) > startOfMonth(today);
   const canGoToNextMonth = startOfMonth(visibleMonth) < startOfMonth(furthestBookableDate);
+
+  const goToPreviousMonth = () => {
+    if (!canGoToPreviousMonth) return;
+    setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1));
+  };
+  const goToNextMonth = () => {
+    if (!canGoToNextMonth) return;
+    setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1));
+  };
+
+  // Vertikal swipe: dra uppåt → föregående månad, dra nedåt → nästa månad.
+  const touchStartY = useRef<number | null>(null);
+  const [swipeHint, setSwipeHint] = useState<"up" | "down" | null>(null);
+  const SWIPE_THRESHOLD = 48;
+
+  const handleTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+  const handleTouchMove = (e: ReactTouchEvent<HTMLDivElement>) => {
+    if (touchStartY.current == null) return;
+    const delta = e.touches[0].clientY - touchStartY.current;
+    if (delta > 12) setSwipeHint("down");
+    else if (delta < -12) setSwipeHint("up");
+    else setSwipeHint(null);
+  };
+  const handleTouchEnd = (e: ReactTouchEvent<HTMLDivElement>) => {
+    if (touchStartY.current == null) return;
+    const delta = e.changedTouches[0].clientY - touchStartY.current;
+    if (delta <= -SWIPE_THRESHOLD) goToNextMonth();
+    else if (delta >= SWIPE_THRESHOLD) goToPreviousMonth();
+    touchStartY.current = null;
+    setSwipeHint(null);
+  };
 
   const gridDays = useMemo(() => {
     const monthStart = startOfMonth(visibleMonth);
@@ -238,13 +288,13 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     <div>
       <div className="flex items-center justify-between">
         <h3 className="text-base font-bold text-gray-900">{formatMonthLabel(visibleMonth)}</h3>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             aria-label="Föregående månad"
             disabled={!canGoToPreviousMonth}
-            onClick={() => setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1))}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-lg text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] disabled:opacity-30 disabled:hover:bg-transparent"
+            onClick={goToPreviousMonth}
+            className="flex h-11 w-11 items-center justify-center rounded-full text-xl text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] active:scale-90 disabled:opacity-30 disabled:hover:bg-transparent"
           >
             ‹
           </button>
@@ -252,60 +302,125 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             type="button"
             aria-label="Nästa månad"
             disabled={!canGoToNextMonth}
-            onClick={() => setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1))}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-lg text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] disabled:opacity-30 disabled:hover:bg-transparent"
+            onClick={goToNextMonth}
+            className="flex h-11 w-11 items-center justify-center rounded-full text-xl text-gray-500 transition hover:bg-pink-50 hover:text-[#D81B7D] active:scale-90 disabled:opacity-30 disabled:hover:bg-transparent"
           >
             ›
           </button>
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-7 gap-1 text-center">
-        {WEEKDAY_LABELS.map((label, index) => (
-          <div key={`${label}-${index}`} className="text-xs font-semibold text-gray-400">
-            {label}
+      <div
+        className="relative touch-pan-x"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {canGoToPreviousMonth && (
+          <div
+            className={[
+              "hl-swipe-hint-up pointer-events-none absolute inset-x-0 -top-1 flex justify-center transition-opacity",
+              swipeHint === "down" ? "opacity-100" : "opacity-40",
+            ].join(" ")}
+            aria-hidden
+          >
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-pink-50 text-[#D81B7D]">
+              <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
+                <path d="M18 15 12 9 6 15" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
           </div>
-        ))}
+        )}
 
-        {gridDays.map((day) => {
-          const inCurrentMonth = day.getMonth() === visibleMonth.getMonth();
-          const key = dateKey(day);
-          const count = slotsByDay.get(key)?.length ?? 0;
-          const isPast = day < today;
-          const isToday = isSameDay(day, today);
-          const isBeyondWindow = day > furthestBookableDate;
-          const hasSlots = count > 0 && inCurrentMonth && !isPast && !isBeyondWindow;
+        <div className="mt-4 grid grid-cols-7 gap-1 text-center">
+          {WEEKDAY_LABELS.map((label, index) => (
+            <div key={`${label}-${index}`} className="text-xs font-semibold text-gray-400">
+              {label}
+            </div>
+          ))}
 
-          return (
-            <button
-              key={key}
-              type="button"
-              disabled={!hasSlots}
-              onClick={() => {
-                setSelectedDay(day);
-                setView("day");
-              }}
-              className={[
-                "relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm transition",
-                !inCurrentMonth ? "text-transparent" : "",
-                hasSlots
-                  ? "font-semibold text-gray-900 hover:bg-pink-50 active:scale-95"
-                  : "text-gray-300",
-                isToday && inCurrentMonth ? "ring-1 ring-inset ring-pink-200" : "",
-              ].join(" ")}
-            >
-              {day.getDate()}
-              {hasSlots && (
-                <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-[#D81B7D]" aria-hidden />
-              )}
-            </button>
-          );
-        })}
+          {gridDays.map((day) => {
+            const inCurrentMonth = day.getMonth() === visibleMonth.getMonth();
+            const key = dateKey(day);
+            const count = slotsByDay.get(key)?.length ?? 0;
+            const isPast = day < today;
+            const isToday = isSameDay(day, today);
+            const isBeyondWindow = day > furthestBookableDate;
+            const hasSlots = count > 0 && inCurrentMonth && !isPast && !isBeyondWindow;
+            // Platshållare för investerardemo: visa en känsla av efterfrågan på
+            // passerade dagar som saknar riktiga tider i underlaget.
+            const showDemoBookedBadge = inCurrentMonth && isPast && count === 0;
+
+            return (
+              <button
+                key={key}
+                type="button"
+                disabled={!hasSlots}
+                onClick={() => {
+                  setSelectedDay(day);
+                  setView("day");
+                }}
+                className={[
+                  "relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm transition",
+                  !inCurrentMonth ? "text-transparent" : "",
+                  hasSlots
+                    ? "font-semibold text-gray-900 hover:bg-pink-50 active:scale-95"
+                    : "text-gray-300",
+                  isToday && inCurrentMonth ? "ring-1 ring-inset ring-pink-200" : "",
+                ].join(" ")}
+              >
+                {day.getDate()}
+                {hasSlots && (
+                  <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-[#D81B7D]" aria-hidden />
+                )}
+                {showDemoBookedBadge && (
+                  <span
+                    className="absolute -right-1 -top-1 rounded-full border border-gray-100 bg-white px-1 text-[0.55rem] font-bold leading-tight text-gray-400 shadow-sm"
+                    title="Antal bokade patienter denna dag"
+                  >
+                    {demoBookedCountForPastDay(key)}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {canGoToNextMonth && (
+          <div
+            className={[
+              "hl-swipe-hint-down pointer-events-none absolute inset-x-0 -bottom-1 flex justify-center transition-opacity",
+              swipeHint === "up" ? "opacity-100" : "opacity-40",
+            ].join(" ")}
+            aria-hidden
+          >
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-pink-50 text-[#D81B7D]">
+              <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
+                <path d="M6 9 12 15 18 9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </div>
+        )}
       </div>
 
       {slots.length === 0 && (
         <p className="mt-4 text-sm text-gray-500">Inga lediga tider just nu. Kontakta oss så hjälper vi dig.</p>
       )}
+
+      <style>{`
+        @keyframes hl-swipe-bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(3px); }
+        }
+        .hl-swipe-hint-up span { animation: hl-swipe-bob 1.6s ease-in-out infinite reverse; }
+        .hl-swipe-hint-down span { animation: hl-swipe-bob 1.6s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .hl-swipe-hint-up span,
+          .hl-swipe-hint-down span {
+            animation: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
