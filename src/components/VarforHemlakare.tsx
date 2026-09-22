@@ -383,8 +383,11 @@ export default function VarforHemlakare() {
             <blockquote>
               <p className="text-[1.25rem] font-semibold leading-[1.45] tracking-[-0.018em] text-gray-950 sm:text-[1.5rem]">
                 Privat vård ska inte vara en fråga om plånbok. Därför erbjuder vi
-                personlig, privatfinansierad vård för en rimlig kostnad – med tid, omtanke
-                och kvalitet för alla. För ett mer jämlikt samhälle.
+                personlig, privatfinansierad vård till en rimlig kostnad – med tid, omtanke
+                och kvalitet för alla. Vi vill göra det enklare att arbeta förebyggande, inte
+                bara söka vård när problemen redan blivit allvarliga. De flesta
+                hjärt-kärlsjukdomar kan förebyggas, och genom att följa bland annat blodtryck
+                kan riskfaktorer upptäckas och åtgärdas i tid. För ett mer jämlikt samhälle.
               </p>
               <footer className="mt-6 flex items-center justify-between gap-2 border-t border-pink-100 pt-4">
                 <div>

@@ -500,14 +500,14 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
                       <span
                         id={`booked-popover-${key}`}
                         role="tooltip"
-                        className={`absolute top-8 z-30 w-max max-w-[11rem] rounded-xl bg-slate-900 px-3 py-2 text-left text-xs font-medium leading-snug text-white shadow-xl ${popoverAlignment}`}
+                        className={`absolute bottom-8 z-30 w-max max-w-[11rem] rounded-xl bg-slate-900 px-3 py-2 text-left text-xs font-medium leading-snug text-white shadow-xl ${popoverAlignment}`}
                       >
                         <span className="block font-bold">{demoBookedCountForPastDay(key)} bokningar</span>
                         <span className="mt-0.5 block whitespace-nowrap text-slate-300">
                           {formatDayHeading(day)}
                         </span>
                         <span
-                          className={`absolute -top-1 h-2.5 w-2.5 rotate-45 bg-slate-900 ${popoverArrowAlignment}`}
+                          className={`absolute -bottom-1 h-2.5 w-2.5 rotate-45 bg-slate-900 ${popoverArrowAlignment}`}
                           aria-hidden
                         />
                       </span>
