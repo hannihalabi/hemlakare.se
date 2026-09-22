@@ -7,11 +7,11 @@ import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Mottagningar",
-  description: "Hemläkare.se erbjuder mottagningsbesök, hembesök, vaccination hemma och digital vård i Stockholm.",
+  description: "Mottagningsbesök, hembesök, vaccination hemma och digital vård i Stockholm – från 595 kr, svar ofta samma dag.",
   alternates: { canonical: "/mottagningar" },
   openGraph: {
     title: "Mottagningar — Hemläkare.se",
-    description: "Hemläkare.se erbjuder mottagningsbesök, hembesök, vaccination hemma och digital vård i Stockholm.",
+    description: "Mottagningsbesök, hembesök, vaccination hemma och digital vård i Stockholm – från 595 kr, svar ofta samma dag.",
     url: `${SITE_URL}/mottagningar`,
   },
 };
