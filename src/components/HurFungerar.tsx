@@ -48,8 +48,8 @@ export default function HurFungerar() {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) {
-      setIsVisible(true);
-      return;
+      const frame = window.requestAnimationFrame(() => setIsVisible(true));
+      return () => window.cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
