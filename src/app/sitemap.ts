@@ -47,6 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/patientavgifter`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/mottagningar`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/om`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/integritetspolicy`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/recensioner`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/aktuellt`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE_URL}/faq`, changeFrequency: "monthly", priority: 0.7 },

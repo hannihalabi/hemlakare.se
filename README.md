@@ -98,6 +98,27 @@ Migrationen skapar tabellen men inget lösenord. Skapa användaren i din lokala
 eller preview-databas med en bcrypt-hash, och använd sedan samma e-postadress
 och lösenord i `/admin`.
 
+### Annonsering i admin
+
+Fliken **Annonsering** visar dagsvärden och kampanjer från Google Ads, Meta Ads
+och TikTok Ads. Kör `db/migrations/0011_ads_reporting.sql` på databasen innan
+vyn används. En administratör eller redaktör kan sedan välja **Synkronisera nu**.
+Synkroniseringen hämtar de senaste 90 dagarna och lagrar rapportvärdena per
+dag, kampanj, konto och plattform. Utan API-uppgifter visas respektive plattform
+som **Ej ansluten** och inga exempelvärden skapas.
+
+Lägg API-uppgifterna i `.env.development.local` lokalt och som serversidiga
+miljövariabler på Vercel. De exakta variabelnamnen finns i `.env.example`.
+Google Calendar-uppgifterna kan inte användas för Google Ads: ett separat
+OAuth-godkännande med Ads-scope och ett Google Cloud-projekt med Ads API-åtkomst
+krävs. Google Ads-utvecklartoken är numera valfri. Meta kräver en token med
+`ads_read` och tillgång till annonskontot. TikTok kräver en auktoriserad app,
+annonsörs-ID och kontots valuta.
+
+Meta-konverteringar visas bara om `META_ADS_CONVERSION_ACTION` anger exakt en
+action type. Konverteringar summeras inte mellan plattformar eftersom de kan
+ha olika definitioner. Kostnader summeras bara när valutan är densamma.
+
 ## Betalning och bokning
 
 Bokningsschemat (`/boka/[slug]`) visar lediga tider för en tjänst, tar betalt

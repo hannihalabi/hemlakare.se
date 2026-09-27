@@ -8,7 +8,6 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import Link from "next/link";
 import { useAdminConversations } from "@/hooks/useAdminConversations";
 import {
   formatClock,
@@ -17,21 +16,9 @@ import {
   type ConversationStatus,
 } from "@/lib/chat-demo";
 import type { AdminRole } from "@/lib/content-types";
-import ContentWorkspace from "@/components/admin/ContentWorkspace";
-import SeoWorkspace from "@/components/admin/SeoWorkspace";
+import AdsWorkspace from "@/components/admin/AdsWorkspace";
 
 type QueueFilter = "new" | "mine" | "waiting" | "resolved" | "all";
-type AdminTab = "chat" | "blog" | "statistics";
-
-const adminTabs: Array<{
-  id: AdminTab;
-  label: string;
-  icon: "chat" | "blog" | "statistics";
-}> = [
-  { id: "chat", label: "Chatt", icon: "chat" },
-  { id: "blog", label: "Blogg", icon: "blog" },
-  { id: "statistics", label: "Statistik", icon: "statistics" },
-];
 
 const queueItems: Array<{
   id: QueueFilter;
@@ -67,7 +54,6 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
     assignConversation,
     setConversationStatus,
     markRead,
-    refresh,
   } = useAdminConversations();
   const [filter, setFilter] = useState<QueueFilter>("new");
   const [search, setSearch] = useState("");
@@ -75,7 +61,7 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
   const [draft, setDraft] = useState("");
   const [showDetails, setShowDetails] = useState(false);
   const [mobileThreadOpen, setMobileThreadOpen] = useState(false);
-  const [activeAdminTab, setActiveAdminTab] = useState<AdminTab>("chat");
+  const [activeSection, setActiveSection] = useState<"chat" | "ads">("chat");
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   const counts = useMemo(
@@ -201,57 +187,8 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
 
   return (
     <div className="flex h-dvh min-h-[680px] flex-col overflow-hidden bg-[#f4f5f7] text-slate-900">
-      <div className="flex min-h-9 shrink-0 items-center justify-center gap-2 bg-[#312a3c] px-4 text-center text-[0.7rem] font-semibold tracking-wide text-white">
-        <BeakerIcon className="size-3.5 text-pink-300" />
-        <span className="sm:hidden">ADMIN MVP · DATABAS</span>
-        <span className="hidden sm:inline">
-          ADMIN MVP
-          <span className="mx-2 text-white/45">·</span>
-          DATABASANSLUTEN
-          <span className="mx-2 text-white/45">·</span>
-          <span className="text-white/70">
-            SÄKER SESSION OCH RIKTIG BACKEND
-          </span>
-        </span>
-      </div>
-
-      <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-5">
-        <div className="flex min-w-0 items-center gap-3">
-          <BrandMark />
-          <div className="min-w-0">
-            <p className="truncate text-[0.92rem] font-extrabold tracking-tight text-slate-950">
-              hemläkare<span className="text-[#e72e8a]">.se</span>
-            </p>
-            <p className="text-[0.68rem] font-semibold text-slate-400">
-              Kundservice
-            </p>
-          </div>
-        </div>
-
+      <header className="flex h-16 shrink-0 items-center justify-end border-b border-slate-200 bg-white px-4 sm:px-5">
         <div className="flex items-center gap-2">
-          <Link
-            href="/chatt-demo"
-            className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-600 transition hover:bg-slate-50 md:flex"
-          >
-            <PresentationIcon className="size-4" />
-            Presentationsvy
-          </Link>
-          <Link
-            href="/"
-            target="_blank"
-            className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-600 transition hover:bg-slate-50 sm:flex"
-          >
-            <ExternalIcon className="size-4" />
-            Öppna besökarvy
-          </Link>
-          <button
-            onClick={() => void refresh()}
-            className="grid size-10 place-items-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e72e8a]"
-            aria-label="Uppdatera inkorg"
-            title="Uppdatera inkorg"
-          >
-            <RefreshIcon className="size-4" />
-          </button>
           <div className="ml-1 flex items-center gap-2">
             <EmployeeAvatar />
             <div className="hidden sm:block">
@@ -267,17 +204,13 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
 
       <div className="flex min-h-0 flex-1">
         <AdminSidebar
-          activeTab={activeAdminTab}
+          activeSection={activeSection}
+          onSelectSection={setActiveSection}
           unreadChatCount={unreadChatCount}
-          onSelectTab={setActiveAdminTab}
           onSignOut={onSignOut}
         />
 
-        {activeAdminTab === "blog" ? (
-          <ContentWorkspace role={currentUser.role} />
-        ) : activeAdminTab === "statistics" ? (
-          <SeoWorkspace role={currentUser.role} />
-        ) : (
+      {activeSection === "ads" ? <AdsWorkspace role={currentUser.role} /> : (
       <div className="grid min-h-0 flex-1 md:grid-cols-[310px_minmax(0,1fr)] lg:grid-cols-[220px_330px_minmax(0,1fr)] 2xl:grid-cols-[220px_350px_minmax(460px,1fr)_290px]">
         <aside className="hidden min-h-0 flex-col border-r border-slate-200 bg-[#fbfbfc] lg:flex">
           <nav className="flex-1 px-3 py-5" aria-label="Ärendeköer">
@@ -772,51 +705,54 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
           )}
         </aside>
       </div>
-        )}
+      )}
       </div>
     </div>
   );
 }
 
 function AdminSidebar({
-  activeTab,
+  activeSection,
+  onSelectSection,
   unreadChatCount,
-  onSelectTab,
   onSignOut,
 }: {
-  activeTab: AdminTab;
+  activeSection: "chat" | "ads";
+  onSelectSection: (section: "chat" | "ads") => void;
   unreadChatCount: number;
-  onSelectTab: (tab: AdminTab) => void;
   onSignOut?: () => void;
 }) {
   return (
     <aside className="flex w-[76px] shrink-0 flex-col items-center border-r border-slate-200 bg-[#211c2b] px-2 py-4 text-white">
       <nav className="flex flex-1 flex-col items-center gap-2" aria-label="Adminmeny">
-        {adminTabs.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => onSelectTab(item.id)}
-            className={`group relative flex min-h-[58px] w-full flex-col items-center justify-center gap-1 rounded-2xl text-[0.62rem] font-extrabold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${
-              activeTab === item.id
-                ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20"
-                : "text-white/55 hover:bg-white/10 hover:text-white"
-            }`}
-            aria-current={activeTab === item.id ? "page" : undefined}
-            title={item.label}
-          >
-            <AdminTabIcon name={item.icon} className="size-5" />
-            <span>{item.label}</span>
-            {item.id === "chat" && unreadChatCount > 0 && (
-              <span
-                className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-red-600 text-[0.6rem] font-extrabold leading-none text-white ring-2 ring-[#211c2b]"
-                aria-label={`${unreadChatCount} olästa meddelanden`}
-              >
-                {unreadChatCount > 9 ? "9+" : unreadChatCount}
-              </span>
-            )}
-          </button>
-        ))}
+        <button
+          type="button"
+          onClick={() => onSelectSection("chat")}
+          className={`relative grid size-12 place-items-center rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${activeSection === "chat" ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20" : "text-white/55 hover:bg-white/10 hover:text-white"}`}
+          aria-current={activeSection === "chat" ? "page" : undefined}
+          aria-label="Chatt"
+          title="Chatt"
+        >
+          <ChatIcon className="size-[22px]" />
+          {unreadChatCount > 0 && (
+            <span
+              className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-red-600 text-[0.6rem] font-extrabold leading-none text-white ring-2 ring-[#211c2b]"
+              aria-label={`${unreadChatCount} olästa meddelanden`}
+            >
+              {unreadChatCount > 9 ? "9+" : unreadChatCount}
+            </span>
+          )}
+        </button>
+        <button
+          type="button"
+          onClick={() => onSelectSection("ads")}
+          className={`grid size-12 place-items-center rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${activeSection === "ads" ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20" : "text-white/55 hover:bg-white/10 hover:text-white"}`}
+          aria-current={activeSection === "ads" ? "page" : undefined}
+          aria-label="Annonsering"
+          title="Annonsering"
+        >
+          <AdsIcon className="size-[22px]" />
+        </button>
       </nav>
 
       {onSignOut && (
@@ -1081,14 +1017,6 @@ function EmployeeAvatar({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function BrandMark() {
-  return (
-    <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-[linear-gradient(180deg,#e72e8a,#d81b7d)] text-white shadow-sm">
-      <HeartIcon className="size-5" />
-    </span>
-  );
-}
-
 type IconProps = { className?: string };
 
 function QueueIcon({
@@ -1102,17 +1030,6 @@ function QueueIcon({
   if (name === "check") return <CheckIcon className={className} />;
   if (name === "layers") return <LayersIcon className={className} />;
   return <InboxIcon className={className} />;
-}
-
-function AdminTabIcon({
-  name,
-  className,
-}: IconProps & {
-  name: "chat" | "blog" | "statistics";
-}) {
-  if (name === "blog") return <BlogIcon className={className} />;
-  if (name === "statistics") return <StatsIcon className={className} />;
-  return <ChatIcon className={className} />;
 }
 
 function BaseIcon({
@@ -1132,14 +1049,6 @@ function BaseIcon({
     >
       {children}
     </svg>
-  );
-}
-
-function HeartIcon(props: IconProps) {
-  return (
-    <BaseIcon {...props}>
-      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
-    </BaseIcon>
   );
 }
 
@@ -1212,32 +1121,6 @@ function ShieldIcon(props: IconProps) {
   );
 }
 
-function RefreshIcon(props: IconProps) {
-  return (
-    <BaseIcon {...props}>
-      <path d="M20 7h-6V1" />
-      <path d="M20 7a9 9 0 1 0 1 8" />
-    </BaseIcon>
-  );
-}
-
-function ExternalIcon(props: IconProps) {
-  return (
-    <BaseIcon {...props}>
-      <path d="M14 4h6v6M20 4l-9 9" />
-      <path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6" />
-    </BaseIcon>
-  );
-}
-
-function PresentationIcon(props: IconProps) {
-  return (
-    <BaseIcon {...props}>
-      <path d="M4 4h16v11H4zM8 20l4-5 4 5" />
-    </BaseIcon>
-  );
-}
-
 function ChevronDownIcon(props: IconProps) {
   return (
     <BaseIcon {...props}>
@@ -1306,20 +1189,10 @@ function ChatIcon(props: IconProps) {
   );
 }
 
-function BlogIcon(props: IconProps) {
+function AdsIcon(props: IconProps) {
   return (
     <BaseIcon {...props}>
-      <path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" />
-      <path d="M8 8h8M8 12h8M8 16h5" />
-    </BaseIcon>
-  );
-}
-
-function StatsIcon(props: IconProps) {
-  return (
-    <BaseIcon {...props}>
-      <path d="M4 19V5M4 19h16" />
-      <path d="M8 16v-5M12 16V8M16 16v-8" />
+      <path d="M4 19V5M4 19h16M8 16v-4m4 4V8m4 8v-6" />
     </BaseIcon>
   );
 }
@@ -1330,15 +1203,6 @@ function LogOutIcon(props: IconProps) {
       <path d="M10 17 15 12 10 7" />
       <path d="M15 12H3" />
       <path d="M21 4v16" />
-    </BaseIcon>
-  );
-}
-
-function BeakerIcon(props: IconProps) {
-  return (
-    <BaseIcon {...props}>
-      <path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4h8.8a3 3 0 0 0 2.6-4l-5-9V3" />
-      <path d="M7.5 15h9" />
     </BaseIcon>
   );
 }

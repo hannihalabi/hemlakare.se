@@ -204,7 +204,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-wrap gap-4 justify-between text-[0.75rem] text-white/40">
         <span>© {new Date().getFullYear()} Hemläkare.se — Privat vård utan kö</span>
         <div className="flex gap-6">
-          <span>Integritetspolicy</span>
+          <Link href="/integritetspolicy" className="transition-colors hover:text-white">
+            Integritetspolicy
+          </Link>
           <span>Cookies</span>
         </div>
       </div>
