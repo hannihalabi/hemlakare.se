@@ -17,6 +17,11 @@ import {
 } from "@/lib/chat-demo";
 import type { AdminRole } from "@/lib/content-types";
 import AdsWorkspace from "@/components/admin/AdsWorkspace";
+import CallcenterWorkspace from "@/components/admin/CallcenterWorkspace";
+import EmailWorkspace from "@/components/admin/EmailWorkspace";
+import HealthDataWorkspace from "@/components/admin/HealthDataWorkspace";
+
+type AdminSection = "callcenter" | "chat" | "ads" | "health-data" | "email";
 
 type QueueFilter = "new" | "mine" | "waiting" | "resolved" | "all";
 
@@ -61,7 +66,8 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
   const [draft, setDraft] = useState("");
   const [showDetails, setShowDetails] = useState(false);
   const [mobileThreadOpen, setMobileThreadOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<"chat" | "ads">("chat");
+  const [activeSection, setActiveSection] = useState<AdminSection>("chat");
+  const [unreadEmailCount, setUnreadEmailCount] = useState(0);
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   const counts = useMemo(
@@ -140,6 +146,26 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
     messageEndRef.current?.scrollIntoView({ block: "nearest" });
   }, [selectedConversation?.id, selectedConversation?.messages.length]);
 
+  useEffect(() => {
+    let cancelled = false;
+    async function refreshEmailCount() {
+      try {
+        const response = await fetch("/api/admin/email?status=new", { cache: "no-store" });
+        if (!response.ok) return;
+        const data = (await response.json()) as { unreadCount?: number };
+        if (!cancelled) setUnreadEmailCount(data.unreadCount ?? 0);
+      } catch {
+        // E-post kan vara oansluten eller migrationen ännu inte körd.
+      }
+    }
+    void refreshEmailCount();
+    const timer = window.setInterval(() => void refreshEmailCount(), 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [activeSection]);
+
   function selectConversation(conversation: ChatConversation) {
     setSelectedId(conversation.id);
     setMobileThreadOpen(true);
@@ -207,10 +233,11 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
           activeSection={activeSection}
           onSelectSection={setActiveSection}
           unreadChatCount={unreadChatCount}
+          unreadEmailCount={unreadEmailCount}
           onSignOut={onSignOut}
         />
 
-      {activeSection === "ads" ? <AdsWorkspace role={currentUser.role} /> : (
+      {activeSection === "callcenter" ? <CallcenterWorkspace /> : activeSection === "ads" ? <AdsWorkspace role={currentUser.role} /> : activeSection === "health-data" ? <HealthDataWorkspace /> : activeSection === "email" ? <EmailWorkspace role={currentUser.role} /> : (
       <div className="grid min-h-0 flex-1 md:grid-cols-[310px_minmax(0,1fr)] lg:grid-cols-[220px_330px_minmax(0,1fr)] 2xl:grid-cols-[220px_350px_minmax(460px,1fr)_290px]">
         <aside className="hidden min-h-0 flex-col border-r border-slate-200 bg-[#fbfbfc] lg:flex">
           <nav className="flex-1 px-3 py-5" aria-label="Ärendeköer">
@@ -715,16 +742,28 @@ function AdminSidebar({
   activeSection,
   onSelectSection,
   unreadChatCount,
+  unreadEmailCount,
   onSignOut,
 }: {
-  activeSection: "chat" | "ads";
-  onSelectSection: (section: "chat" | "ads") => void;
+  activeSection: AdminSection;
+  onSelectSection: (section: AdminSection) => void;
   unreadChatCount: number;
+  unreadEmailCount: number;
   onSignOut?: () => void;
 }) {
   return (
     <aside className="flex w-[76px] shrink-0 flex-col items-center border-r border-slate-200 bg-[#211c2b] px-2 py-4 text-white">
       <nav className="flex flex-1 flex-col items-center gap-2" aria-label="Adminmeny">
+        <button
+          type="button"
+          onClick={() => onSelectSection("callcenter")}
+          className={`grid size-12 place-items-center rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${activeSection === "callcenter" ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20" : "text-white/55 hover:bg-white/10 hover:text-white"}`}
+          aria-current={activeSection === "callcenter" ? "page" : undefined}
+          aria-label="Callcenter"
+          title="Callcenter"
+        >
+          <PhoneIcon className="size-[22px]" />
+        </button>
         <button
           type="button"
           onClick={() => onSelectSection("chat")}
@@ -752,6 +791,34 @@ function AdminSidebar({
           title="Annonsering"
         >
           <AdsIcon className="size-[22px]" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onSelectSection("health-data")}
+          className={`grid size-12 place-items-center rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${activeSection === "health-data" ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20" : "text-white/55 hover:bg-white/10 hover:text-white"}`}
+          aria-current={activeSection === "health-data" ? "page" : undefined}
+          aria-label="GoHealth"
+          title="GoHealth"
+        >
+          <HealthDataIcon className="size-[22px]" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onSelectSection("email")}
+          className={`relative grid size-12 place-items-center rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${activeSection === "email" ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20" : "text-white/55 hover:bg-white/10 hover:text-white"}`}
+          aria-current={activeSection === "email" ? "page" : undefined}
+          aria-label="E-post"
+          title="E-post"
+        >
+          <EmailIcon className="size-[22px]" />
+          {unreadEmailCount > 0 && (
+            <span
+              className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-red-600 text-[0.6rem] font-extrabold leading-none text-white ring-2 ring-[#211c2b]"
+              aria-label={`${unreadEmailCount} nya mejl`}
+            >
+              {unreadEmailCount > 9 ? "9+" : unreadEmailCount}
+            </span>
+          )}
         </button>
       </nav>
 
@@ -1189,11 +1256,46 @@ function ChatIcon(props: IconProps) {
   );
 }
 
+function PhoneIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2Z" />
+    </BaseIcon>
+  );
+}
+
 function AdsIcon(props: IconProps) {
   return (
     <BaseIcon {...props}>
       <path d="M4 19V5M4 19h16M8 16v-4m4 4V8m4 8v-6" />
     </BaseIcon>
+  );
+}
+
+function HealthDataIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M3 12h4l2-5 4 10 2-5h6" />
+      <path d="M5 4.5a9 9 0 1 1-1.5 12" />
+    </BaseIcon>
+  );
+}
+
+function EmailIcon(props: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
   );
 }
 
