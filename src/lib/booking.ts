@@ -75,10 +75,11 @@ async function getOwnBookingIntervals(rangeStart: Date, rangeEnd: Date): Promise
     select start_time, end_time from bookings
     where start_time < ${rangeEnd.toISOString()}
       and end_time > ${rangeStart.toISOString()}
-      and (
-        status = 'confirmed'
-        or (status = 'pending' and hold_expires_at > now())
-      )
+      and (status = 'confirmed' or (status = 'pending' and hold_expires_at > now()))
+    union all
+    select start_time, end_time from schedule_blocks
+    where start_time < ${rangeEnd.toISOString()}
+      and end_time > ${rangeStart.toISOString()}
   `;
   return rows.map((row) => ({ start: new Date(row.start_time as string), end: new Date(row.end_time as string) }));
 }
@@ -192,7 +193,9 @@ export async function confirmBooking(bookingId: string): Promise<void> {
     console.error("confirmBooking: ingen bokning med id", bookingId);
     return;
   }
-  if (booking.status === "confirmed") return; // redan hanterad
+  // Endast en aktiv hold får bekräftas. En sen Stripe-webhook ska aldrig
+  // kunna återuppliva en avbokad eller utgången bokning.
+  if (booking.status !== "pending") return;
 
   const service = bookableServicesBySlug.get(booking.service_slug as string);
   const variantLabel = booking.variant_label as string | null;

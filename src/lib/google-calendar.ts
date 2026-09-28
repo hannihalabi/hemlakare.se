@@ -52,7 +52,7 @@ export type CreateBookingEventInput = {
   description: string;
   start: Date;
   end: Date;
-  patientEmail: string;
+  patientEmail?: string;
 };
 
 /** Skapar en kalenderhändelse för en bekräftad (betald) bokning. Returnerar Google-händelsens id. */
@@ -67,7 +67,7 @@ export async function createBookingEvent(input: CreateBookingEventInput): Promis
       description: input.description,
       start: { dateTime: input.start.toISOString() },
       end: { dateTime: input.end.toISOString() },
-      attendees: [{ email: input.patientEmail }],
+      attendees: input.patientEmail ? [{ email: input.patientEmail }] : undefined,
     },
     sendUpdates: "none",
   });

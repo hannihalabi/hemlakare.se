@@ -20,8 +20,9 @@ import AdsWorkspace from "@/components/admin/AdsWorkspace";
 import CallcenterWorkspace from "@/components/admin/CallcenterWorkspace";
 import EmailWorkspace from "@/components/admin/EmailWorkspace";
 import HealthDataWorkspace from "@/components/admin/HealthDataWorkspace";
+import BookingsWorkspace from "@/components/admin/BookingsWorkspace";
 
-type AdminSection = "callcenter" | "chat" | "ads" | "health-data" | "email";
+type AdminSection = "callcenter" | "chat" | "ads" | "health-data" | "email" | "bookings";
 
 type QueueFilter = "new" | "mine" | "waiting" | "resolved" | "all";
 
@@ -237,7 +238,7 @@ export default function StaffInbox({ onSignOut, currentUser }: { onSignOut?: () 
           onSignOut={onSignOut}
         />
 
-      {activeSection === "callcenter" ? <CallcenterWorkspace /> : activeSection === "ads" ? <AdsWorkspace role={currentUser.role} /> : activeSection === "health-data" ? <HealthDataWorkspace /> : activeSection === "email" ? <EmailWorkspace role={currentUser.role} /> : (
+      {activeSection === "callcenter" ? <CallcenterWorkspace /> : activeSection === "ads" ? <AdsWorkspace role={currentUser.role} /> : activeSection === "health-data" ? <HealthDataWorkspace /> : activeSection === "email" ? <EmailWorkspace role={currentUser.role} /> : activeSection === "bookings" ? <BookingsWorkspace /> : (
       <div className="grid min-h-0 flex-1 md:grid-cols-[310px_minmax(0,1fr)] lg:grid-cols-[220px_330px_minmax(0,1fr)] 2xl:grid-cols-[220px_350px_minmax(460px,1fr)_290px]">
         <aside className="hidden min-h-0 flex-col border-r border-slate-200 bg-[#fbfbfc] lg:flex">
           <nav className="flex-1 px-3 py-5" aria-label="Ärendeköer">
@@ -820,6 +821,16 @@ function AdminSidebar({
             </span>
           )}
         </button>
+        <button
+          type="button"
+          onClick={() => onSelectSection("bookings")}
+          className={`grid size-12 place-items-center rounded-2xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${activeSection === "bookings" ? "bg-[#e72e8a] text-white shadow-lg shadow-pink-950/20" : "text-white/55 hover:bg-white/10 hover:text-white"}`}
+          aria-current={activeSection === "bookings" ? "page" : undefined}
+          aria-label="Bokningar"
+          title="Bokningar"
+        >
+          <CalendarIcon className="size-[22px]" />
+        </button>
       </nav>
 
       {onSignOut && (
@@ -1295,6 +1306,15 @@ function EmailIcon(props: IconProps) {
     >
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="m4 7 8 6 8-6" />
+    </svg>
+  );
+}
+
+function CalendarIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
     </svg>
   );
 }
