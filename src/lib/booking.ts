@@ -1,5 +1,5 @@
 import { getSql } from "@/lib/db";
-import { getBusyIntervals, createBookingEvent } from "@/lib/google-calendar";
+import { getBusyIntervals, createBookingEvent, googleCalendarSyncEnabled } from "@/lib/google-calendar";
 import { bookableServicesBySlug } from "@/data/bookable-services";
 import { BOOKING_WINDOW_DAYS } from "@/lib/booking-constants";
 
@@ -86,9 +86,9 @@ async function getOwnBookingIntervals(rangeStart: Date, rangeEnd: Date): Promise
 
 /**
  * Genererar lediga tider för en tjänst under kommande BOOKING_WINDOW_DAYS dagar.
- * Kandidatfönster kommer från provider_availability_rules; de filtreras mot
- * Google Calendar (sanningskälla för vårdgivarens faktiska upptagna tid) och
- * mot egna aktiva bokningar/holds för att undvika dubbelbokning.
+ * Kandidatfönster kommer från provider_availability_rules. Det egna schemat
+ * (blockeringar, bokningar och aktiva holds) är sanningskälla. Google Calendar
+ * kan valfritt läggas ovanpå som en passiv spegling/integration.
  */
 export async function getAvailableSlots(serviceSlug: string, now: Date = new Date()): Promise<AvailableSlot[]> {
   await releaseExpiredHolds();
@@ -139,7 +139,7 @@ export async function getAvailableSlots(serviceSlug: string, now: Date = new Dat
   return slots.sort((a, b) => a.start.localeCompare(b.start));
 }
 
-/** Kontrollerar att en specifik starttid fortfarande är ledig (regler + kalender + egna bokningar). */
+/** Kontrollerar att en specifik starttid fortfarande är ledig i det egna schemat. */
 export async function isSlotStillAvailable(serviceSlug: string, startIso: string, now: Date = new Date()): Promise<{ ok: true; endIso: string } | { ok: false; reason: string }> {
   await releaseExpiredHolds();
   const duration = await getServiceDuration(serviceSlug);
@@ -176,8 +176,8 @@ export async function isSlotStillAvailable(serviceSlug: string, startIso: string
 }
 
 /**
- * Markerar en pending bokning som confirmed och skapar Google
- * Calendar-händelsen. Delas mellan Stripe-webhooken (efter lyckad betalning)
+ * Markerar en pending bokning som confirmed. Om den valfria Google-synken är
+ * aktiverad skapas även en kalenderhändelse. Delas mellan Stripe-webhooken
  * och bokningar som inte kräver förskottsbetalning (t.ex. vaccin med
  * "från"-pris, där det verkliga priset avgörs vid besöket).
  */
@@ -197,23 +197,23 @@ export async function confirmBooking(bookingId: string): Promise<void> {
   // kunna återuppliva en avbokad eller utgången bokning.
   if (booking.status !== "pending") return;
 
-  const service = bookableServicesBySlug.get(booking.service_slug as string);
-  const variantLabel = booking.variant_label as string | null;
-  const summary = `${service?.name ?? booking.service_slug}${variantLabel ? ` – ${variantLabel}` : ""} – ${booking.patient_name}`;
-
   let googleEventId: string | null = null;
-  try {
-    googleEventId = await createBookingEvent({
-      summary,
-      description: `Bokad via hemlakare.se.\nPatient: ${booking.patient_name}\nE-post: ${booking.patient_email}${variantLabel ? `\nVal: ${variantLabel}` : ""}`,
-      start: new Date(booking.start_time as string),
-      end: new Date(booking.end_time as string),
-      patientEmail: booking.patient_email as string,
-    });
-  } catch (error) {
-    // Bokningen ska bekräftas även om kalenderhändelsen misslyckas – den
-    // kan läggas till manuellt. Viktigast är att patienten inte tappas.
-    console.error("Kunde inte skapa Google Calendar-händelse för bekräftad bokning", booking.id, error);
+  if (googleCalendarSyncEnabled()) {
+    const service = bookableServicesBySlug.get(booking.service_slug as string);
+    const variantLabel = booking.variant_label as string | null;
+    const summary = `${service?.name ?? booking.service_slug}${variantLabel ? ` – ${variantLabel}` : ""} – ${booking.patient_name}`;
+    try {
+      googleEventId = await createBookingEvent({
+        summary,
+        description: `Bokad via hemlakare.se.\nPatient: ${booking.patient_name}\nE-post: ${booking.patient_email}${variantLabel ? `\nVal: ${variantLabel}` : ""}`,
+        start: new Date(booking.start_time as string),
+        end: new Date(booking.end_time as string),
+        patientEmail: booking.patient_email as string,
+      });
+    } catch (error) {
+      // Bokningen ska bekräftas även om den valfria speglingen misslyckas.
+      console.error("Kunde inte spegla bekräftad bokning till Google Calendar", booking.id, error);
+    }
   }
 
   await sql`

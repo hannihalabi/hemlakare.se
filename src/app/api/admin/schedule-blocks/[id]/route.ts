@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAdminSession } from "@/lib/admin-auth";
 import { getSql } from "@/lib/db";
-import { deleteBookingEvent } from "@/lib/google-calendar";
+import { deleteBookingEvent, googleCalendarSyncEnabled } from "@/lib/google-calendar";
 
 const idSchema = z.string().uuid();
 
@@ -19,7 +19,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
 
     let calendarWarning = false;
     const googleEventId = rows[0].google_event_id as string | null;
-    if (googleEventId) {
+    if (googleEventId && googleCalendarSyncEnabled()) {
       try {
         await deleteBookingEvent(googleEventId);
       } catch (error) {

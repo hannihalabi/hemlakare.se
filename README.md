@@ -49,8 +49,9 @@ tecken). Börja med att kopiera `.env.example` till `.env.local` och fyll i
 värdena. Utan dem kan de publika sidorna fortfarande byggas, men admin- och
 chattfunktionerna kan inte logga in.
 
-För bokningsflödet (`/boka/[slug]`) behövs dessutom Stripe- och
-Google Calendar-nycklarna som beskrivs i [Betalning och bokning](#betalning-och-bokning).
+För bokningsflödet (`/boka/[slug]`) behövs dessutom Stripe-nycklarna som
+beskrivs i [Betalning och bokning](#betalning-och-bokning). Google Calendar är
+en valfri, avstängd spegling och behövs inte för att visa eller boka tider.
 
 ## Vanliga kommandon
 
@@ -119,6 +120,25 @@ Meta-konverteringar visas bara om `META_ADS_CONVERSION_ACTION` anger exakt en
 action type. Konverteringar summeras inte mellan plattformar eftersom de kan
 ha olika definitioner. Kostnader summeras bara när valutan är densamma.
 
+### WhatsApp Business i admin
+
+Fliken **WhatsApp Business** är en separat kundserviceinkorg för administrativa
+frågor. Kör `db/migrations/0014_whatsapp_business.sql` och lägg sedan in
+variablerna `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`,
+`WHATSAPP_WEBHOOK_VERIFY_TOKEN` och `WHATSAPP_APP_SECRET` i Vercel. Variablerna
+och en valfri Graph API-version finns dokumenterade i `.env.example`.
+
+I Meta for Developers anges webhook-adressen
+`https://<din-domän>/api/webhooks/whatsapp`, samma verifieringstoken som i
+miljövariabeln och prenumerationen **messages**. Fria textsvar kan skickas inom
+24 timmar efter kontaktens senaste meddelande. Utanför det fönstret kräver Meta
+en godkänd meddelandemall; den här första versionen blockerar därför fria svar.
+
+Inkorgen är avsedd för bokning och andra administrativa ärenden. Gränssnittet
+påminner personalen om att hänvisa symtom, personnummer och andra känsliga
+hälsouppgifter till en säker patientkanal. Webhooken lagrar inte råpayload,
+media, kontaktkort eller platskoordinater.
+
 ## Betalning och bokning
 
 Bokningsschemat (`/boka/[slug]`) visar lediga tider för en tjänst, tar betalt
@@ -129,16 +149,16 @@ Arkitekturen i korthet:
 - **Reglerna** för när tjänster kan bokas (veckodagar, tider, tjänstlängd)
   ligger i tabellerna `provider_availability_rules` och `service_durations`
   i databasen.
-- **Sanningskällan för upptagen tid** är vårdgivarens vanliga Google Calendar.
-  Lediga tider räknas fram som regler minus det som redan är upptaget i
-  kalendern (och minus egna pågående bokningar). Blockar du tid direkt i
-  kalendern (semester, ett hembesök du bokat per telefon) syns det
-  automatiskt som upptaget på sajten – ingen dubbel inmatning.
+- **Sanningskällan för upptagen tid** är schemat i `/admin`. Lediga tider
+  räknas fram som regler minus blockeringar, bekräftade bokningar och aktiva
+  betalningsreservationer i den egna databasen. När personal blockerar eller
+  bokar en tid i adminschemat försvinner motsvarande tider direkt från den
+  publika bokningskalendern.
 - **Betalningen** sker via Stripe Checkout (Stripes hostade betalsida).
   När en patient väljer en tid skapas en tillfällig "hold" (10 minuter) och
   patienten skickas till Stripe för att betala – kort, Klarna, Apple/Google
   Pay m.fl. hanteras helt av Stripe, utan egen redirect-hantering i koden.
-  Bokningen bekräftas och läggs i Google Calendar först när Stripes webhook
+  Bokningen bekräftas i det egna adminschemat först när Stripes webhook
   rapporterar att betalningen lyckats – inte innan.
 - **Tjänster med varianter** (`src/data/booking-variants.ts`) – just nu
   blodprovspaket (`blodprovstagning`) och vaccin (`vaccination-hemma`) –
@@ -179,31 +199,16 @@ eller motsvarande i Neons SQL-editor.
      med [Stripe CLI](https://stripe.com/docs/stripe-cli) och använda
      hemligheten den skriver ut.
 
-### 3. Koppla Google Calendar (engångssetup)
+### 3. Valfri Google Calendar-spegling
 
-Vårdgivaren loggar aldrig in via sajten – i stället skapas en engångs
-"refresh token" som backend sedan använder för att läsa/skriva i just den
-kalendern.
+Google Calendar är passiv som standard. `GOOGLE_CALENDAR_SYNC_ENABLED` ska
+vara `false` eller saknas helt. Patienternas tillgänglighet påverkas då endast
+av reglerna och schemat i `/admin`; ogiltiga Google-uppgifter kan inte slå ut
+bokningskalendern.
 
-1. Skapa ett projekt i [Google Cloud Console](https://console.cloud.google.com/),
-   aktivera **Google Calendar API** och skapa OAuth-klientuppgifter av typen
-   "Web application" med redirect-URI `http://localhost:3000/api/auth/google-calendar/callback`
-   (lägg till produktionens URL också när den finns).
-2. Fyll i `GOOGLE_CALENDAR_CLIENT_ID` och `GOOGLE_CALENDAR_CLIENT_SECRET` i
-   `.env.local`.
-3. Logga in med det Google-konto vars kalender ska styra tillgängligheten och
-   godkänn scopet `https://www.googleapis.com/auth/calendar` via Googles
-   [OAuth Playground](https://developers.google.com/oauthplayground) (ange
-   dina egna klientuppgifter under kugghjulet → "Use your own OAuth
-   credentials").
-4. Byt ut den engångskod Playground ger dig mot ett access- och refresh-token
-   och spara refresh-token som `GOOGLE_CALENDAR_REFRESH_TOKEN`.
-5. Sätt `GOOGLE_CALENDAR_ID` till `primary` (standardkalendern för det
-   inloggade kontot) eller till en specifik kalenders id om vårdgivaren har
-   en separat bokningskalender.
-
-Refresh-token upphör inte automatiskt att gälla och behöver bara skapas en
-gång per vårdgivarkalender.
+Om integrationen återaktiveras senare krävs OAuth-variablerna i `.env.example`
+och `GOOGLE_CALENDAR_SYNC_ENABLED=true`. Google Calendar blir även då en
+kompletterande spegling ovanpå adminschemat, inte systemets enda sanningskälla.
 
 ### API-rutter
 

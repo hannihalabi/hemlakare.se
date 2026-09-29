@@ -4,7 +4,7 @@ import { getAdminSession } from "@/lib/admin-auth";
 import { getBookingDashboard, scheduleRangeHasConflict } from "@/lib/admin-bookings-server";
 import { bookableServicesBySlug } from "@/data/bookable-services";
 import { getSql } from "@/lib/db";
-import { createBookingEvent } from "@/lib/google-calendar";
+import { createBookingEvent, googleCalendarSyncEnabled } from "@/lib/google-calendar";
 
 const querySchema = z.object({
   from: z.string().datetime(),
@@ -127,16 +127,18 @@ export async function POST(request: Request) {
 
     let googleEventId: string | null = null;
     let calendarWarning = false;
-    try {
-      googleEventId = await createBookingEvent({ summary, description, start, end, patientEmail });
-      if (parsed.data.kind === "block") {
-        await sql`update schedule_blocks set google_event_id = ${googleEventId}, updated_at = now() where id = ${id}::uuid`;
-      } else {
-        await sql`update bookings set google_event_id = ${googleEventId}, updated_at = now() where id = ${id}::uuid`;
+    if (googleCalendarSyncEnabled()) {
+      try {
+        googleEventId = await createBookingEvent({ summary, description, start, end, patientEmail });
+        if (parsed.data.kind === "block") {
+          await sql`update schedule_blocks set google_event_id = ${googleEventId}, updated_at = now() where id = ${id}::uuid`;
+        } else {
+          await sql`update bookings set google_event_id = ${googleEventId}, updated_at = now() where id = ${id}::uuid`;
+        }
+      } catch (calendarError) {
+        calendarWarning = true;
+        console.error("Schemaposten sparades men kunde inte speglas till Google Calendar", id, calendarError);
       }
-    } catch (calendarError) {
-      calendarWarning = true;
-      console.error("Schemaposten skapades men kunde inte synkas till Google Calendar", id, calendarError);
     }
 
     try {
