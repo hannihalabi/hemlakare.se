@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-export type AvailableSlot = { start: string; end: string };
+export type BookingSlot = { start: string; end: string; available: boolean };
 
 const WEEKDAY_LABELS = ["M", "T", "O", "T", "F", "L", "S"];
 
@@ -44,30 +44,15 @@ function formatTimeLabel(iso: string) {
   return new Date(iso).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
 }
 
-/**
- * PLATSHÅLLARDATA för investerardemo – ingen verklig bokningsstatistik.
- * Ger ett deterministiskt (samma dag → samma tal) men till synes slumpat
- * antal "bokade patienter" mellan 6 och 16 för passerade dagar som saknar
- * riktiga tider, för att visuellt kommunicera efterfrågan i prototypen.
- * Byt ut mot verklig beläggningsdata innan detta går mot skarp trafik.
- */
-function demoBookedCountForPastDay(key: string): number {
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
-  }
-  return 6 + (hash % 11); // 6–16
-}
-
 function timeOfDayLabel(hour: number): string {
   if (hour < 12) return "Förmiddag";
   if (hour < 17) return "Eftermiddag";
   return "Kväll";
 }
 
-function groupSlotsByTimeOfDay(slots: AvailableSlot[]): { label: string; slots: AvailableSlot[] }[] {
+function groupSlotsByTimeOfDay(slots: BookingSlot[]): { label: string; slots: BookingSlot[] }[] {
   const order = ["Förmiddag", "Eftermiddag", "Kväll"];
-  const groups = new Map<string, AvailableSlot[]>();
+  const groups = new Map<string, BookingSlot[]>();
   for (const slot of slots) {
     const label = timeOfDayLabel(new Date(slot.start).getHours());
     if (!groups.has(label)) groups.set(label, []);
@@ -136,9 +121,9 @@ function LoadingMark() {
 type View = "month" | "day";
 
 type Props = {
-  slots: AvailableSlot[] | null;
+  slots: BookingSlot[] | null;
   slotsError: string | null;
-  onSelectSlot: (slot: AvailableSlot) => void;
+  onSelectSlot: (slot: BookingSlot) => void;
   /** Hur många dagar framåt som ska gå att bläddra till, oavsett om det finns lediga tider där. */
   maxDaysAhead: number;
 };
@@ -157,7 +142,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
   }, [today, maxDaysAhead]);
 
   const slotsByDay = useMemo(() => {
-    const map = new Map<string, AvailableSlot[]>();
+    const map = new Map<string, BookingSlot[]>();
     for (const slot of slots ?? []) {
       const key = dateKey(new Date(slot.start));
       if (!map.has(key)) map.set(key, []);
@@ -177,7 +162,8 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
   useEffect(() => {
     if (hasAutoJumped.current || !slots || slots.length === 0) return;
     hasAutoJumped.current = true;
-    const first = new Date(slots[0].start);
+    const firstBookableSlot = slots.find((slot) => slot.available) ?? slots[0];
+    const first = new Date(firstBookableSlot.start);
     setVisibleMonth((current) => (startOfMonth(first) > current ? startOfMonth(first) : current));
   }, [slots]);
 
@@ -276,29 +262,6 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
     };
   };
 
-  const [openBookedPopoverKey, setOpenBookedPopoverKey] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!openBookedPopoverKey) return;
-
-    const closeOnOutsidePointer = (event: PointerEvent) => {
-      const target = event.target;
-      if (!(target instanceof Element) || !target.closest(`[data-booked-popover="${openBookedPopoverKey}"]`)) {
-        setOpenBookedPopoverKey(null);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenBookedPopoverKey(null);
-    };
-
-    document.addEventListener("pointerdown", closeOnOutsidePointer);
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("pointerdown", closeOnOutsidePointer);
-      document.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [openBookedPopoverKey]);
-
   const gridDays = useMemo(() => {
     const monthStart = startOfMonth(visibleMonth);
     const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0);
@@ -351,10 +314,26 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
                     <button
                       key={slot.start}
                       type="button"
-                      onClick={() => onSelectSlot(slot)}
-                      className="rounded-full border border-pink-200 px-4 py-2 text-sm font-semibold text-[#D81B7D] transition hover:border-[#D81B7D] hover:bg-pink-50 active:scale-95"
+                      disabled={!slot.available}
+                      aria-label={`${formatTimeLabel(slot.start)}${slot.available ? "" : ", bokad"}`}
+                      onClick={() => {
+                        if (slot.available) onSelectSlot(slot);
+                      }}
+                      className={[
+                        "min-w-[5.25rem] rounded-full border px-4 py-2 text-sm font-semibold transition",
+                        slot.available
+                          ? "border-pink-200 text-[#D81B7D] hover:border-[#D81B7D] hover:bg-pink-50 active:scale-95"
+                          : "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400",
+                      ].join(" ")}
                     >
-                      {formatTimeLabel(slot.start)}
+                      <span className={slot.available ? undefined : "line-through decoration-gray-400"}>
+                        {formatTimeLabel(slot.start)}
+                      </span>
+                      {!slot.available && (
+                        <span className="ml-1.5 text-[0.65rem] font-bold uppercase tracking-wide no-underline">
+                          Bokad
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -404,39 +383,30 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             </div>
           ))}
 
-          {gridDays.map((day, dayIndex) => {
+          {gridDays.map((day) => {
             const inCurrentMonth = day.getMonth() === visibleMonth.getMonth();
             const key = dateKey(day);
-            const count = slotsByDay.get(key)?.length ?? 0;
+            const slotsForDay = slotsByDay.get(key) ?? [];
+            const availableCount = slotsForDay.filter((slot) => slot.available).length;
+            const bookedCount = slotsForDay.length - availableCount;
             const isPast = day < today;
             const isToday = isSameDay(day, today);
             const isBeyondWindow = day > furthestBookableDate;
-            const hasSlots = count > 0 && inCurrentMonth && !isPast && !isBeyondWindow;
-            // Platshållare för investerardemo: visa en känsla av efterfrågan på
-            // passerade dagar som saknar riktiga tider i underlaget.
-            const showDemoBookedBadge = inCurrentMonth && isPast && count === 0;
-            const isBookedPopoverOpen = openBookedPopoverKey === key;
-            const columnIndex = dayIndex % 7;
-            const popoverAlignment =
-              columnIndex <= 1
-                ? "left-0"
-                : columnIndex >= 5
-                  ? "right-0"
-                  : "left-1/2 -translate-x-1/2";
-            const popoverArrowAlignment =
-              columnIndex <= 1 ? "left-2" : columnIndex >= 5 ? "right-2" : "left-1/2 -translate-x-1/2";
+            const hasSlots = slotsForDay.length > 0 && inCurrentMonth && !isPast && !isBeyondWindow;
+            const isFullyBooked = hasSlots && availableCount === 0 && bookedCount > 0;
 
-            // showDemoBookedBadge-dagar är alltid !hasSlots (de saknar per definition
-            // riktiga tider), vilket gör dagsknappen `disabled`. En disabled HTML-knapp
-            // blockerar pointer-events för HELA sitt innehåll, så en badge som låg som
-            // barn till knappen kunde aldrig ta emot klick oavsett egna handlers. Badgen
-            // ligger därför nu som ett eget syskon-element i en gemensam wrapper, inte
-            // nästlad inuti dagsknappen.
             return (
               <div key={key} className="relative">
                 <button
                   type="button"
                   disabled={!hasSlots}
+                  aria-label={
+                    isFullyBooked
+                      ? `${formatDayHeading(day)}, fullbokad`
+                      : hasSlots
+                        ? `${formatDayHeading(day)}, ${availableCount} lediga tider`
+                        : undefined
+                  }
                   onClick={() => {
                     setSelectedDay(day);
                     setView("day");
@@ -451,51 +421,15 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
                   ].join(" ")}
                 >
                   {day.getDate()}
-                  {hasSlots && (
+                  {availableCount > 0 && hasSlots && (
                     <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
                   )}
-                </button>
-                {showDemoBookedBadge && (
-                  <button
-                    type="button"
-                    data-booked-popover={key}
-                    title="Antal bokade patienter denna dag"
-                    aria-label={`${demoBookedCountForPastDay(key)} bokade patienter ${formatDayHeading(day).toLowerCase()}`}
-                    aria-expanded={isBookedPopoverOpen}
-                    aria-describedby={isBookedPopoverOpen ? `booked-popover-${key}` : undefined}
-                    onClick={() => setOpenBookedPopoverKey((current) => (current === key ? null : key))}
-                    className="hl-booked-badge absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-emerald-200 bg-white text-emerald-600 shadow-sm transition hover:border-emerald-300 hover:bg-emerald-50 hover:shadow active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
-                  >
-                    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden>
-                      <path
-                        d="m5 10.25 3.1 3.1L15.5 6"
-                        stroke="currentColor"
-                        strokeWidth="2.25"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span className="absolute -right-1.5 -top-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-white px-0.5 text-[0.48rem] font-bold leading-none text-emerald-800 shadow-[0_1px_3px_rgba(15,23,42,0.18)] ring-1 ring-emerald-100">
-                      {demoBookedCountForPastDay(key)}
+                  {isFullyBooked && (
+                    <span className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-wide text-gray-400">
+                      Bokad
                     </span>
-                    {isBookedPopoverOpen && (
-                      <span
-                        id={`booked-popover-${key}`}
-                        role="tooltip"
-                        className={`absolute bottom-8 z-30 w-max max-w-[11rem] rounded-xl bg-slate-900 px-3 py-2 text-left text-xs font-medium leading-snug text-white shadow-xl ${popoverAlignment}`}
-                      >
-                        <span className="block font-bold">{demoBookedCountForPastDay(key)} bokningar</span>
-                        <span className="mt-0.5 block whitespace-nowrap text-slate-300">
-                          {formatDayHeading(day)}
-                        </span>
-                        <span
-                          className={`absolute -bottom-1 h-2.5 w-2.5 rotate-45 bg-slate-900 ${popoverArrowAlignment}`}
-                          aria-hidden
-                        />
-                      </span>
-                    )}
-                  </button>
-                )}
+                  )}
+                </button>
               </div>
             );
           })}
@@ -503,7 +437,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
 
       </div>
 
-      {slots.length === 0 && (
+      {slots.every((slot) => !slot.available) && (
         <p className="mt-4 text-sm text-gray-500">Inga lediga tider just nu. Kontakta oss så hjälper vi dig.</p>
       )}
 

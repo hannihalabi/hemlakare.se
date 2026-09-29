@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { HealthcareService } from "@/data/services";
 import type { BookingVariant } from "@/data/booking-variants";
-import CalendarTimePicker, { type AvailableSlot } from "@/components/booking/CalendarTimePicker";
+import CalendarTimePicker, { type BookingSlot } from "@/components/booking/CalendarTimePicker";
 import { BOOKING_WINDOW_DAYS } from "@/lib/booking-constants";
 
 function formatDayLabel(iso: string) {
@@ -31,9 +31,9 @@ export default function BookingFlow({ service, variants }: Props) {
   const [step, setStep] = useState<Step>(variants && variants.length > 0 ? "pick-variant" : "pick-time");
   const [selectedVariant, setSelectedVariant] = useState<BookingVariant | null>(null);
 
-  const [slots, setSlots] = useState<AvailableSlot[] | null>(null);
+  const [slots, setSlots] = useState<BookingSlot[] | null>(null);
   const [slotsError, setSlotsError] = useState<string | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<AvailableSlot | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<BookingSlot | null>(null);
 
   const [patientName, setPatientName] = useState("");
   const [patientEmail, setPatientEmail] = useState("");

@@ -19,9 +19,10 @@ type ServiceDuration = {
   buffer_minutes: number;
 };
 
-export type AvailableSlot = {
+export type BookingSlot = {
   start: string; // ISO
   end: string; // ISO
+  available: boolean;
 };
 
 function parseTimeOnDate(date: Date, time: string): Date {
@@ -90,7 +91,7 @@ async function getOwnBookingIntervals(rangeStart: Date, rangeEnd: Date): Promise
  * (blockeringar, bokningar och aktiva holds) är sanningskälla. Google Calendar
  * kan valfritt läggas ovanpå som en passiv spegling/integration.
  */
-export async function getAvailableSlots(serviceSlug: string, now: Date = new Date()): Promise<AvailableSlot[]> {
+export async function getAvailableSlots(serviceSlug: string, now: Date = new Date()): Promise<BookingSlot[]> {
   await releaseExpiredHolds();
   const duration = await getServiceDuration(serviceSlug);
   const rules = await getActiveRulesForService(serviceSlug);
@@ -106,7 +107,7 @@ export async function getAvailableSlots(serviceSlug: string, now: Date = new Dat
   const busyIntervals = [...busyFromCalendar, ...busyFromOwnBookings];
 
   const slotLengthMs = (duration.duration_minutes + duration.buffer_minutes) * 60 * 1000;
-  const slots: AvailableSlot[] = [];
+  const slots: BookingSlot[] = [];
 
   for (let dayOffset = 0; dayOffset <= BOOKING_WINDOW_DAYS; dayOffset += 1) {
     const day = new Date(rangeStart);
@@ -127,8 +128,12 @@ export async function getAvailableSlots(serviceSlug: string, now: Date = new Dat
         const isPast = candidateStart <= now;
         const isBusy = busyIntervals.some((busy) => overlaps(candidateStart, blockEnd, busy.start, busy.end));
 
-        if (!isPast && !isBusy) {
-          slots.push({ start: candidateStart.toISOString(), end: candidateEnd.toISOString() });
+        if (!isPast) {
+          slots.push({
+            start: candidateStart.toISOString(),
+            end: candidateEnd.toISOString(),
+            available: !isBusy,
+          });
         }
 
         candidateStart = new Date(candidateStart.getTime() + SLOT_GRANULARITY_MINUTES * 60 * 1000);
