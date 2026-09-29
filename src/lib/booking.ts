@@ -141,7 +141,21 @@ export async function getAvailableSlots(serviceSlug: string, now: Date = new Dat
     }
   }
 
-  return slots.sort((a, b) => a.start.localeCompare(b.start));
+  // Flera överlappande tillgänglighetsregler (t.ex. en generell regel plus en
+  // tjänstespecifik för samma veckodag/fönster) kan generera samma starttid mer
+  // än en gång. Slå ihop dem till en post per starttid – om någon av dubbletterna
+  // är upptagen räknas hela tiden som upptagen.
+  const bySlotStart = new Map<string, BookingSlot>();
+  for (const slot of slots) {
+    const existing = bySlotStart.get(slot.start);
+    if (!existing) {
+      bySlotStart.set(slot.start, slot);
+    } else if (existing.available && !slot.available) {
+      bySlotStart.set(slot.start, slot);
+    }
+  }
+
+  return Array.from(bySlotStart.values()).sort((a, b) => a.start.localeCompare(b.start));
 }
 
 /** Kontrollerar att en specifik starttid fortfarande är ledig i det egna schemat. */
