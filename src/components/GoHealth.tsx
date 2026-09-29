@@ -1,6 +1,12 @@
 import GoHealthRadar from "@/components/GoHealthRadar";
 
-export default function GoHealth() {
+type GoHealthProps = {
+  headingLevel?: "h1" | "h2";
+};
+
+export default function GoHealth({ headingLevel = "h2" }: GoHealthProps) {
+  const Heading = headingLevel;
+
   return (
     <section className="bg-[linear-gradient(180deg,#ffffff_0%,#fff8fb_100%)] px-6 py-10 sm:py-20">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-10 text-center">
@@ -12,9 +18,9 @@ export default function GoHealth() {
         </span>
 
         <div className="flex flex-col gap-3">
-          <h2 className="text-[2rem] font-bold tracking-tight text-gray-900 sm:text-[2.4rem]">
+          <Heading className="text-[2rem] font-bold tracking-tight text-gray-900 sm:text-[2.4rem]">
             GoHealth – din hälsa, alltid uppkopplad
-          </h2>
+          </Heading>
           <p className="mx-auto max-w-2xl text-[1rem] leading-relaxed text-gray-600">
             En efterfrågad tjänst är äntligen här. Med GoHealth bär du ett pulsarmband som
             kontinuerligt mäter din hälsa – och vår AI larmar våra läkare direkt om något

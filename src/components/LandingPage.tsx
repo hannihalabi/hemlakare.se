@@ -1,7 +1,6 @@
 import Aktuellt from "@/components/Aktuellt";
 import ChatWidget from "@/components/ChatWidget";
 import Footer from "@/components/Footer";
-import GoHealth from "@/components/GoHealth";
 import Header from "@/components/Header";
 import HealthPackages from "@/components/HealthPackages";
 import Hero from "@/components/Hero";
@@ -68,7 +67,6 @@ export default function LandingPage() {
         <Omdomen />
         <HurFungerar />
         <HealthPackages />
-        <GoHealth />
         <Prickmottagning />
         <Lunchforelasning />
         <Aktuellt />

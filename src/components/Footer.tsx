@@ -7,6 +7,7 @@ const quickLinks = [
   ["Recensioner", "/recensioner"],
   ["Patientavgifter", "/patientavgifter"],
   ["Hälsokontroller", "/patientavgifter#halsokontroller"],
+  ["GoHealth", "/gohealth"],
   ["Här finns vi", "/mottagningar"],
   ["Vårdguiden", "/vardguiden"],
   ["Om företaget", "/om"],

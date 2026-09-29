@@ -8,6 +8,7 @@ import PromoBanner from "./PromoBanner";
 const navLinks = [
   { label: "Tjänster", href: "/#halsokontroller" },
   { label: "Priser & paket", href: "/patientavgifter" },
+  { label: "GoHealth", href: "/gohealth" },
   { label: "Om oss", href: "/om" },
   { label: "Mottagningar", href: "/mottagningar" },
   { label: "Frågor & svar", href: "/faq" },

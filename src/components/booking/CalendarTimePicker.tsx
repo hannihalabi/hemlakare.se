@@ -322,7 +322,7 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
                       className={[
                         "min-w-[5.25rem] rounded-full border px-4 py-2 text-sm font-semibold transition",
                         slot.available
-                          ? "border-pink-200 text-[#D81B7D] hover:border-[#D81B7D] hover:bg-pink-50 active:scale-95"
+                          ? "hl-slot-pulse border-emerald-500 bg-emerald-500 text-white shadow-sm shadow-emerald-500/30 hover:bg-emerald-600 active:scale-95"
                           : "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400",
                       ].join(" ")}
                     >
@@ -341,6 +341,16 @@ export default function CalendarTimePicker({ slots, slotsError, onSelectSlot, ma
             ))}
           </div>
         )}
+        <style>{`
+          @keyframes hl-slot-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+            50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+          }
+          .hl-slot-pulse { animation: hl-slot-pulse 1.8s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) {
+            .hl-slot-pulse { animation: none; }
+          }
+        `}</style>
       </div>
     );
   }
