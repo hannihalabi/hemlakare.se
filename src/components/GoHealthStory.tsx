@@ -62,6 +62,9 @@ export default function GoHealthStory() {
 
           <div className="mt-12 sm:mt-16">
             <EarlySignalVisual />
+            <div className="mt-8 sm:mt-10">
+              <AnnualBloodPressureVisual />
+            </div>
           </div>
         </div>
       </section>
@@ -189,6 +192,133 @@ function EarlySignalVisual() {
           </div>
         </div>
 
+      </div>
+    </div>
+  );
+}
+
+function AnnualBloodPressureVisual() {
+  const months = ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
+  const monthPositions = months.map((_, index) => 60 + (index * 506) / (months.length - 1));
+  const elevatedPeriods = [
+    { start: 3, end: 26 },
+    { start: 47, end: 69 },
+    { start: 91, end: 112 },
+    { start: 137, end: 162 },
+    { start: 190, end: 211 },
+    { start: 230, end: 249 },
+  ];
+  const readings = Array.from({ length: 250 }, (_, index) => {
+    const elevation = elevatedPeriods.reduce((highest, period) => {
+      if (index < period.start || index > period.end) return highest;
+      const distanceFromEdge = Math.min(index - period.start, period.end - index);
+      return Math.max(highest, Math.min(1, (distanceFromEdge + 1) / 4));
+    }, 0);
+    const progress = index / 249;
+    const systolic = 122 + progress * 9 + 3 * Math.sin(index * 0.17) + 2 * Math.sin(index * 0.69) + 1.5 * Math.sin(index * 1.53) + elevation * 21;
+    const diastolic = 79 + progress * 6 + 2 * Math.sin(index * 0.15 + 0.8) + 1.4 * Math.sin(index * 0.61) + 0.8 * Math.sin(index * 1.37) + elevation * 14;
+
+    return {
+      systolic: Math.min(150, Math.max(120, systolic)),
+      diastolic: Math.min(100, Math.max(80, diastolic)),
+    };
+  });
+  const toY = (value: number) => 250 - ((value - 70) / 90) * 200;
+  const toX = (index: number) => 60 + (index * 506) / (readings.length - 1);
+  const systolicPath = readings.map((reading, index) => `${index === 0 ? "M" : "L"}${toX(index)} ${toY(reading.systolic)}`).join(" ");
+  const diastolicPath = readings.map((reading, index) => `${index === 0 ? "M" : "L"}${toX(index)} ${toY(reading.diastolic)}`).join(" ");
+  const averageSystolic = Math.round(readings.reduce((sum, reading) => sum + reading.systolic, 0) / readings.length);
+  const averageDiastolic = Math.round(readings.reduce((sum, reading) => sum + reading.diastolic, 0) / readings.length);
+  const getTrend = (key: "systolic" | "diastolic") => {
+    const meanX = (readings.length - 1) / 2;
+    const meanY = readings.reduce((sum, reading) => sum + reading[key], 0) / readings.length;
+    const slope = readings.reduce((sum, reading, index) => sum + (index - meanX) * (reading[key] - meanY), 0)
+      / readings.reduce((sum, _, index) => sum + (index - meanX) ** 2, 0);
+
+    return {
+      start: meanY - slope * meanX,
+      end: meanY + slope * meanX,
+    };
+  };
+  const systolicTrend = getTrend("systolic");
+  const diastolicTrend = getTrend("diastolic");
+
+  return (
+    <div
+      className="gh-visual relative mx-auto w-full max-w-[650px]"
+      role="img"
+      aria-label={`Illustrativ årsgraf med 250 mätpunkter och sex utspridda perioder av förhöjt blodtryck. Trendlinjerna för både övertryck och undertryck stiger under året. Årsmedelvärdet är ${averageSystolic} över ${averageDiastolic}, vilket är högre än referensen 135 över 85 för hemmätning.`}
+    >
+      <div className="absolute -inset-8 rounded-full bg-purple-100/40 blur-3xl" aria-hidden="true" />
+      <div className="relative overflow-hidden rounded-[2rem] border border-pink-100 bg-[linear-gradient(145deg,#ffffff_0%,#fff7fb_100%)] p-5 shadow-[0_30px_90px_-40px_rgba(175,31,101,0.32)] sm:p-8">
+        <div className="text-center">
+          <p className="text-lg font-bold text-gray-900 sm:text-xl">Året avslöjar mönstret</p>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
+            250 mätpunkter visar variationerna. Trendlinjerna visar riktningen över tid.
+          </p>
+        </div>
+
+        <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[11px] font-semibold text-gray-500">
+          <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-[#e72e8a]" />Övertryck</span>
+          <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-[#7655a6]" />Undertryck</span>
+          <span className="flex items-center gap-1.5"><span className="w-4 border-t border-dashed border-gray-400" />Referens</span>
+          <span className="flex items-center gap-1.5"><span className="w-4 border-t-2 border-dashed border-gray-700" />Trendlinje</span>
+        </div>
+
+        <svg viewBox="0 0 600 285" className="mt-2 h-auto w-full" aria-hidden="true">
+          <defs>
+            <linearGradient id="gh-annual-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#e72e8a" stopOpacity="0.13" />
+              <stop offset="1" stopColor="#e72e8a" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          <path d="M60 40V250H566" fill="none" stroke="#d8cbd2" strokeWidth="1.5" />
+          {[50, 94, 139, 183, 228].map((y, index) => (
+            <g key={y}>
+              <path d={`M60 ${y}H566`} stroke="#eddde6" strokeWidth="1" strokeDasharray="4 7" />
+              <text x="49" y={y + 3} textAnchor="end" fill="#9ca3af" fontSize="9" fontWeight="600">
+                {[160, 140, 120, 100, 80][index]}
+              </text>
+            </g>
+          ))}
+
+          <path d={`M60 ${toY(135)}H566`} stroke="#e72e8a" strokeWidth="1.5" strokeDasharray="2 7" opacity="0.35" />
+          <path d={`M60 ${toY(85)}H566`} stroke="#7655a6" strokeWidth="1.5" strokeDasharray="2 7" opacity="0.35" />
+          <text x="563" y={toY(135) - 5} textAnchor="end" fill="#c74383" fontSize="9" fontWeight="700">135</text>
+          <text x="563" y={toY(85) - 5} textAnchor="end" fill="#7655a6" fontSize="9" fontWeight="700">85</text>
+
+          <path d={`${systolicPath} L566 250 L60 250 Z`} fill="url(#gh-annual-fill)" />
+          <path className="gh-chart-line" pathLength="1" d={systolicPath} fill="none" stroke="#e72e8a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+          <path className="gh-chart-line gh-annual-diastolic" pathLength="1" d={diastolicPath} fill="none" stroke="#7655a6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path className="gh-trend-line" pathLength="1" d={`M60 ${toY(systolicTrend.start)}L566 ${toY(systolicTrend.end)}`} fill="none" stroke="#a50f59" strokeWidth="2.25" strokeDasharray="9 6" />
+          <path className="gh-trend-line" pathLength="1" d={`M60 ${toY(diastolicTrend.start)}L566 ${toY(diastolicTrend.end)}`} fill="none" stroke="#51317e" strokeWidth="2.25" strokeDasharray="9 6" />
+
+          {monthPositions.map((x, index) => (
+            <g key={months[index]}>
+              <path d={`M${x} 250V256`} stroke="#d8cbd2" strokeWidth="1.5" />
+              <text x={x} y="270" textAnchor="middle" fill="#9ca3af" fontSize="9" fontWeight="600">{months[index]}</text>
+            </g>
+          ))}
+
+          <circle cx="566" cy={toY(readings.at(-1)?.systolic ?? 0)} r="4.5" fill="#e72e8a" stroke="white" strokeWidth="2" />
+          <circle cx="566" cy={toY(readings.at(-1)?.diastolic ?? 0)} r="4" fill="#7655a6" stroke="white" strokeWidth="2" />
+        </svg>
+
+        <div className="gh-annual-result mt-2 rounded-2xl border border-pink-200 bg-white px-4 py-4 text-center shadow-sm sm:flex sm:items-center sm:justify-between sm:px-6 sm:text-left">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400">Årsmedel</p>
+            <p className="mt-1 text-2xl font-bold text-gray-900">{averageSystolic}/{averageDiastolic} <span className="text-xs font-semibold text-gray-400">mmHg</span></p>
+          </div>
+          <div className="mt-3 sm:mt-0 sm:text-right">
+            <span className="inline-flex rounded-full bg-pink-100 px-3 py-1.5 text-xs font-bold text-[#b71868]">Förhöjt</span>
+            <p className="mt-1 text-[10px] text-gray-400">Referens för hemmätning: under 135/85</p>
+          </div>
+        </div>
+
+        <p className="mt-3 text-center text-[10px] leading-4 text-gray-400">
+          Illustrativa värden. Medicinsk bedömning görs individuellt av vårdpersonal.
+        </p>
       </div>
     </div>
   );

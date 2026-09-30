@@ -84,22 +84,22 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-1" aria-label="Huvudmeny">
+        <nav className="hidden shrink-0 items-center gap-0 xl:flex 2xl:gap-1" aria-label="Huvudmeny">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="px-3.5 py-2 text-[0.875rem] font-medium text-gray-600 rounded-xl hover:text-gray-900 hover:bg-gray-50 transition-colors"
+              className="whitespace-nowrap rounded-xl px-2.5 py-2 text-[0.8rem] font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 2xl:px-3.5 2xl:text-[0.875rem]"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden xl:flex items-center gap-3">
+        <div className="hidden shrink-0 items-center gap-2 xl:flex 2xl:gap-3">
           <a
             href="tel:0108086084"
-            className="btn-cta cta-attention flex items-center gap-2 px-5 py-2.5 rounded-full text-[0.875rem] font-semibold text-white transition-all"
+            className="btn-cta cta-attention flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-[0.8rem] font-semibold text-white transition-all 2xl:gap-2 2xl:px-5 2xl:text-[0.875rem]"
             aria-label="Ring Hemläkare på 010-808 60 84"
           >
             <PhoneIcon />
@@ -109,7 +109,7 @@ export default function Header() {
             href="https://wa.me/46108086084"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-full border-2 border-[#25d366] bg-white px-4 py-2 text-[0.875rem] font-semibold text-[#128c4a] transition-colors hover:bg-emerald-50"
+            className="flex items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-[#25d366] bg-white px-3 py-2 text-[0.8rem] font-semibold text-[#128c4a] transition-colors hover:bg-emerald-50 2xl:gap-2 2xl:px-4 2xl:text-[0.875rem]"
             aria-label="Kontakta Hemläkare via WhatsApp"
           >
             <WhatsAppIcon />
