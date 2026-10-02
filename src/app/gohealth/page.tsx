@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import ChatWidget from "@/components/ChatWidget";
 import Footer from "@/components/Footer";
 import GoHealth from "@/components/GoHealth";
@@ -25,6 +26,16 @@ export default function GoHealthPage() {
     <>
       <Header />
       <main>
+        <section aria-label="GoHealth – din hälsoöversikt" className="relative h-dvh w-full overflow-hidden bg-black">
+          <Image
+            src="/bilder/gohealth-pic2-swe.png"
+            alt="En person följer sin hälsoöversikt på en surfplatta med Hemläkares GoHealth."
+            fill
+            preload
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </section>
         <GoHealth headingLevel="h1" />
         <GoHealthStory />
       </main>

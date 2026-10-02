@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import HealthPackages from "@/components/HealthPackages";
 import Hero from "@/components/Hero";
 import HurFungerar from "@/components/HurFungerar";
+import HurFungerarScrollDemo from "@/components/HurFungerarScrollDemo";
 import Lunchforelasning from "@/components/Lunchforelasning";
 import Omdomen from "@/components/Omdomen";
 import Prickmottagning from "@/components/Prickmottagning";
@@ -66,6 +67,7 @@ export default function LandingPage() {
         <VarforHemlakare />
         <Omdomen />
         <HurFungerar />
+        <HurFungerarScrollDemo />
         <HealthPackages />
         <Prickmottagning />
         <Lunchforelasning />

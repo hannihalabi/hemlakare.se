@@ -135,6 +135,78 @@ body {
   }
 }
 
+/* Scrollstyrd processdemo: punkten ligger mot viewportens guideposition och
+   varje steg får en tydlig ankomst när punkten når dess markör. */
+.scroll-process-marker,
+.scroll-process-copy {
+  transition:
+    border-color 0.28s ease,
+    background-color 0.28s ease,
+    color 0.28s ease,
+    opacity 0.28s ease,
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-process-step[data-state="pending"] .scroll-process-marker {
+  border-color: #9ca59f;
+  color: #506057;
+}
+
+.scroll-process-step[data-state="pending"] .scroll-process-copy {
+  opacity: 0.42;
+  transform: translateY(7px);
+}
+
+.scroll-process-step[data-state="current"] .scroll-process-copy {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-process-step[data-state="current"] .scroll-process-marker {
+  border-color: #e72e8a;
+  background: #e72e8a;
+  color: #fff;
+  animation: scrollProcessMarkerArrival 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.scroll-process-step[data-state="current"] .scroll-process-copy {
+  animation: scrollProcessCopyArrival 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scrollProcessMarkerArrival {
+  0% {
+    box-shadow: 0 0 0 0 rgba(231, 46, 138, 0.3);
+    transform: scale(0.82);
+  }
+  58% {
+    box-shadow: 0 0 0 12px rgba(231, 46, 138, 0.12);
+    transform: scale(1.1);
+  }
+  100% {
+    box-shadow: 0 0 0 7px rgba(231, 46, 138, 0.08);
+    transform: scale(1);
+  }
+}
+
+@keyframes scrollProcessCopyArrival {
+  from {
+    opacity: 0.42;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-process-marker,
+  .scroll-process-copy {
+    animation: none !important;
+    transition: none;
+  }
+}
+
 /* Roterande ord i hero-rubriken */
 @keyframes rotateWordIn {
   from {
