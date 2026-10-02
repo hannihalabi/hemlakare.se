@@ -28,7 +28,7 @@ export default function GoHealthPage() {
       <main>
         <section aria-label="GoHealth – din hälsoöversikt" className="relative h-dvh w-full overflow-hidden bg-black">
           <Image
-            src="/bilder/gohealth-pic2-swe.png"
+            src="/bilder/Svensk hjärthälsa på surfplatta.png"
             alt="En person följer sin hälsoöversikt på en surfplatta med Hemläkares GoHealth."
             fill
             preload
