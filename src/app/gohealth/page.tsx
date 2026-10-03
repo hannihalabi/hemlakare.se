@@ -6,6 +6,7 @@ import GoHealth from "@/components/GoHealth";
 import GoHealthStory from "@/components/GoHealthStory";
 import Header from "@/components/Header";
 import { SITE_URL } from "@/lib/site";
+import styles from "./gohealth.module.css";
 
 const description =
   "GoHealth följer dina hälsovärden över tid och hjälper vårdteamet att uppmärksamma avvikelser tidigt, innan de alltid hunnit ge tydliga symtom.";
@@ -26,15 +27,25 @@ export default function GoHealthPage() {
     <>
       <Header />
       <main>
-        <section aria-label="GoHealth – din hälsoöversikt" className="relative h-dvh w-full overflow-hidden bg-black">
+        <section aria-label="GoHealth – din hälsoöversikt" className={styles.hero}>
+          <div className={styles.visual}>
+          <Image
+            src="/bilder/Svensk hjärthälsa på surfplatta.png"
+            alt=""
+            aria-hidden="true"
+            fill
+            sizes="(max-width: 640px) 120vw, 88vw"
+            className={styles.softImage}
+          />
           <Image
             src="/bilder/Svensk hjärthälsa på surfplatta.png"
             alt="En person följer sin hälsoöversikt på en surfplatta med Hemläkares GoHealth."
             fill
             preload
-            sizes="100vw"
-            className="object-cover object-center"
+            sizes="(max-width: 640px) 120vw, 88vw"
+            className={styles.sharpImage}
           />
+          </div>
         </section>
         <GoHealth headingLevel="h1" />
         <GoHealthStory />

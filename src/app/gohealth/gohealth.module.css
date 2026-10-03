@@ -1,0 +1,45 @@
+.hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.85;
+  overflow: hidden;
+  background: #fff;
+}
+
+.visual {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 88%;
+  aspect-ratio: 1672 / 941;
+}
+
+.softImage,
+.sharpImage {
+  object-fit: contain;
+}
+
+/* Keep the tablet crisp, blending into the soft feet and outer silhouette. */
+.softImage {
+  filter: blur(6px);
+}
+
+.sharpImage {
+  mask-image: radial-gradient(ellipse 49% 68% at 58% 42%, #000 70%, transparent 100%);
+}
+
+@media (max-width: 640px) {
+  .hero {
+    aspect-ratio: 4 / 5;
+  }
+
+  .visual {
+    width: 120%;
+    right: -20%;
+    bottom: 0;
+  }
+
+  .softImage {
+    filter: blur(4px);
+  }
+}
