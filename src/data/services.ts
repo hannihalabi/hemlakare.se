@@ -89,10 +89,10 @@ export const healthcareServices: HealthcareService[] = [
     slug: "fysiskt-lakarbesok",
     name: "Fysiskt läkarbesök",
     eyebrow: "Läkarbesök på plats",
-    seoTitle: "Läkare på hembesök i Stockholm – fysiskt läkarbesök",
+    seoTitle: "Hembesök av läkare i Stockholm – pris och bokning",
     metaDescription:
       "Boka ett privat läkarbesök hemma i Stockholm för 995 kr. Personlig medicinsk bedömning, fysisk undersökning och tydlig vägledning.",
-    title: "Fysiskt läkarbesök hemma med tid för hela bilden",
+    title: "Hembesök av läkare i Stockholm",
     lead:
       "När besvären behöver undersökas på plats kommer läkaren hem till dig i Stockholm. Du får tid att beskriva hur du mår, en fysisk undersökning och en tydlig plan framåt.",
     price: "995 kr",
@@ -132,6 +132,9 @@ export const healthcareServices: HealthcareService[] = [
       "Vid livshotande symtom ska du ringa 112. För sjukvårdsrådgivning kan du ringa 1177.",
     ],
     faq: [
+      { question: "Kan jag boka en läkare som kommer hem i Stockholm?", answer: "Ja, Hemläkare.se erbjuder privata hembesök i Stockholm. Kontakta oss för att kontrollera tillgänglighet för din adress och om hembesök passar ditt vårdbehov." },
+      { question: "Är Hemläkare.se samma tjänst som jourläkarbilen via 1177?", answer: "Nej. Hos Hemläkare.se bokar du privat vård med egna priser och villkor. Regionens jourläkarbil förmedlas efter bedömning via 1177 och SOS Alarm." },
+      { question: "Kan jag få hembesök samma dag?", answer: "Tillgängliga tider varierar. Kontakta oss eller se bokningen för aktuella tider. Ett besök samma dag kan inte garanteras." },
       { question: "Vad kostar ett fysiskt läkarbesök?", answer: "Besöket kostar just nu 995 kr, jämfört med ordinarie pris 2 790 kr. Eventuella prover, läkemedel eller andra åtgärder kan tillkomma." },
       { question: "Kan jag få remiss?", answer: "Ja, om läkaren efter sin bedömning anser att det är medicinskt motiverat. Remiss kan inte garanteras på förhand." },
       { question: "Vad ska jag förbereda?", answer: "Ha gärna legitimation, aktuell läkemedelslista och relevanta tidigare vård- eller provuppgifter tillgängliga." },

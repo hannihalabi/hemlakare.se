@@ -76,6 +76,18 @@ export function ServicePageBody({
 
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="min-w-0 space-y-12 sm:space-y-16">
+            {service.slug === "fysiskt-lakarbesok" && (
+              <section aria-labelledby="hembesok-stockholm">
+                <h2 id="hembesok-stockholm" className="text-2xl font-bold text-gray-950">En läkare som kommer hem till dig</h2>
+                <p className="mt-4 leading-7 text-gray-600">Vi erbjuder privata läkarbesök hemma i Stockholm. Kontakta oss för att kontrollera din adress, aktuella tider och vilken besöksform som passar ditt ärende. Förbered gärna en läkemedelslista och de frågor du vill ta upp med läkaren.</p>
+                <h3 className="mt-6 text-xl font-bold text-gray-950">Vad kostar ett hembesök?</h3>
+                <p className="mt-3 leading-7 text-gray-600">Läkarbesöket kostar just nu {service.price}. Eventuella prover eller andra åtgärder kan tillkomma. Kontrollera det aktuella priset och villkoren innan du bekräftar bokningen.</p>
+                <nav aria-label="Guider om vård hemma" className="mt-5 flex flex-col gap-3 font-semibold text-[#d81b7d]">
+                  <Link href="/aktuellt/1177-hembesok-lakare-stockholm">Hembesök via 1177 och jourläkarbilen – så fungerar det</Link>
+                  <Link href="/aktuellt/vard-hemma-hembesok-hemsjukvard">Vård hemma – skillnaden mellan hembesök, hemsjukvård och ASIH</Link>
+                </nav>
+              </section>
+            )}
             <ContentSection title={service.suitableTitle} intro={service.suitableIntro}>
               <CheckList items={service.suitableFor} />
             </ContentSection>

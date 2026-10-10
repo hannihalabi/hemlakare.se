@@ -11,7 +11,15 @@ import rsVirus from "./rs-virus-barn-symtom";
 import solskydd from "./solvax-och-solskydd";
 import somnloshet from "./somnloshet-kronisk";
 
+import searchGuide0 from "./1177-hembesok-lakare-stockholm";
+import searchGuide1 from "./blodande-leverflack";
+import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
+
 const publishedArticles: Article[] = [
+  searchGuide0,
+  searchGuide1,
+  searchGuide2,
+
   allergi,
   baltros,
   bihaleinflammation,

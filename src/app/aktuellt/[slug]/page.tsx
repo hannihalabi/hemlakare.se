@@ -257,6 +257,18 @@ function RichLegacyArticle({ article }: { article: Article }) {
             </section>
           )}
 
+          <section aria-labelledby="relaterad-lasning" className="mt-12 border-t border-gray-200 pt-6">
+            <h2 id="relaterad-lasning" className="text-xl font-bold text-gray-950">Läs vidare</h2>
+            <nav aria-label="Relaterade artiklar" className="mt-4 flex flex-col gap-3 text-sm font-semibold text-[#d81b7d]">
+              {articles.filter((item) => item.slug !== article.slug && item.tag === article.tag).slice(0, 3).map((item) => (
+                <Link key={item.slug} href={`/aktuellt/${item.slug}`} className="hover:underline">{item.title}</Link>
+              ))}
+              <Link href={article.tag === "HUD" ? "/hudforandringar" : "/lakare/hembesok"} className="hover:underline">
+                {article.tag === "HUD" ? "Så fungerar en första bedömning av hudförändringar" : "Läkarbesök hemma i Stockholm – pris och bokning"}
+              </Link>
+            </nav>
+          </section>
+
           {article.sources && (
             <section className="mt-12 border-t border-gray-200 pt-6">
               <h2 className="text-xs font-bold uppercase tracking-wide text-gray-500">Källor</h2>

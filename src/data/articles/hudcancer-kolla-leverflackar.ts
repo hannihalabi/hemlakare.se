@@ -3,19 +3,17 @@ import type { Article } from "./types";
 const article: Article = {
     slug: "hudcancer-kolla-leverflackar",
     title: "Hudcancer – så kontrollerar du dina leverfläckar",
-    h1: "Hudcancer och leverfläckar: så kontrollerar du huden",
-    seoTitle: "Hudcancer och leverfläckar: så kontrollerar du huden",
+    h1: "Kolla leverfläckar – tecken på hudcancer och när du ska söka vård",
+    seoTitle: "Kolla leverfläckar – tecken på hudcancer och när du ska söka vård",
     metaDescription: "Lär dig känna igen misstänkta leverfläckar med ABCDE-regeln, när du bör söka vård och hur en läkare bedömer hudförändringar.",
     tag: "HUD",
     date: "maj 15, 2026",
     publishedAtIso: "2026-05-15",
-    updatedAt: "september 10, 2026",
-    updatedAtIso: "2026-09-10",
+    updatedAt: "oktober 10, 2026",
+    updatedAtIso: "2026-10-10",
     image: "/bilder/artiklar/hudcancer-1.jpeg",
     imageAlt: "Närbild av hud med leverfläck som kontrolleras för tecken på hudcancer.",
     authorName: "Hemläkare.se redaktion",
-    reviewerName: "Hemläkare.se medicinska team",
-    reviewedAt: "september 10, 2026",
     targetQuery: "kontrollera leverfläckar",
     excerpt: "Melanom är den allvarligaste hudcancerformen. Lär dig ABCDE-regeln, vilka hudförändringar som bör bedömas och hur du kontrollerar huden hemma.",
     summary: "Kontrollera leverfläckar som ändrar färg, form eller storlek, börjar klia, blöda, blir såriga eller ser tydligt annorlunda ut än dina andra fläckar. ABCDE-regeln hjälper dig att upptäcka varningssignaler, men en misstänkt hudförändring ska alltid bedömas av vårdpersonal. Tidig upptäckt av melanom förbättrar möjligheten till behandling.",
@@ -23,7 +21,7 @@ const article: Article = {
       "Titta efter förändring över tid: en fläck som växer, byter färg eller ändrar form ska kontrolleras.",
       "Använd ABCDE-regeln: asymmetri, ojämn kant, flera färger, storlek och utveckling.",
       "Sök vård om en fläck kliar, blöder, vätskar, blir sårig eller inte läker.",
-      "Fotografera misstänkta fläckar och jämför efter några veckor om du är osäker.",
+      "Fotografier kan visa förändring över tid, men vänta inte med vårdkontakt om fläcken blöder eller växer snabbt.",
       "Skydda huden mot stark UV-strålning med skugga, kläder och solskydd där kläder inte täcker."
     ],
     body: "Kontrollera leverfläckar som ändrar färg, form eller storlek, börjar klia, blöda, blir såriga eller ser tydligt annorlunda ut än dina andra fläckar. ABCDE-regeln hjälper dig att upptäcka varningssignaler, men en misstänkt hudförändring ska alltid bedömas av vårdpersonal. Tidig upptäckt av melanom förbättrar möjligheten till behandling.\n\nHudcancer är ett samlingsnamn för flera cancersjukdomar i huden. Den form många oroar sig mest för är malignt melanom, eftersom den kan sprida sig om den inte upptäcks i tid. Samtidigt är de flesta leverfläckar ofarliga. Målet med egenkontroll är därför inte att du ska ställa diagnos själv, utan att du ska veta vilka förändringar som behöver bedömas.\n\nEtt bra sätt att börja är att lära känna din egen hud. Titta igenom kroppen i bra ljus, använd spegel för ryggen och glöm inte hårbotten, fotsulor, mellan tårna, under naglar och bakom öron. Om du har många leverfläckar kan bilder hjälpa dig att upptäcka förändringar över tid.",
@@ -128,6 +126,9 @@ const article: Article = {
       }
     ],
     faq: [
+      { question: "Vad betyder en vit leverfläck?", answer: "En ljus eller vit hudförändring kan inte bedömas säkert utifrån färgen ensam. Kontakta vårdcentralen om den är ny, förändras eller oroar dig." },
+      { question: "Kan man få hudcancer på benet?", answer: "Melanom kan uppstå på olika delar av kroppen. Placeringen på benet avgör inte vad en hudförändring är. En ny eller förändrad fläck behöver bedömas utifrån sitt utseende och sin utveckling." },
+      { question: "Vad ska jag göra om en leverfläck blöder?", answer: "Kontakta vårdcentralen så snart som möjligt. Detsamma gäller om förändringen växer snabbt eller växer på höjden. En bild ersätter inte den undersökning som kan behövas." },
       {
         question: "Hur vet man om en leverfläck är farlig?",
         answer: "Du kan inte säkert avgöra det själv. Varningssignaler är att fläcken ändrar färg, form eller storlek, blir asymmetrisk, får flera färger, börjar klia, blöda eller blir sårig. En läkare kan bedöma om den behöver undersökas närmare."
@@ -157,7 +158,7 @@ const article: Article = {
       {
         title: "Födelsemärken, leverfläckar",
         publisher: "1177",
-        url: "https://www.1177.se/Gotland/sjukdomar--besvar/hud-har-och-naglar/fodelsemarken-och-hudforandringar/fodelsemarken-leverflackar/"
+        url: "https://www.1177.se/Stockholm/sjukdomar--besvar/hud-har-och-naglar/fodelsemarken-och-hudforandringar/fodelsemarken-leverflackar/"
       },
       {
         title: "Malignt melanom – hudcancer",
