@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import skyddaAldre2026 from "./skydda-aldre-luftvagsvirus-vintern-2026";
 import influensavaccin2026 from "./influensavaccin-2026-vem-far-vaccin-forst";
 import vinterkraksjuka2026 from "./vinterkraksjuka-vatskebrist-nar-soka-vard-2026";
 import allergi from "./allergi-symtom-behandling";
@@ -18,6 +19,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  skyddaAldre2026,
   influensavaccin2026,
   vinterkraksjuka2026,
   searchGuide0,
