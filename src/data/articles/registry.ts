@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import koldskador2026 from "./koldskador-fingrar-tar-nar-soka-vard-vintern-2026";
 import feberBarn2026 from "./feber-hos-barn-nar-soka-vard-vintern-2026";
 import halkrisk2026 from "./fallrisk-aldre-halka-vintern-2026";
 import torrHud2026 from "./torr-hud-vintern-nar-soka-vard-2026";
@@ -22,6 +23,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  koldskador2026,
   feberBarn2026,
   halkrisk2026,
   torrHud2026,
