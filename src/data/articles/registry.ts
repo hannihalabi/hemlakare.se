@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import vinterkraksjukaHemma2026 from "./vinterkraksjuka-smitta-hemma-stadning-2026";
 import dVitaminVinter2026 from "./d-vitamin-vintern-vem-behover-tillskott-2026";
 import rsAntikroppar2026 from "./rs-virus-antikroppar-nyfodda-2026";
 import influensaGravid2026 from "./influensavaccin-gravid-vecka-12-hosten-2026";
@@ -26,6 +27,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  vinterkraksjukaHemma2026,
   dVitaminVinter2026,
   rsAntikroppar2026,
   influensaGravid2026,
