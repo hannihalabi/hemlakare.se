@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import rsAntikroppar2026 from "./rs-virus-antikroppar-nyfodda-2026";
 import influensaGravid2026 from "./influensavaccin-gravid-vecka-12-hosten-2026";
 import koldskador2026 from "./koldskador-fingrar-tar-nar-soka-vard-vintern-2026";
 import feberBarn2026 from "./feber-hos-barn-nar-soka-vard-vintern-2026";
@@ -24,6 +25,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  rsAntikroppar2026,
   influensaGravid2026,
   koldskador2026,
   feberBarn2026,
