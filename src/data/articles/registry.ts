@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import nasblodVinter2026 from "./nasblod-torr-luft-vintern-stoppa-blodning-2026";
 import torraOgonVinter2026 from "./torra-ogon-inomhusluft-vintern-2026";
 import vinterkraksjukaHemma2026 from "./vinterkraksjuka-smitta-hemma-stadning-2026";
 import dVitaminVinter2026 from "./d-vitamin-vintern-vem-behover-tillskott-2026";
@@ -28,6 +29,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  nasblodVinter2026,
   torraOgonVinter2026,
   vinterkraksjukaHemma2026,
   dVitaminVinter2026,
