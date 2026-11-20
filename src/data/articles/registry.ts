@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import fluVsCovid2026 from "./influensa-eller-covid-symtom-november-2026";
 import influensaStart2026 from "./influensaepidemin-startat-november-2026";
 import handeksemVinter2026 from "./handeksem-vintern-sprickor-hander-2026";
 import nasblodVinter2026 from "./nasblod-torr-luft-vintern-stoppa-blodning-2026";
@@ -31,6 +32,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  fluVsCovid2026,
   influensaStart2026,
   handeksemVinter2026,
   nasblodVinter2026,
