@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import hostaEfterForkylning2026 from "./hosta-efter-forkylning-hur-lange-2026";
 import covidAldre2026 from "./covid-19-aldre-nar-soka-vard-november-2026";
 import rsVaccinAldre2026 from "./rs-virus-vaccin-aldre-75-ar-riskgrupp-2026";
 import antiviralInfluensa2026 from "./influensa-antiviral-behandling-riskgrupp-2026";
@@ -36,6 +37,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  hostaEfterForkylning2026,
   covidAldre2026,
   rsVaccinAldre2026,
   antiviralInfluensa2026,
