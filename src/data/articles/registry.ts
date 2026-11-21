@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import antiviralInfluensa2026 from "./influensa-antiviral-behandling-riskgrupp-2026";
 import influensaSmitta2026 from "./influensa-hur-lange-smittar-stanna-hemma-2026";
 import fluVsCovid2026 from "./influensa-eller-covid-symtom-november-2026";
 import influensaStart2026 from "./influensaepidemin-startat-november-2026";
@@ -33,6 +34,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  antiviralInfluensa2026,
   influensaSmitta2026,
   fluVsCovid2026,
   influensaStart2026,
