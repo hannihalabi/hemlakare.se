@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import rsVaccinAldre2026 from "./rs-virus-vaccin-aldre-75-ar-riskgrupp-2026";
 import antiviralInfluensa2026 from "./influensa-antiviral-behandling-riskgrupp-2026";
 import influensaSmitta2026 from "./influensa-hur-lange-smittar-stanna-hemma-2026";
 import fluVsCovid2026 from "./influensa-eller-covid-symtom-november-2026";
@@ -34,6 +35,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  rsVaccinAldre2026,
   antiviralInfluensa2026,
   influensaSmitta2026,
   fluVsCovid2026,
