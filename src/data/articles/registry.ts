@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import halsflussAntibiotika2026 from "./halsfluss-antibiotika-eller-virus-nar-soka-vard-2026";
 import kikhostaGravid2026 from "./kikhosta-gravid-vaccin-skydda-spadbarn-2026";
 import hostaEfterForkylning2026 from "./hosta-efter-forkylning-hur-lange-2026";
 import covidAldre2026 from "./covid-19-aldre-nar-soka-vard-november-2026";
@@ -38,6 +39,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  halsflussAntibiotika2026,
   kikhostaGravid2026,
   hostaEfterForkylning2026,
   covidAldre2026,
