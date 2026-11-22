@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import lunginflammationEfterInfluensa2026 from "./lunginflammation-efter-influensa-varningssignaler-2026";
 import halsflussAntibiotika2026 from "./halsfluss-antibiotika-eller-virus-nar-soka-vard-2026";
 import kikhostaGravid2026 from "./kikhosta-gravid-vaccin-skydda-spadbarn-2026";
 import hostaEfterForkylning2026 from "./hosta-efter-forkylning-hur-lange-2026";
@@ -39,6 +40,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  lunginflammationEfterInfluensa2026,
   halsflussAntibiotika2026,
   kikhostaGravid2026,
   hostaEfterForkylning2026,
