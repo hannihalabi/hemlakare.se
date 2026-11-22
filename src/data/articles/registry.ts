@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import influensaStatistikV462026 from "./influensafall-okar-vecka-46-vad-betyder-siffrorna-2026";
 import lunginflammationEfterInfluensa2026 from "./lunginflammation-efter-influensa-varningssignaler-2026";
 import halsflussAntibiotika2026 from "./halsfluss-antibiotika-eller-virus-nar-soka-vard-2026";
 import kikhostaGravid2026 from "./kikhosta-gravid-vaccin-skydda-spadbarn-2026";
@@ -40,6 +41,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  influensaStatistikV462026,
   lunginflammationEfterInfluensa2026,
   halsflussAntibiotika2026,
   kikhostaGravid2026,
