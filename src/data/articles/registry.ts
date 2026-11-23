@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import samvaccination2026 from "./influensa-covid-vaccin-samtidigt-samma-besok-2026";
 import influensavaccinSjuk2026 from "./influensavaccin-sjuk-feber-boka-om-2026";
 import vinterkraksjukaAtergang2026 from "./vinterkraksjuka-nar-tillbaka-forskola-skola-jobb-2026";
 import rsAnmalningsplikt2026 from "./rs-virus-anmalningsplikt-vad-betyder-det-for-foraldrar-2026";
@@ -44,6 +45,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  samvaccination2026,
   influensavaccinSjuk2026,
   vinterkraksjukaAtergang2026,
   rsAnmalningsplikt2026,
