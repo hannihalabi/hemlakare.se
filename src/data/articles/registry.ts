@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import rsAnmalningsplikt2026 from "./rs-virus-anmalningsplikt-vad-betyder-det-for-foraldrar-2026";
 import influensaStatistikV462026 from "./influensafall-okar-vecka-46-vad-betyder-siffrorna-2026";
 import lunginflammationEfterInfluensa2026 from "./lunginflammation-efter-influensa-varningssignaler-2026";
 import halsflussAntibiotika2026 from "./halsfluss-antibiotika-eller-virus-nar-soka-vard-2026";
@@ -41,6 +42,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  rsAnmalningsplikt2026,
   influensaStatistikV462026,
   lunginflammationEfterInfluensa2026,
   halsflussAntibiotika2026,
