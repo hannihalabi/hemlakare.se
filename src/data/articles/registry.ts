@@ -1,4 +1,5 @@
 import type { Article } from "./types";
+import vinterkraksjukaAtergang2026 from "./vinterkraksjuka-nar-tillbaka-forskola-skola-jobb-2026";
 import rsAnmalningsplikt2026 from "./rs-virus-anmalningsplikt-vad-betyder-det-for-foraldrar-2026";
 import influensaStatistikV462026 from "./influensafall-okar-vecka-46-vad-betyder-siffrorna-2026";
 import lunginflammationEfterInfluensa2026 from "./lunginflammation-efter-influensa-varningssignaler-2026";
@@ -42,6 +43,7 @@ import searchGuide1 from "./blodande-leverflack";
 import searchGuide2 from "./vard-hemma-hembesok-hemsjukvard";
 
 const publishedArticles: Article[] = [
+  vinterkraksjukaAtergang2026,
   rsAnmalningsplikt2026,
   influensaStatistikV462026,
   lunginflammationEfterInfluensa2026,
