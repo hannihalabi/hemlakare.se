@@ -1,0 +1,287 @@
+.section {
+  background: #fcfafb;
+  color: #322437;
+  padding: clamp(4rem, 8vw, 7rem) max(1.25rem, 4vw);
+  scroll-margin-top: 5rem;
+}
+
+.container {
+  max-width: 1160px;
+  margin-inline: auto;
+}
+
+.heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(1.75rem, 4vw, 3rem);
+}
+
+.heading h2 {
+  margin: 0;
+  font-size: clamp(2.15rem, 4.3vw, 4rem);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.heading p, .intro p, .topicBody p {
+  color: #605664;
+  line-height: 1.62;
+}
+
+.heading p {
+  max-width: 28rem;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.guide {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.5rem, 1.4vw, 1rem);
+  margin-bottom: 1rem;
+}
+
+.choice {
+  --tile-tint: #f7e8f0;
+  --tile-ink: #70394f;
+  display: flex;
+  position: relative;
+  cursor: pointer;
+}
+
+.choice[data-source="wearable"] {
+  --tile-tint: #e8f1ee;
+  --tile-ink: #365d54;
+}
+
+.choice[data-source="clinical"] {
+  --tile-tint: #eeeaf4;
+  --tile-ink: #564969;
+}
+
+.tile {
+  display: flex;
+  isolation: isolate;
+  position: relative;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-height: 9.3rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  background: var(--tile-tint);
+  color: var(--tile-ink);
+  transition: border-color .16s;
+}
+
+.illustration {
+  align-self: flex-end;
+  width: 7.4rem;
+  height: auto;
+  margin: -.8rem 1.5rem -.05rem 0;
+}
+
+.tileTitle {
+  font-size: clamp(1.05rem, 2.1vw, 1.5rem);
+  font-weight: 650;
+  letter-spacing: -.035em;
+  line-height: 1.16;
+  overflow-wrap: break-word;
+}
+
+.choiceIndicator {
+  position: absolute;
+  top: .85rem;
+  left: 1.12rem;
+  width: 1.2rem;
+  overflow: visible;
+}
+
+.choiceIndicator circle {
+  fill: transparent;
+  stroke: currentColor;
+  opacity: .48;
+}
+
+.choiceIndicator path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  visibility: hidden;
+}
+
+.choice:hover .tile {
+  border-color: var(--tile-ink);
+}
+
+.choice input:checked + .tile {
+  border-color: var(--tile-ink);
+  box-shadow: inset 0 0 0 1px var(--tile-ink);
+}
+
+.choice input:checked + .tile .choiceIndicator circle {
+  fill: var(--tile-ink);
+  opacity: 1;
+}
+
+.choice input:checked + .tile .choiceIndicator path {
+  visibility: visible;
+}
+
+.choice input:focus-visible + .tile,
+.topic summary:focus-visible,
+.sources a:focus-visible {
+  outline: 3px solid #9a2367;
+  outline-offset: 3px;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.6fr);
+  align-content: start;
+  align-items: start;
+  gap: 1.25rem clamp(2rem, 5vw, 5rem);
+  margin-block: 1rem 0;
+  padding: clamp(1.4rem, 3.2vw, 2.75rem);
+  border: 1px solid #e8e0e6;
+  border-radius: 1.1rem;
+  background: #fff;
+}
+
+@supports selector(:has(*)) {
+  .guide:has(input:checked) .panel { display: none; }
+  .guide:has(input[value="blood"]:checked) .panel[data-panel="blood"],
+  .guide:has(input[value="wearable"]:checked) .panel[data-panel="wearable"],
+  .guide:has(input[value="clinical"]:checked) .panel[data-panel="clinical"] { display: grid; }
+}
+
+.intro h3 {
+  font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+  font-weight: 650;
+  letter-spacing: -.045em;
+  line-height: 1.12;
+}
+
+.intro p, .topicBody p {
+  max-width: 47ch;
+  margin: .75rem 0 0;
+  font-size: .96rem;
+}
+
+.topics {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
+}
+
+.topic { border-bottom: 1px solid #ebe5e9; }
+.topic:first-child { border-top: 1px solid #ebe5e9; }
+
+.topic summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.25rem;
+  padding: .75rem .25rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.topic summary::-webkit-details-marker { display: none; }
+.topic summary:hover, .topic[open] summary { color: #9e245e; }
+.topic summary svg { width: 1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.topic[open] .plusStem { display: none; }
+
+.topicBody { padding: 0 .25rem 1.2rem; }
+.topicBody p { margin: 0 0 .65rem; }
+.topicBody ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.topicBody li {
+  max-width: 100%;
+  padding: .22rem .6rem;
+  border-radius: .4rem;
+  background: #f4f0f4;
+  color: #514153;
+  font-size: .82rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.sources {
+  align-self: end;
+  color: #695d6a;
+  font-size: .8rem;
+  line-height: 1.5;
+}
+
+.sources > span { display: block; margin-bottom: .2rem; font-weight: 650; }
+.sources ul { display: flex; flex-wrap: wrap; gap: .15rem .85rem; margin: 0; padding: 0; list-style: none; }
+.sources a { display: inline-block; padding: .18rem 0; text-decoration: underline; text-underline-offset: .18em; }
+.sources a:hover { color: #92215a; }
+
+@media (max-width: 760px) {
+  .heading { flex-direction: column; align-items: flex-start; gap: .8rem; }
+  .heading p { max-width: 38rem; }
+  .tile { min-height: 8rem; padding: .9rem; }
+  .illustration { width: 6.6rem; max-width: 90%; margin: -.4rem 0 .2rem; }
+  .choiceIndicator { width: 1rem; top: .62rem; left: .68rem; }
+  .panel { grid-template-columns: minmax(0, 1fr); }
+  .topics, .sources { grid-row: auto; grid-column: auto; }
+  .intro p { max-width: 62ch; }
+}
+
+@media (max-width: 480px) {
+  .section { padding-inline: 1rem; }
+  .choices { gap: .35rem; }
+  .tile { min-height: 7.25rem; padding: .55rem; border-radius: .72rem; }
+  .tileTitle { font-size: .92rem; }
+  .illustration { width: 5.25rem; margin-block: .3rem .18rem; }
+  .choiceIndicator { width: .88rem; top: .4rem; left: .45rem; }
+  .panel { padding: 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .tile { border: 1px solid ButtonText; }
+  .choice input:checked + .tile { outline: 2px solid Highlight; outline-offset: -2px; }
+}

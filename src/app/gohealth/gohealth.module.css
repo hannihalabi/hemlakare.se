@@ -1,45 +1,102 @@
-.hero {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1.85;
-  overflow: hidden;
-  background: #fff;
+.page {
+  color: #302337;
+  --gh-ink: #302337;
+  --gh-wine: #95194f;
+  --gh-width: 1160px;
+  --gh-gutter: clamp(20px, 5vw, 60px);
 }
 
-.visual {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 88%;
-  aspect-ratio: 1672 / 941;
+.hero { background: #fcf8fa; border-bottom: 1px solid #eee4e9; }
+.heroInner, .careInner, .joinInner {
+  width: calc(100% - var(--gh-gutter) * 2);
+  max-width: var(--gh-width);
+  margin: 0 auto;
 }
-
-.softImage,
-.sharpImage {
-  object-fit: contain;
+.heroInner {
+  display: grid;
+  grid-template-columns: .91fr 1.09fr;
+  gap: clamp(20px, 4.5vw, 70px);
+  align-items: center;
+  padding-block: clamp(41px, 5.6vw, 82px);
 }
-
-/* Keep the tablet crisp, blending into the soft feet and outer silhouette. */
-.softImage {
-  filter: blur(6px);
+.heroCopy { padding-block: 6px; }
+.product { display: flex; align-items: center; gap: 9px; color: var(--gh-wine); font-size: 1.12rem; font-weight: 700; letter-spacing: -.045em; }
+.product svg { color: #c82a74; }
+.heroCopy h1 {
+  margin: 22px 0;
+  font-size: clamp(4.25rem, 7.4vw, 6.55rem);
+  line-height: .96;
+  font-weight: 650;
+  letter-spacing: -.077em;
 }
-
-.sharpImage {
-  mask-image: radial-gradient(ellipse 49% 68% at 58% 42%, #000 70%, transparent 100%);
+.heroCopy h1 em { font-family: Georgia, "Times New Roman", serif; letter-spacing: -.063em; font-weight: 400; color: var(--gh-wine); }
+.lead, .joinIntro p { max-width: 43ch; color: #615463; font-size: clamp(1.035rem, 1.22vw, 1.15rem); line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 13px 22px; margin-top: 28px; }
+.primary, .secondary, .phone {
+  display: inline-flex;
+  gap: 11px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 650;
+  font-size: .94rem;
+  min-height: 45px;
 }
-
-@media (max-width: 640px) {
-  .hero {
-    aspect-ratio: 4 / 5;
-  }
-
-  .visual {
-    width: 120%;
-    right: -20%;
-    bottom: 0;
-  }
-
-  .softImage {
-    filter: blur(4px);
-  }
+.primary { width: fit-content; color: white; background: #aa195b; border-radius: 100px; padding: 12px 23px; }
+.primary:hover { background: #8e114b; }
+.secondary { color: var(--gh-ink); }
+.secondary:hover, .phone:hover { text-decoration: underline; text-underline-offset: 4px; }
+.page :is(a, button, summary, input):focus-visible { outline: 3px solid #a61f64; outline-offset: 4px; }
+.heroVisual {
+  position: relative; isolation: isolate; overflow: hidden;
+  aspect-ratio: 1.34;
+  border-radius: clamp(18px, 2vw, 28px);
+  background: radial-gradient(ellipse at 74% 27%, #f9f1ef 2%, #f1dce2 55%, #dfbbc9 100%);
+}
+.contours { position: absolute; width: 100%; height: 100%; stroke: #fff; stroke-width: 1.2; opacity: .65; }
+.heroVisual .tablet { top: auto !important; bottom: 0; height: 90% !important; object-fit: cover; object-position: 52% 0; }
+.pulseCard {
+  position: absolute; top: 9%; left: 6%; width: clamp(115px, 11.5vw, 160px); padding: 15px 17px 12px;
+  border-radius: 16px; background: #fffcfd; box-shadow: 0 9px 30px #3914281f;
+  transform: rotate(-3deg);
+}
+.pulseLabel { display: flex; align-items: center; gap: 6px; color: #6a4556; font-weight: 600; font-size: .78rem; }
+.pulseLabel span { width: 6px; height: 6px; border-radius: 50%; background: #ba2869; }
+.pulseValue { font-size: clamp(1.85rem, 2.7vw, 2.4rem); line-height: 1.16; margin-top: 6px; font-weight: 650; letter-spacing: -.06em; }
+.pulseValue small { font-size: .62rem; font-weight: 500; letter-spacing: 0; color: #6c5461; }
+.pulseCard svg { width: 100%; height: 23px; margin-block: 2px; }
+.sample { display: block; font-size: .63rem; color: #725e69; }
+.care { background: #302437; color: #fff; }
+.careInner { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: stretch; gap: clamp(35px, 6vw, 92px); }
+.carePhoto { position: relative; overflow: hidden; min-height: 360px; background: radial-gradient(ellipse at 52% 68%, #775469, transparent 68%); }
+.carePhoto img { object-fit: contain; object-position: bottom; padding-top: 38px; }
+.careBody { padding-block: clamp(45px, 6vw, 80px); }
+.care h2, .join h2 { font-size: clamp(2.05rem, 3.8vw, 3.45rem); line-height: 1.05; font-weight: 630; letter-spacing: -.055em; text-wrap: balance; }
+.steps { margin: 29px 0 0; padding: 0; list-style: none; counter-reset: care; }
+.steps li { position: relative; padding: 0 0 18px 36px; counter-increment: care; }
+.steps li:last-child { padding-bottom: 0; }
+.steps li::before { content: counter(care); position: absolute; top: 1px; left: 0; width: 24px; height: 24px; background: #543b50; border: 1px solid #8e667c; color: #ffdfef; text-align: center; border-radius: 50%; font-size: .76rem; line-height: 22px; }
+.steps li:not(:last-child)::after { content: ""; position: absolute; top: 25px; bottom: -1px; left: 11.5px; border-left: 1px solid #6b4d62; }
+.steps h3 { font-weight: 640; font-size: 1.05rem; }
+.steps p { font-size: .97rem; color: #e0d3dd; line-height: 1.55; margin-top: 3px; }
+.join { padding-block: clamp(48px, 7vw, 95px); background: #fcf5f8; scroll-margin-top: 110px; }
+.joinInner { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(36px, 8vw, 110px); }
+.joinIntro p { margin-top: 18px; }
+.offer { border-left: 1px solid #e7cfdb; padding-left: clamp(30px, 6vw, 85px); }
+.price { font-size: clamp(2.4rem, 4vw, 3.9rem); font-weight: 650; line-height: 1; letter-spacing: -.065em; }
+.price span { font-weight: 550; font-size: 1.2rem; letter-spacing: -.04em; }
+.terms { color: #66545e; font-size: .94rem; margin-top: 10px; margin-bottom: 20px; }
+.phone { display: flex; width: fit-content; font-size: .88rem; font-weight: 550; color: #634052; }
+@media (max-width: 720px) {
+  .heroInner { grid-template-columns: 1fr; gap: 26px; padding-block: 34px 28px; }
+  .heroCopy h1 { font-size: clamp(3.75rem, 12vw, 5.45rem); margin-block: 17px; }
+  .actions { margin-top: 19px; gap: 10px 16px; }
+  .primary, .secondary { font-size: .88rem; }
+  .heroVisual { aspect-ratio: 1.65; max-height: 335px; }
+  .heroVisual .tablet { height: 98% !important; object-position: 60% 2%; }
+  .pulseCard { top: 9%; left: 5%; padding: 10px 12px; border-radius: 12px; }
+  .pulseValue { margin-top: 2px; }
+  .carePhoto { display: none; }
+  .careInner, .joinInner { grid-template-columns: 1fr; }
+  .joinInner { gap: 24px; }
+  .offer { padding: 22px 0 0; border-left: 0; border-top: 1px solid #e7cfdb; }
 }

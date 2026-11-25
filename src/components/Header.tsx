@@ -124,7 +124,8 @@ export default function Header() {
             aria-label="Ring Hemläkare på 010-808 60 84"
           >
             <PhoneIcon />
-            010 808 60 84
+            <span className="hidden min-[371px]:inline">010 808 60 84</span>
+            <span className="min-[371px]:hidden">Ring</span>
           </a>
           <button
             type="button"

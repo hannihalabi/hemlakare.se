@@ -1,0 +1,124 @@
+.section {
+  --ink: #302338;
+  --muted: #695d68;
+  --pink: #c31c70;
+  --teal: #217b78;
+  color: var(--ink);
+  background: #fcf9fa;
+  border-block: 1px solid #eee5e9;
+  padding: clamp(3.6rem, 7.7vw, 7rem) clamp(1.15rem, 4vw, 3rem);
+  scroll-margin-top: 5rem;
+}
+.inner {
+  display: grid;
+  grid-template-columns: minmax(16rem, .78fr) minmax(0, 1.45fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  max-width: 1160px;
+  margin: auto;
+}
+.intro h2 {
+  max-width: 8.5em;
+  margin: 0;
+  font-size: clamp(2.2rem, 4.5vw, 3.7rem);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+.intro > p {
+  margin: 1.15rem 0 1.7rem;
+  color: var(--muted);
+  font-size: 1.03rem;
+  line-height: 1.6;
+}
+.options {display: grid; gap: .35rem;}
+.options button {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  width: 100%;
+  min-height: 4.15rem;
+  padding: .55rem .8rem;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: .85rem;
+  cursor: pointer;
+}
+.options button:hover {background: #f6edf1;}
+.options button[aria-pressed="true"] {
+  border-color: #e2c0d0;
+  background: #fff;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  background: #eee8ed;
+  color: #635360;
+}
+.icon svg {width: 1.18rem;}
+.options button[aria-pressed="true"] .icon {background: #fce6f0; color: #ab125f;}
+.optionCopy {display: grid; gap: .1rem;}
+.optionCopy strong {font-size: 1rem; line-height: 1.3; font-weight: 680;}
+.optionCopy small {color: var(--muted); font-size: .78rem; line-height: 1.3;}
+.arrow {width: 1.08rem; margin-left: auto; color: var(--pink); visibility: hidden;}
+button[aria-pressed="true"] .arrow {visibility: visible;}
+.panel {min-width: 0;}
+.card {
+  margin: 0;
+  padding: clamp(1.2rem, 3.4vw, 2.65rem);
+  border: 1px solid #e4dce1;
+  border-radius: 1.65rem;
+  background: #fff;
+  box-shadow: 0 15px 55px -32px #50384e38;
+}
+.cardHead {display: flex; align-items: flex-start; justify-content: space-between; gap: .7rem;}
+.source {margin: 0 0 .3rem; color: var(--muted); font-size: .8rem; font-weight: 550;}
+.cardHead h3 {margin: 0; font-size: clamp(1.3rem, 2.25vw, 1.7rem); letter-spacing: -.032em; line-height: 1.23; font-weight: 650;}
+.example {border: 1px solid #dfd7dd; border-radius: 2rem; padding: .25rem .6rem; color: #675b65; font-size: .69rem; line-height: 1.5; white-space: nowrap;}
+.reading {display: flex; align-items: baseline; flex-wrap: wrap; gap: .3rem .45rem; margin: 1.25rem 0 1.3rem; font-variant-numeric: tabular-nums;}
+.reading strong {font-size: clamp(1.9rem, 4.2vw, 3.3rem); font-weight: 570; line-height: 1.1; letter-spacing: -.06em;}
+.reading > span {color: var(--muted); font-size: .9rem;}
+.readingDate {margin-left: .3rem; padding-left: .65rem; border-left: 1px solid #e4dce1;}
+.plotLayout {display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: .6rem; padding-top: .4rem;}
+.yLabels {display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; margin-block: -.38rem; color: var(--muted); font-size: .72rem; font-variant-numeric: tabular-nums; line-height: .76rem;}
+.plot {height: clamp(8.5rem, 13.5vw, 11.1rem); position: relative;}
+.plot > svg {width: 100%; height: 100%; cursor: crosshair; overflow: visible;}
+.gridLine {stroke: #e6dfe3; stroke-width: 1;}
+.cursorLine {stroke: #a98297; stroke-width: 1; stroke-dasharray: 3 4;}
+.primaryLine, .lowerLine {fill: none; stroke: var(--pink); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round;}
+.lowerLine {stroke: var(--teal); stroke-width: 2; stroke-dasharray: 5 4;}
+.dot, .lowerDot {position: absolute; width: .43rem; height: .43rem; transform: translate(-50%, -50%); border: 1.6px solid var(--pink); background: #fff; border-radius: 50%; pointer-events: none;}
+.lowerDot {border-color: var(--teal);}
+.dot[data-selected="true"], .lowerDot[data-selected="true"] {width: .68rem; height: .68rem; background: var(--pink); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--pink);}
+.lowerDot[data-selected="true"] {background: var(--teal); box-shadow: 0 0 0 1px var(--teal);}
+.dates {grid-column: 2; display: grid; margin-top: .4rem;}
+.dates button {min-width: 0; justify-self: stretch; min-height: 2.2rem; color: var(--muted); font-size: .75rem; border-radius: .4rem; cursor: pointer;}
+.dates button:hover {background: #f7f2f5;}
+.dates button[aria-pressed="true"] {background: #fbebf3; color: #a3175c; font-weight: 700;}
+.options button:focus-visible, .dates button:focus-visible {outline: 2px solid #99285e; outline-offset: 2px;}
+.legend {display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: .6rem 0 -.25rem; font-size: .75rem; color: var(--muted);}
+.legend span {display: inline-flex; align-items: center; gap: .4rem;}
+.legend span::before {content: ""; width: 1.2rem; border-top: 2px solid var(--pink);}
+.legend span + span::before {border-top: 2px dashed var(--teal);}
+.card figcaption {margin-top: 1.05rem; padding-top: .95rem; border-top: 1px solid #ebe4e8; color: var(--muted); font-size: .89rem; line-height: 1.55; text-wrap: pretty;}
+@media (max-width: 760px) {
+  .inner {grid-template-columns: 1fr; gap: 1.15rem; max-width: 36rem;}
+  .intro h2 {max-width: 14em;}
+  .intro > p {max-width: 36rem; margin: .65rem 0 1.3rem;}
+  .options {grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .25rem;}
+  .options button {align-items: flex-start; flex-direction: column; justify-content: center; min-height: 3.68rem; gap: .3rem; padding: .4rem .45rem; border-color: #e7dfe4;}
+  .icon {height: 1.3rem; width: 1.3rem; background: transparent;}
+  .icon svg {width: 1rem;}
+  .optionCopy strong {font-size: clamp(.68rem, 2.8vw, .9rem); letter-spacing: -.015em;}
+  .optionCopy small, .arrow {display: none;}
+  .card {border-radius: 1.2rem;}
+}
+@media (max-width: 359px) {
+  .section {padding-inline: .8rem;}
+  .card {padding: 1rem .8rem;}
+}
