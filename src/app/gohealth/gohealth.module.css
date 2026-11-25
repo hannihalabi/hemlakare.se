@@ -100,3 +100,29 @@
   .joinInner { gap: 24px; }
   .offer { padding: 22px 0 0; border-left: 0; border-top: 1px solid #e7cfdb; }
 }
+
+.radar { background: #fff; scroll-margin-top: 105px; }
+.radarInner {
+  max-width: var(--gh-width);
+  width: calc(100% - var(--gh-gutter) * 2);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr 1.12fr;
+  align-items: center;
+  gap: clamp(1.8rem, 6vw, 6rem);
+  padding-block: clamp(3rem, 6vw, 6rem);
+}
+.radarCopy h2 { max-width: 13ch; font-size: clamp(2.35rem, 4.3vw, 3.8rem); line-height: 1.04; letter-spacing: -.055em; font-weight: 650; }
+.radarCopy > p { max-width: 42ch; color: #615463; font-size: 1.03rem; line-height: 1.6; margin-top: 17px; }
+.radarLinks { display: grid; max-width: 23rem; margin-top: 21px; }
+.radarLinks a { display: flex; align-items: center; justify-content: space-between; gap: .65rem; padding: 12px 2px; border-top: 1px solid #eddee5; font-weight: 600; font-size: .94rem; color: #8a1b50; }
+.radarLinks a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.radarPlot { min-width: 0; padding: 16px clamp(16px, 3.2vw, 42px) 0; }
+@media (max-width: 760px) {
+  .radarInner { grid-template-columns: minmax(0, 1fr); }
+  .radarCopy h2 { max-width: 16ch; }
+  .radarLinks { display: flex; flex-wrap: wrap; gap: 0 1rem; max-width: none; margin-top: .8rem; }
+  .radarLinks a { border: 0; text-decoration: underline; text-underline-offset: 3px; min-height: 42px; padding: .45rem 0; }
+  .radarLinks svg { display: none; }
+  .radarPlot { margin: 0 auto; width: min(100%, 440px); padding-top: 6px; }
+}

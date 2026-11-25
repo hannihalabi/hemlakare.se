@@ -1,6 +1,8 @@
 type MeasurementGroup = {
   id: string;
   title: string;
+  question: string;
+  examples: { label: string; value: string }[];
   intro: string;
   topics: { title: string; description: string; measures: string[] }[];
   sources: { label: string; href: string }[];
@@ -10,6 +12,13 @@ export const measurementGroups: MeasurementGroup[] = [
   {
     id: "blood",
     title: "Blodprov",
+    question: "Vad kan man mäta med blodprov?",
+    examples: [
+      { label: "Blodvärde och järnförråd", value: "Hemoglobin (Hb) och ferritin" },
+      { label: "Blodsocker", value: "Fasteglukos och långtidsblodsocker (HbA1c)" },
+      { label: "Blodfetter", value: "LDL-kolesterol och ApoB" },
+      { label: "Sköldkörtel", value: "TSH och fritt T4" },
+    ],
     intro: "Guiden visar exempel på möjliga analyser. Du och läkaren väljer vilka prover som är relevanta för dig utifrån dina symtom, din hälsa och dina mål.",
     topics: [
       {
@@ -80,7 +89,14 @@ export const measurementGroups: MeasurementGroup[] = [
   },
   {
     id: "wearable",
-    title: "Klocka och telefon",
+    title: "Pulsklocka och telefon",
+    question: "Vad kan du följa med pulsklocka eller telefon?",
+    examples: [
+      { label: "Vardagsrörelse", value: "Steg per dag och gångdistans" },
+      { label: "Puls och återhämtning", value: "Vilopuls och pulsvariation (HRV)" },
+      { label: "Sömn", value: "Sömntid och regelbundenhet" },
+      { label: "Andning", value: "Andningsfrekvens och uppskattad syremättnad (SpO₂)" },
+    ],
     intro: "Vilka värden klockan visar beror på modell och inställningar. Flera är uppskattningar. I GoHealth-appen ser du vilka mätningar du kan dela med vårdteamet.",
     topics: [
       {
@@ -132,7 +148,14 @@ export const measurementGroups: MeasurementGroup[] = [
   },
   {
     id: "clinical",
-    title: "Andra mätningar",
+    title: "Annan utrustning",
+    question: "Vad kan mätas med annan utrustning?",
+    examples: [
+      { label: "Blodtrycksmanschett", value: "Övertryck och undertryck" },
+      { label: "Glukossensor (CGM)", value: "Glukoskurva över dygnet" },
+      { label: "Spirometer", value: "Hur mycket luft du kan blåsa ut på en sekund" },
+      { label: "Arbetsprov med andningsmask", value: "Syreupptag under ansträngning" },
+    ],
     intro: "Vissa värden kräver en separat mätare eller en undersökning på mottagning. Du och läkaren kan även följa kroppsmått som midjemått över tid.",
     topics: [
       {

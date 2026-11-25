@@ -43,31 +43,7 @@ export default function GoHealthStory() {
     <div ref={storyRef}>
       <StoryStyles />
 
-      <section
-        data-gohealth-story
-        data-visible="false"
-        className="gh-story overflow-hidden bg-white px-6 py-20 sm:py-28"
-        aria-labelledby="tidiga-signaler"
-      >
-        <div className="mx-auto max-w-6xl">
-          <div className="gh-copy mx-auto max-w-4xl text-center">
-            <h2 id="tidiga-signaler" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-[1.08]">
-              Ett läkarbesök är en ögonblicksbild. GoHealth ser utvecklingen.
-            </h2>
-            <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-gray-600 sm:text-lg">
-              Ett vårdbesök visar hur du mår just då. GoHealth följer dina värden över tid,
-              så att AI:n kan uppmärksamma avvikelser som annars riskerar att missas.
-            </p>
-          </div>
-
-          <div className="mt-12 sm:mt-16">
-            <EarlySignalVisual />
-            <div className="mt-8 sm:mt-10">
-              <AnnualBloodPressureVisual />
-            </div>
-          </div>
-        </div>
-      </section>
+      <BloodPressureStory />
 
       <section
         data-gohealth-story
@@ -134,15 +110,79 @@ export default function GoHealthStory() {
   );
 }
 
+export function BloodPressureStory() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.setAttribute("data-draw", "true");
+          observer.unobserve(entry.target);
+        }
+      }
+    });
+    section.querySelectorAll("svg[role=img]").forEach((plot) => observer.observe(plot));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="blodtryck" aria-labelledby="tidiga-signaler" className="scroll-mt-24 overflow-hidden bg-white px-5 py-14 sm:px-8 sm:py-20">
+      <style>{`
+        @keyframes gh-bp-draw { from {stroke-dashoffset: 1} to {stroke-dashoffset: 0} }
+        @media (prefers-reduced-motion: no-preference) {
+          #blodtryck [data-draw="true"] .gh-bp-series {stroke-dasharray: 1; animation: gh-bp-draw 1.1s ease-out both;}
+        }
+        @media (max-width: 639px) {
+          #blodtryck svg[role="img"] text {font-size: 18px;}
+          #blodtryck .gh-bp-month-minor {display: none;}
+        }
+      `}</style>
+      <div className="mx-auto max-w-[1160px]">
+        <header className="mx-auto mb-8 max-w-3xl text-center sm:mb-12">
+          <h2 id="tidiga-signaler" className="text-3xl font-semibold leading-[1.07] tracking-[-.05em] text-[#302337] sm:text-5xl">
+            Vad händer med blodtrycket mellan läkarbesöken?
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-[#625564]">
+            Två fiktiva exempel visar vad läkaren kan se med en blodtrycksmanschett under ett dygn och med återkommande mätningar hemma under ett år.
+          </p>
+        </header>
+        <div className="grid items-start gap-6 lg:grid-cols-2 lg:gap-8">
+          <EarlySignalVisual />
+          <AnnualBloodPressureVisual />
+        </div>
+        <p className="mt-5 text-center text-sm text-[#695966]">
+          <a className="underline underline-offset-4" href="https://www.1177.se/undersokning-behandling/undersokningar-och-provtagning/provtagning-och-matningar/matningar/blodtrycksmatning/">1177 om hur blodtryck mäts</a>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function EarlySignalVisual() {
   return (
-    <div className="gh-visual relative mx-auto w-full max-w-[650px]" role="img" aria-label="Blodtrycket är högt vid midnatt och sjunker fram till cirka 03:00. Normalt blodtryck hos vårdcentralen jämförs med för högt blodtryck medan personen sover.">
+    <div className="relative mx-auto w-full max-w-[650px]">
       <div className="absolute -inset-8 rounded-full bg-pink-100/50 blur-3xl" aria-hidden="true" />
       <div className="relative overflow-hidden rounded-[2rem] border border-pink-100 bg-[linear-gradient(145deg,#ffffff_0%,#fff6fa_100%)] p-5 shadow-[0_30px_90px_-40px_rgba(175,31,101,0.4)] sm:p-8">
-        <p className="text-lg font-bold text-gray-900">Upptäcker avvikelser – även när ingen ser</p>
+        <h3 className="text-xl font-bold tracking-tight text-[#302337]">Ett dygn med blodtrycksmanschett</h3>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+            <p className="text-xs font-semibold text-gray-600">På vårdcentralen</p>
+            <p className="mt-1 font-bold text-[#302337]"><span className="text-xl sm:text-2xl">120/78</span> <small>mmHg</small></p>
+            <p className="mt-1 text-xs text-gray-600">Normalt vid besöket</p>
+          </div>
+          <div className="rounded-xl border border-pink-200 bg-white p-3 shadow-sm">
+            <p className="flex items-center gap-1 text-xs font-semibold text-[#a31d60]"><MoonIcon /> Hemma, en annan natt</p>
+            <p className="mt-1 font-bold text-[#a31d60]"><span className="text-xl sm:text-2xl">148/92</span> <small>mmHg</small></p>
+            <p className="mt-1 text-xs text-gray-600">Förhöjt vid midnatt</p>
+          </div>
+        </div>
+        <p className="mt-5 text-sm font-semibold text-gray-700">Övertryck under dygnet hemma <span className="font-normal">(mmHg)</span></p>
 
-        <div className="relative mt-5">
-          <svg viewBox="0 0 560 270" className="h-auto w-full" aria-hidden="true">
+        <div className="relative mt-1">
+          <svg viewBox="0 0 560 270" className="h-auto w-full" role="img" aria-label="Övertrycket hemma är 148 mmHg vid midnatt, sjunker till omkring 120 under dagen och stiger på kvällen. En streckad linje markerar besökets övertryck på 120 mmHg.">
             <defs>
               <linearGradient id="gh-chart-fill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" stopColor="#e72e8a" stopOpacity="0.2" />
@@ -159,39 +199,31 @@ function EarlySignalVisual() {
             {[40, 165, 291, 416, 542].map((x) => (
               <path key={x} d={`M${x} 228V234`} stroke="#d8cbd2" strokeWidth="1.5" />
             ))}
-            <text x="40" y="251" textAnchor="start" fill="#9ca3af" fontSize="10" fontWeight="600">00:00</text>
-            <text x="165" y="251" textAnchor="middle" fill="#9ca3af" fontSize="10" fontWeight="600">06:00</text>
-            <text x="291" y="251" textAnchor="middle" fill="#9ca3af" fontSize="10" fontWeight="600">12:00</text>
-            <text x="416" y="251" textAnchor="middle" fill="#9ca3af" fontSize="10" fontWeight="600">18:00</text>
-            <text x="542" y="251" textAnchor="end" fill="#9ca3af" fontSize="10" fontWeight="600">23:59</text>
-            <text x="13" y="131" textAnchor="middle" transform="rotate(-90 13 131)" fill="#9ca3af" fontSize="11" fontWeight="600">Blodtryck</text>
-            {[48, 102, 156, 210].map((y) => (
-              <path key={y} d={`M40 ${y}H542`} stroke="#eddde6" strokeWidth="1" strokeDasharray="4 8" />
-            ))}
-            <rect x="40" y="92" width="502" height="70" rx="18" fill="#f4eaf0" opacity="0.7" />
-            <path d="M40 132H542" stroke="#aa718f" strokeWidth="1.5" strokeDasharray="7 8" opacity="0.6" />
-            <path d="M207 38V228" stroke="#7f7480" strokeWidth="2" strokeDasharray="5 7" opacity="0.5" />
-            <path d="M466 38V228" stroke="#e72e8a" strokeWidth="2" strokeDasharray="5 7" opacity="0.5" />
+            <text x="40" y="251" textAnchor="start" fill="#675963" fontSize="15" fontWeight="600">00:00</text>
+            <text x="165" y="251" textAnchor="middle" fill="#675963" fontSize="15" fontWeight="600">06:00</text>
+            <text x="291" y="251" textAnchor="middle" fill="#675963" fontSize="15" fontWeight="600">12:00</text>
+            <text x="416" y="251" textAnchor="middle" fill="#675963" fontSize="15" fontWeight="600">18:00</text>
+            <text x="542" y="251" textAnchor="end" fill="#675963" fontSize="15" fontWeight="600">23:59</text>
+            {[150, 140, 130, 120, 110, 100].map((value) => {
+              const y = 196 - 3 * (value - 100);
+              return (
+                <g key={value}>
+                  <text x="29" y={y + 4} textAnchor="end" fill="#675963" fontSize="15">{value}</text>
+                  <path d={`M40 ${y}H542`} stroke="#eddde6" strokeDasharray="4 8" />
+                </g>
+              );
+            })}
+            <path d="M40 136H542" stroke="#766577" strokeWidth="2" strokeDasharray="6 6" />
             <path d="M40 52 C55 72 72 128 103 148 S160 132 207 134 S278 143 318 132 S368 124 397 130 C430 137 446 105 466 89 S502 64 542 43 L542 228 L40 228 Z" fill="url(#gh-chart-fill)" />
-            <path className="gh-chart-line" pathLength="1" d="M40 52 C55 72 72 128 103 148 S160 132 207 134 S278 143 318 132 S368 124 397 130 C430 137 446 105 466 89 S502 64 542 43" fill="none" stroke="url(#gh-chart-line)" strokeWidth="5" strokeLinecap="round" />
-            <circle cx="207" cy="134" r="8" fill="#7f7480" stroke="white" strokeWidth="4" />
-            <circle className="gh-alert-ring" cx="466" cy="89" r="14" fill="none" stroke="#e72e8a" strokeWidth="3" />
-            <circle cx="466" cy="89" r="8" fill="#e72e8a" stroke="white" strokeWidth="4" />
+            <path className="gh-bp-series" pathLength="1" d="M40 52 C55 72 72 128 103 148 S160 132 207 134 S278 143 318 132 S368 124 397 130 C430 137 446 105 466 89 S502 64 542 43" fill="none" stroke="url(#gh-chart-line)" strokeWidth="5" strokeLinecap="round" />
+            <circle cx="40" cy="52" r="8" fill="#e72e8a" stroke="white" strokeWidth="3" />
           </svg>
 
-          <div className="gh-snapshot absolute left-[2%] top-[1%] max-w-32 rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-lg sm:left-[25%] sm:max-w-40">
-            <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Hos vårdcentralen</p>
-            <p className="mt-0.5 text-[11px] font-semibold leading-4 text-gray-700">Normalt blodtryck</p>
-          </div>
-
-          <div className="gh-alert absolute -top-[4%] right-[1%] max-w-36 rounded-2xl border border-pink-200 bg-white px-3 py-2.5 shadow-xl sm:-top-[6%] sm:right-[1%] sm:max-w-48 sm:px-4 sm:py-3">
-            <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#D81B7D]">
-              <MoonIcon /> Medan du sover
-            </p>
-            <p className="mt-1 text-xs font-semibold leading-4 text-gray-700">För högt blodtryck</p>
-          </div>
+          <p className="flex items-center gap-2 text-xs leading-relaxed text-gray-600">
+            <span aria-hidden="true" className="w-5 shrink-0 border-t-2 border-dashed border-[#766577]" />
+            Övertryck vid läkarbesöket
+          </p>
         </div>
-
       </div>
     </div>
   );
@@ -244,17 +276,13 @@ function AnnualBloodPressureVisual() {
   const diastolicTrend = getTrend("diastolic");
 
   return (
-    <div
-      className="gh-visual relative mx-auto w-full max-w-[650px]"
-      role="img"
-      aria-label={`Illustrativ årsgraf med 250 mätpunkter och sex utspridda perioder av förhöjt blodtryck. Trendlinjerna för både övertryck och undertryck stiger under året. Årsmedelvärdet är ${averageSystolic} över ${averageDiastolic}, vilket är högre än referensen 135 över 85 för hemmätning.`}
-    >
+    <div className="relative mx-auto w-full max-w-[650px]">
       <div className="absolute -inset-8 rounded-full bg-purple-100/40 blur-3xl" aria-hidden="true" />
       <div className="relative overflow-hidden rounded-[2rem] border border-pink-100 bg-[linear-gradient(145deg,#ffffff_0%,#fff7fb_100%)] p-5 shadow-[0_30px_90px_-40px_rgba(175,31,101,0.32)] sm:p-8">
-        <div className="text-center">
-          <p className="text-lg font-bold text-gray-900 sm:text-xl">Året avslöjar mönstret</p>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-            250 mätpunkter visar variationerna. Trendlinjerna visar riktningen över tid.
+        <div>
+          <h3 className="text-xl font-bold tracking-tight text-[#302337]">Året avslöjar mönstret</h3>
+          <p className="mt-2 text-sm leading-6 text-gray-600">
+            Bland 250 hemmamätningar syns flera perioder med högre värden. Både övertryck och undertryck stiger över året.
           </p>
         </div>
 
@@ -265,7 +293,7 @@ function AnnualBloodPressureVisual() {
           <span className="flex items-center gap-1.5"><span className="w-4 border-t-2 border-dashed border-gray-700" />Trendlinje</span>
         </div>
 
-        <svg viewBox="0 0 600 285" className="mt-2 h-auto w-full" aria-hidden="true">
+        <svg viewBox="0 0 600 285" className="mt-2 h-auto w-full" role="img" aria-label={`250 fiktiva hemmamätningar från januari till december, med stigande trend för övertryck och undertryck. Årsmedel ${averageSystolic}/${averageDiastolic} mmHg.`}>
           <defs>
             <linearGradient id="gh-annual-fill" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor="#e72e8a" stopOpacity="0.13" />
@@ -277,7 +305,7 @@ function AnnualBloodPressureVisual() {
           {[50, 94, 139, 183, 228].map((y, index) => (
             <g key={y}>
               <path d={`M60 ${y}H566`} stroke="#eddde6" strokeWidth="1" strokeDasharray="4 7" />
-              <text x="49" y={y + 3} textAnchor="end" fill="#9ca3af" fontSize="9" fontWeight="600">
+              <text x="49" y={y + 3} textAnchor="end" fill="#685b65" fontSize="14" fontWeight="600">
                 {[160, 140, 120, 100, 80][index]}
               </text>
             </g>
@@ -285,19 +313,19 @@ function AnnualBloodPressureVisual() {
 
           <path d={`M60 ${toY(135)}H566`} stroke="#e72e8a" strokeWidth="1.5" strokeDasharray="2 7" opacity="0.35" />
           <path d={`M60 ${toY(85)}H566`} stroke="#7655a6" strokeWidth="1.5" strokeDasharray="2 7" opacity="0.35" />
-          <text x="563" y={toY(135) - 5} textAnchor="end" fill="#c74383" fontSize="9" fontWeight="700">135</text>
-          <text x="563" y={toY(85) - 5} textAnchor="end" fill="#7655a6" fontSize="9" fontWeight="700">85</text>
+          <text x="563" y={toY(135) - 5} textAnchor="end" fill="#c74383" fontSize="13" fontWeight="700">135</text>
+          <text x="563" y={toY(85) - 5} textAnchor="end" fill="#7655a6" fontSize="13" fontWeight="700">85</text>
 
           <path d={`${systolicPath} L566 250 L60 250 Z`} fill="url(#gh-annual-fill)" />
-          <path className="gh-chart-line" pathLength="1" d={systolicPath} fill="none" stroke="#e72e8a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-          <path className="gh-chart-line gh-annual-diastolic" pathLength="1" d={diastolicPath} fill="none" stroke="#7655a6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-          <path className="gh-trend-line" pathLength="1" d={`M60 ${toY(systolicTrend.start)}L566 ${toY(systolicTrend.end)}`} fill="none" stroke="#a50f59" strokeWidth="2.25" strokeDasharray="9 6" />
-          <path className="gh-trend-line" pathLength="1" d={`M60 ${toY(diastolicTrend.start)}L566 ${toY(diastolicTrend.end)}`} fill="none" stroke="#51317e" strokeWidth="2.25" strokeDasharray="9 6" />
+          <path className="gh-bp-series" pathLength="1" d={systolicPath} fill="none" stroke="#e72e8a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+          <path className="gh-bp-series" pathLength="1" d={diastolicPath} fill="none" stroke="#7655a6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path className="gh-trend-line" d={`M60 ${toY(systolicTrend.start)}L566 ${toY(systolicTrend.end)}`} fill="none" stroke="#a50f59" strokeWidth="2.25" strokeDasharray="9 6" />
+          <path className="gh-trend-line" d={`M60 ${toY(diastolicTrend.start)}L566 ${toY(diastolicTrend.end)}`} fill="none" stroke="#51317e" strokeWidth="2.25" strokeDasharray="9 6" />
 
           {monthPositions.map((x, index) => (
-            <g key={months[index]}>
+            <g key={months[index]} className={index % 3 !== 0 && index !== 11 ? "gh-bp-month-minor" : undefined}>
               <path d={`M${x} 250V256`} stroke="#d8cbd2" strokeWidth="1.5" />
-              <text x={x} y="270" textAnchor="middle" fill="#9ca3af" fontSize="9" fontWeight="600">{months[index]}</text>
+              <text x={x} y="270" textAnchor="middle" fill="#685b65" fontSize="14" fontWeight="600">{months[index]}</text>
             </g>
           ))}
 
@@ -312,13 +340,10 @@ function AnnualBloodPressureVisual() {
           </div>
           <div className="mt-3 sm:mt-0 sm:text-right">
             <span className="inline-flex rounded-full bg-pink-100 px-3 py-1.5 text-xs font-bold text-[#b71868]">Förhöjt</span>
-            <p className="mt-1 text-[10px] text-gray-400">Referens för hemmätning: under 135/85</p>
+            <p className="mt-1 text-[10px] text-gray-400">Hemblodtryck bör i genomsnitt ligga under 135/85 mmHg</p>
           </div>
         </div>
 
-        <p className="mt-3 text-center text-[10px] leading-4 text-gray-400">
-          Illustrativa värden. Medicinsk bedömning görs individuellt av vårdpersonal.
-        </p>
       </div>
     </div>
   );

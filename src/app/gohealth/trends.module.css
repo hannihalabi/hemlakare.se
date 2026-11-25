@@ -91,7 +91,7 @@ button[aria-pressed="true"] .arrow {visibility: visible;}
 .gridLine {stroke: #e6dfe3; stroke-width: 1;}
 .cursorLine {stroke: #a98297; stroke-width: 1; stroke-dasharray: 3 4;}
 .primaryLine, .lowerLine {fill: none; stroke: var(--pink); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round;}
-.lowerLine {stroke: var(--teal); stroke-width: 2; stroke-dasharray: 5 4;}
+.lowerLine, .averageLine {stroke: var(--teal); stroke-width: 2; stroke-dasharray: 5 4;}
 .dot, .lowerDot {position: absolute; width: .43rem; height: .43rem; transform: translate(-50%, -50%); border: 1.6px solid var(--pink); background: #fff; border-radius: 50%; pointer-events: none;}
 .lowerDot {border-color: var(--teal);}
 .dot[data-selected="true"], .lowerDot[data-selected="true"] {width: .68rem; height: .68rem; background: var(--pink); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--pink);}

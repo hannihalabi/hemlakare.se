@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 /**
  * Levande radar-visualisering för GoHealth. Varje vitalparameter har en egen,
@@ -10,6 +10,7 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 
 type VitalNode = {
   label: string;
+  example: string;
   angle: number; // grader, 0 = rakt upp, medurs
   icon: ReactNode;
 };
@@ -22,6 +23,7 @@ const SCAN_START_DELAY = 1.2;
 const vitals: VitalNode[] = [
   {
     label: "Puls",
+    example: "62 slag/min",
     angle: 0,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -31,6 +33,7 @@ const vitals: VitalNode[] = [
   },
   {
     label: "Andning",
+    example: "14 andetag/min",
     angle: 60,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -40,6 +43,7 @@ const vitals: VitalNode[] = [
   },
   {
     label: "Rytm",
+    example: "EKG registrerat",
     angle: 120,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -50,6 +54,7 @@ const vitals: VitalNode[] = [
   },
   {
     label: "Sömn",
+    example: "7 h 25 min i natt",
     angle: 180,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -59,6 +64,7 @@ const vitals: VitalNode[] = [
   },
   {
     label: "Stress",
+    example: "26/100 · klockans uppskattning",
     angle: 240,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -69,6 +75,7 @@ const vitals: VitalNode[] = [
   },
   {
     label: "Body Battery",
+    example: "72/100 · klockans energiindex",
     angle: 300,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -96,6 +103,8 @@ function polarToPercent(angleDeg: number, radiusPercent: number) {
 export default function GoHealthRadar() {
   const radarRef = useRef<HTMLDivElement>(null);
   const streamFilterId = useId();
+  const [paused, setPaused] = useState(false);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const radar = radarRef.current;
@@ -121,15 +130,21 @@ export default function GoHealthRadar() {
     return () => observer.disconnect();
   }, []);
 
-  return (
+  const radar = (
     <div
       ref={radarRef}
       data-visible="false"
       className="gh-radar-stage relative mx-auto aspect-square w-full max-w-[420px] select-none px-16 sm:px-0"
       role="img"
-      aria-label="Sex hälsovärden synkas kontinuerligt med GoHealth AI"
+      aria-label="Simulerad datainsamling. Sex animerade flöden visar puls, andning, rytm, sömn, stress och Body Battery på väg till GoHealth."
     >
       <style>{`
+        .gh-radar-demo { width: 100%; margin: 0; }
+        .gh-radar-demo[data-paused="true"] .gh-radar-stage * { animation-play-state: paused !important; }
+        .gh-radar-caption { margin: 28px auto 0; max-width: 420px; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid #e5d7df; background: #fff; border-radius: 14px; color: #322638; }
+        .gh-radar-caption small { display: block; color: #765c6b; font-size: 11px; }
+        .gh-radar-caption strong { display: block; font-size: 14px; line-height: 1.35; }
+        .gh-radar-caption button { color: #891b50; font-weight: 650; cursor: pointer; font-size: 13px; padding: 6px; min-height: 40px; }
         @keyframes gh-sweep-rotate {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
@@ -231,6 +246,7 @@ export default function GoHealthRadar() {
         .gh-core-wave { animation: gh-core-wave 3.4s ease-out infinite; }
 
         @media (prefers-reduced-motion: reduce) {
+          .gh-radar-caption button { display: none; }
           .gh-radar-stage,
           .gh-radar-stage[data-visible="true"] {
             opacity: 1;
@@ -262,6 +278,12 @@ export default function GoHealthRadar() {
         }
       `}</style>
 
+      <noscript><style>{`
+        .gh-radar-stage, .gh-radar-stage .gh-data-layer, .gh-radar-stage .gh-node-shell, .gh-radar-stage .gh-label { opacity: 1; filter: none; }
+        .gh-radar-stage .gh-node-shell, .gh-radar-stage .gh-label { transform: translate(-50%, -50%); }
+        .gh-radar-stage * { animation: none !important; }
+        .gh-radar-caption button { display: none; }
+      `}</style></noscript>
       <div
         className="gh-radar-disc absolute inset-0 overflow-hidden rounded-full"
         style={{
@@ -389,6 +411,8 @@ export default function GoHealthRadar() {
                 style={{ animationDelay: `${scanDelay}s` }}
               />
               <div
+                onAnimationStart={() => setCurrent(index)}
+                onAnimationIteration={() => setCurrent(index)}
                 className="gh-node-anim relative grid size-6 place-items-center rounded-full text-white/90 shadow-[0_0_18px_rgba(232,61,147,0.42)] sm:size-7"
                 style={{
                   background: "linear-gradient(145deg, #f0529e 0%, #d81b7d 55%, #a71668 100%)",
@@ -419,5 +443,20 @@ export default function GoHealthRadar() {
         );
       })}
     </div>
+  );
+
+  return (
+    <figure className="gh-radar-demo" data-paused={paused}>
+      {radar}
+      <figcaption className="gh-radar-caption">
+        <div>
+          <small>Simulerad avläsning</small>
+          <strong>{vitals[current].label} · {vitals[current].example}</strong>
+        </div>
+        <button type="button" aria-label={paused ? "Fortsätt radarn" : "Pausa radarn"} onClick={() => setPaused(!paused)}>
+          {paused ? "Fortsätt" : "Pausa"}
+        </button>
+      </figcaption>
+    </figure>
   );
 }

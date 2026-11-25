@@ -29,6 +29,9 @@ const week = [
   ["Fredag", "Fre"], ["Lördag", "Lör"], ["Söndag", "Sön"],
 ];
 
+// Average nightly sleep over the four weeks before the illustrated week, in minutes.
+const previousSleepAverage = 435;
+
 const trends: Trend[] = [
   {
     id: "sleep", area: "Återhämtning", title: "Sömntid", source: "Pulsklocka", period: "En vecka",
@@ -36,7 +39,7 @@ const trends: Trend[] = [
     readings: [455, 440, 410, 370, 395, 440, 465].map((value, i) => ({
       value, date: week[i][0], shortDate: week[i][1],
     })),
-    interpretation: "Veckans kortaste natt infaller på torsdagen. Kände du dig också tröttare då? Det är en fråga att ta med i samtalet med läkaren.",
+    interpretation: "Onsdag till fredag ligger sömnen under personens tidigare snitt. Om du också känt dig tröttare kan du och läkaren prata om vad som hände de dagarna.",
   },
   {
     id: "glucose", area: "Ämnesomsättning", title: "Långtidsblodsocker", source: "Blodprov · HbA1c", period: "Ett år",
@@ -45,14 +48,14 @@ const trends: Trend[] = [
       { date: "Januari", shortDate: "Jan", value: 38 }, { date: "April", shortDate: "Apr", value: 40 },
       { date: "Juli", shortDate: "Jul", value: 39 }, { date: "Oktober", shortDate: "Okt", value: 38 },
     ],
-    interpretation: "HbA1c speglar blodsockret under de senaste två till tre månaderna. Flera provtagningar ger läkaren möjlighet att följa förändringen över året.",
+    interpretation: "I april stiger provsvaret från 38 till 40 mmol/mol. Nästa två prover visar 39 och 38. Tillsammans visar de att uppgången i april inte fortsatte.",
   },
   {
     id: "pressure", area: "Cirkulation", title: "Blodtryck", source: "Blodtrycksmanschett", period: "En vecka",
     unit: "mmHg", ticks: [140, 120, 100, 80, 60],
     readings: [[120, 76], [121, 77], [125, 79], [127, 80], [124, 78], [121, 75], [119, 75]]
       .map(([value, lower], i) => ({ value, lower, date: week[i][0], shortDate: week[i][1] })),
-    interpretation: "Här visas sju morgonmätningar i vila. Övertryck och undertryck följs tillsammans, så att du och läkaren kan se hur de varierar från dag till dag.",
+    interpretation: "Alla sju mätningar är tagna hemma på morgonen i vila. Båda värdena stiger fram till torsdag och sjunker sedan igen. Liknande mätförhållanden gör dagarna lättare att jämföra.",
   },
 ];
 
@@ -65,14 +68,18 @@ function MetricSymbol({ metric }: { metric: Metric }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[metric]}</svg>;
 }
 
+function sleepDuration(minutes: number) {
+  return `${Math.floor(minutes / 60)} h ${minutes % 60} min`;
+}
+
 function numericLabel(trend: Trend, reading: Measurement) {
-  if (trend.id === "sleep") return `${Math.floor(reading.value / 60)} h ${reading.value % 60} min`;
+  if (trend.id === "sleep") return sleepDuration(reading.value);
   if (reading.lower !== undefined) return `${reading.value}/${reading.lower}`;
   return String(reading.value);
 }
 
 function TrendCard({ trend }: { trend: Trend }) {
-  const [selected, setSelected] = useState(trend.readings.length - 1);
+  const [selected, setSelected] = useState(trend.id === "sleep" ? 3 : trend.readings.length - 1);
   const reading = trend.readings[selected];
   const valueLabel = numericLabel(trend, reading);
   const high = trend.ticks[0];
@@ -112,6 +119,10 @@ function TrendCard({ trend }: { trend: Trend }) {
               <defs><linearGradient id="gohealth-sleep-wash" x2="0" y2="1"><stop stopColor="#db247c" stopOpacity=".15"/><stop offset="1" stopColor="#db247c" stopOpacity="0"/></linearGradient></defs>
               <polygon points={`${xAt(0)},100 ${points} ${xAt(trend.readings.length - 1)},100`} fill="url(#gohealth-sleep-wash)" />
             </>}
+            {trend.id === "sleep" && (
+              <line x1="0" x2="100" y1={yAt(previousSleepAverage)} y2={yAt(previousSleepAverage)}
+                className={styles.averageLine} vectorEffect="non-scaling-stroke" />
+            )}
             <line x1={activeX} x2={activeX} y1="0" y2="100" className={styles.cursorLine} vectorEffect="non-scaling-stroke" />
             <polyline points={points} className={styles.primaryLine} vectorEffect="non-scaling-stroke" />
             {lowerPoints && <polyline points={lowerPoints} className={styles.lowerLine} vectorEffect="non-scaling-stroke" />}
@@ -129,6 +140,11 @@ function TrendCard({ trend }: { trend: Trend }) {
           ))}
         </div>
       </div>
+      {trend.id === "sleep" && (
+        <div className={styles.legend}>
+          <span>Nattens sömn</span><span>Snitt föregående fyra veckor · {sleepDuration(previousSleepAverage)}</span>
+        </div>
+      )}
       {lowerPoints && <div className={styles.legend}><span>Övertryck</span><span>Undertryck</span></div>}
       <figcaption>{trend.interpretation}</figcaption>
     </figure>
@@ -141,8 +157,8 @@ export default function TrendExplorer() {
     <section id="halsotrender" className={styles.section} aria-labelledby="trend-heading">
       <div className={styles.inner}>
         <div className={styles.intro}>
-          <h2 id="trend-heading">Hur förändras dina värden?</h2>
-          <p>Utforska tre exempel på vad du och din läkare kan se när flera mätningar läggs bredvid varandra.</p>
+          <h2 id="trend-heading">Så följer vi dina trender</h2>
+          <p>Vi jämför med dina tidigare värden och ser om en förändring återkommer. Läkaren väger in hur du mår när ni avgör vad som ska följas upp.</p>
           <div className={styles.options} role="group" aria-label="Välj hälsoområde">
             {trends.map(trend => <button type="button" key={trend.id} aria-pressed={current.id === trend.id}
               aria-controls="trend-panel" onClick={() => setCurrent(trend)}>

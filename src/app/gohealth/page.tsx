@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import ChatWidget from "@/components/ChatWidget";
 import Footer from "@/components/Footer";
+import GoHealthRadar from "@/components/GoHealthRadar";
+import { BloodPressureStory } from "@/components/GoHealthStory";
 import Header from "@/components/Header";
 import { SITE_URL } from "@/lib/site";
 import MeasurementGuide from "./MeasurementGuide";
@@ -83,7 +85,7 @@ export default function GoHealthPage() {
               <p className={styles.lead}>Hur påverkas din återhämtning under en intensiv vecka? Med GoHealth följer du och din läkare sömn, puls och blodprover över tid. Tillsammans ser ni vad som är värt att följa upp.</p>
               <div className={styles.actions}>
                 <a className={styles.primary} href="#medlemskap">Bli medlem <Arrow /></a>
-                <a className={styles.secondary} href="#halsotrender">Utforska hälsotrender <Arrow down /></a>
+                <a className={styles.secondary} href="#dataradarn">Se dataradarn <Arrow down /></a>
               </div>
             </div>
             <div className={styles.heroVisual}>
@@ -98,6 +100,22 @@ export default function GoHealthPage() {
           </div>
         </section>
 
+        <section id="dataradarn" aria-labelledby="radar-title" className={styles.radar}>
+          <div className={styles.radarInner}>
+            <div className={styles.radarCopy}>
+              <h2 id="radar-title">Följ mätningarna i dataradarn.</h2>
+              <p>Se hur pulsen, nattens sömn och andra mätvärden kommer in från en klocka. Radarn visar ett simulerat flöde. I GoHealth väljer du själv vilka uppgifter du delar med vårdteamet.</p>
+              <nav aria-label="Utforska GoHealth" className={styles.radarLinks}>
+                <a href="#blodtryck">Blodtrycket mellan läkarbesöken <Arrow /></a>
+                <a href="#halsotrender">Utforska hälsotrender <Arrow /></a>
+                <a href="#matguiden">Vad kan jag mäta? <Arrow /></a>
+              </nav>
+            </div>
+            <div className={styles.radarPlot}><GoHealthRadar /></div>
+          </div>
+        </section>
+
+        <BloodPressureStory />
         <TrendExplorer />
         <MeasurementGuide />
 

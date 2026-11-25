@@ -55,8 +55,8 @@ export default function MeasurementGuide() {
     <section id="matguiden" aria-labelledby="matguiden-title" className={styles.section}>
       <div className={styles.container}>
         <header className={styles.heading}>
-          <h2 id="matguiden-title">Vad kan du följa?</h2>
-          <p>Vad berättar ett blodprov om din ork och vad kan klockan visa om din sömn? Välj en mätkälla och utforska de områden du är nyfiken på.</p>
+          <h2 id="matguiden-title">Vad kan du mäta och följa?</h2>
+          <p>Välj en mätkälla för fler exempel. Klockans funktioner beror på modellen. Du och läkaren väljer vilka prover och undersökningar som passar dig.</p>
         </header>
         <fieldset className={styles.guide}>
           <legend className={styles.visuallyHidden}>Välj mätkälla</legend>
@@ -68,12 +68,21 @@ export default function MeasurementGuide() {
                   name="gohealth-matkalla"
                   value={group.id}
                   defaultChecked={index === 0}
+                  aria-labelledby={`matguide-val-${group.id}`}
                   aria-controls={`matguide-${group.id}`}
                   className={styles.visuallyHidden}
                 />
                 <span className={styles.tile}>
                   <SourceIllustration source={group.id} />
-                  <span className={styles.tileTitle}>{group.title}</span>
+                  <span id={`matguide-val-${group.id}`} className={styles.tileTitle}>{group.title}</span>
+                  <span className={styles.examples} role="list" aria-label={`Exempel för ${group.title.toLocaleLowerCase("sv-SE")}`}>
+                    {group.examples.map((example) => (
+                      <span className={styles.example} role="listitem" key={example.label}>
+                        <strong>{example.label}</strong>
+                        <span>{example.value}</span>
+                      </span>
+                    ))}
+                  </span>
                   <svg className={styles.choiceIndicator} aria-hidden="true" viewBox="0 0 20 20">
                     <circle cx="10" cy="10" r="8.5" />
                     <path d="m6 10 2.6 2.7 5.4-5.4" />
@@ -91,7 +100,7 @@ export default function MeasurementGuide() {
               className={styles.panel}
             >
               <div className={styles.intro}>
-                <h3 id={`matguide-${group.id}-title`}>{group.title}</h3>
+                <h3 id={`matguide-${group.id}-title`}>{group.question}</h3>
                 <p>{group.intro}</p>
               </div>
               <div className={styles.topics}>
